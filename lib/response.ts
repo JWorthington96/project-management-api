@@ -11,6 +11,11 @@ export function failure(body) {
 function buildResponse(statusCode: number, body) {
     return {
         statusCode: statusCode,
+        // enabling CORS
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": true
+        },
         body: JSON.stringify(body)
     };
 }

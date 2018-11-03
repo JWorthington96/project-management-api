@@ -1,7 +1,8 @@
 service:
   name: project-management-api
 
-profile: serverless-admin
+# using claudia as the profile
+profile: claudia
 
 # serverless-webpack and serverless-offline plugins
 plugins:
@@ -38,7 +39,7 @@ functions:
       - http:
           method: create
           path: projects
-          cors: false
+          cors: true
           authorizer: aws_iam
   get:
     handler: get.main
@@ -46,4 +47,13 @@ functions:
       - http:
           method: get
           path: projects/{id}
+          cors: true
+          authorizer: aws_iam
+  list:
+    handler: list-projects.main
+    events:
+      - http:
+          method: list
+          path: projects
+          cors: true
           authorizer: aws_iam
