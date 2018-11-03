@@ -1,0 +1,41 @@
+service:
+  name: project-management-api
+
+profile: serverless-admin
+
+# serverless-webpack and serverless-offline plugins
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+# serverless-webpack configuration
+# also enable autopacking of external modules
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+      - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:eu-west-2:*:*"
+
+functions:
+  create:
+    handler: handler.main
+    events:
+      - http:
+          method: view
+          path: projects
+          cors: false
+          authorizer: aws_iam
