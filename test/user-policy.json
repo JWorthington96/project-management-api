@@ -27,7 +27,7 @@
         "execute-api:Invoke"
       ],
       "Resource": [
-        "arn:aws:execute-api:eu-west-2:*:ay38keik1f/*/*/*"
+        "arn:aws:execute-api:eu-west-2:*:24alulm62c/*/*/*"
       ]
     }
   ]
