@@ -30,12 +30,13 @@ provider:
       - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
 
+# API endpoints for the functions
 functions:
   create:
-    handler: handler.main
+    handler: create.main
     events:
       - http:
-          method: view
+          method: create
           path: projects
           cors: false
           authorizer: aws_iam

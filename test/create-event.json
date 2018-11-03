@@ -1,0 +1,8 @@
+{
+  "body": "{\"content\":\"testing123\",\"attachment\":\"more text\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "user123"
+    }
+  }
+}
