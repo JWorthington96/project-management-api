@@ -1,6 +1,5 @@
-import * as dynanoDb from "./dynamodb";
-import {success, failure} from "./response";
-import {fail} from "assert";
+import * as dynamoDb from "./lib/dynamodb";
+import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
     const params = {
@@ -12,7 +11,7 @@ export async function main(event, context, callback) {
     };
 
     try {
-        const result = await dynanoDb.call("get", params);
+        const result = await dynamoDb.call("get", params);
         if (result.Item) {
             callback(null, success(result.Item));
         } else {

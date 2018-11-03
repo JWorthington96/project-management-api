@@ -6,8 +6,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as dynanoDb from "./dynamodb";
-import { success, failure } from "./response";
+import * as dynamoDb from "./lib/dynamodb";
+import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
@@ -18,7 +18,7 @@ export function main(event, context, callback) {
             }
         };
         try {
-            const result = yield dynanoDb.call("get", params);
+            const result = yield dynamoDb.call("get", params);
             if (result.Item) {
                 callback(null, success(result.Item));
             }

@@ -40,3 +40,10 @@ functions:
           path: projects
           cors: false
           authorizer: aws_iam
+  get:
+    handler: get.main
+    events:
+      - http:
+          method: get
+          path: projects/{id}
+          authorizer: aws_iam

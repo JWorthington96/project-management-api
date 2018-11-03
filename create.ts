@@ -1,6 +1,6 @@
 import uuid from "uuid/v1";
-import * as dynamoDb from "./dynamodb";
-import {success, failure} from "./response";
+import * as dynamoDb from "./lib/dynamodb";
+import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
     const data = JSON.parse(event.body);
