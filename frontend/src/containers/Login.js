@@ -1,8 +1,9 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap/es";
-import {Button} from "react-bootstrap";
+import {Alert, Button} from "react-bootstrap";
 import "./Login.css";
 import {Auth} from "aws-amplify";
+import LoadingButton from "../components/LoadingButton";
 
 export default class Login extends Component {
     constructor(props, context){
@@ -10,6 +11,8 @@ export default class Login extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.state = {
+            isConfirmed: true,
+            isLoading: false,
             username: '',
             password: ''
         };
@@ -27,18 +30,40 @@ export default class Login extends Component {
         else return false;
     }
 
-    handleChange(e){
-        this.setState({[e.target.id]: e.target.value});
+    handleChange = event => {
+        this.setState({[event.target.id]: event.target.value});
     }
 
     handleSubmit = async e => {
         e.preventDefault();
 
+        this.setState({isLoading: true});
         try {
             await Auth.signIn(this.state.username, this.state.password);
-            alert("Logged in");
             this.props.userHasAuthenticated(true);
             this.props.history.push("/");
+        } catch (error) {
+            if (error.message === "User is not confirmed."){
+                this.setState({isConfirmed: false});
+            } else if (error.message === "User does not exist.") {
+                // TODO: redirect user to the register page
+            } else {
+                alert(error.message);
+            }
+        }
+        this.setState({isLoading: false});
+    }
+
+    handleDismiss = event => {
+        this.setState({isConfirmed: true});
+    }
+
+    handleResend = async event => {
+        event.preventDefault();
+
+        try {
+            await Auth.resendSignUp(this.state.username);
+            this.setState({isConfirmed: true});
         } catch (error) {
             alert(error.message);
         }
@@ -80,14 +105,29 @@ export default class Login extends Component {
                         Remember details
                     </Checkbox>
 
-                    <Button type="submit"
-                            disabled={!this.getValidationBoolean()}>
-                        Login
-                    </Button>
-                </form>
-                <div>
+                    <LoadingButton
+                        type="submit"
+                        disabled={!this.getValidationBoolean()}
+                        isLoading={this.state.isLoading}
+                        text="Login"
+                        loadingText="Logging in..."
+                    />
 
-                </div>
+                    {this.state.isConfirmed ? <div></div>
+                        : <Fragment>
+                            <Alert className="alert" bsStyle="danger" onDismiss={this.handleDismiss}>
+                                <h3>Thank you again for registering!</h3>
+                                <p>Unfortunately you still haven't confirmed your account. Please check your email to confirm your
+                                    account before signing in, alternatively, if that doesn't work or you lost the email,
+                                    click the button below to resend the confirmation email.</p>
+                                <p>
+                                    <Button onClick={this.handleResend}>Resend email</Button>
+                                    <span>  or  </span>
+                                    <Button onClick={this.handleDismiss}>Dismiss</Button>
+                                </p>
+                            </Alert>
+                        </Fragment>}
+                </form>
             </div>
         );
     }

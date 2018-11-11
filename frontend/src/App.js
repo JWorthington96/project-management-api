@@ -11,7 +11,7 @@ class App extends Component {
         super(props);
 
         this.state = {
-            sAuthenticated: false,
+            isAuthenticated: false,
             isAuthenticating: true
         };
     };
@@ -49,7 +49,7 @@ class App extends Component {
                 <Navbar fluid collapseOnSelect>
                     <Navbar.Header>
                         <Navbar.Brand>
-                            <Link to="/">Project Manager</Link>
+                            <Link to="/"><h2>Project Manager</h2></Link>
                         </Navbar.Brand>
                         <Navbar.Toggle/>
                     </Navbar.Header>

@@ -3,3 +3,8 @@
     text-align: left;
     min-width: 500px;
 }
+
+.Login .alert {
+    margin-top: 20px;
+    padding-top: 0px;
+}
