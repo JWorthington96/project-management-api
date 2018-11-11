@@ -3,6 +3,7 @@ import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-b
 import {Button} from "react-bootstrap";
 import "./Register.css";
 import {Auth} from "aws-amplify";
+import LoadingButton from "../components/LoadingButton";
 
 export default class Register extends Component {
     constructor(props, context){
@@ -10,11 +11,12 @@ export default class Register extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.state = {
+            isConfirmed: false,
+            isLoading: false,
             email: '',
             username: '',
             password: '',
             confirmPass: '',
-            confirmCode: '',
             newUser: null
         };
     }
@@ -55,109 +57,85 @@ export default class Register extends Component {
         this.setState({isLoading: false});
     }
 
-    handleConfirmationSubmit = async event => {
-        event.preventDefault();
-
-        this.setState({isLoading: true});
-        try {
-            await Auth.confirmSignUp(this.state.email, this.state.confirmCode);
-            await Auth.signIn(this.state.username, this.state.password);
-
-            this.props.userHasAuthenticated(true);
-            this.props.history.push("/");
-        } catch (e) {
-            alert(e.message);
-            this.setState({isLoading: false});
-        }
-    }
-
-    renderConfirmationCode() {
+    renderConfirmation() {
         return (
-            <div className="register">
-                <form onSubmit={this.handleConfirmationSubmit}>
-                    <FormGroup controlId="confirmCode">
-                        <ControlLabel>Confirmation code</ControlLabel>
-                        <FormControl
-                            autoFocus
-                            type="tel"
-                            value={this.state.confirmationCode}
-                            onChange={this.handleChange}
-                        />
-                        <HelpBlock>Please check your email for the code</HelpBlock>
-                    </FormGroup>
-
-                    <Button type="submit" disabled={!this.getValidationBoolean()}>Confirm</Button>
-                </form>
+            <div className="confirmation">
+                <h1>Thank you for registering!</h1>
+                <h3>Please check your email to confirm your account before signing in</h3>
             </div>
         );
     }
 
     renderForm() {
         return(
-            <div className="register">
-                <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="email">
-                        <ControlLabel>Email</ControlLabel>
-                        <FormControl autoFocus
-                                     type="email"
-                                     value={this.state.email}
-                                     onChange={this.handleChange}
-                                     placeholder="john.doe@example.com"
-                        />
-                        <FormControl.Feedback />
-                    </FormGroup>
+            <form onSubmit={this.handleSubmit}>
+                <FormGroup controlId="email">
+                    <ControlLabel>Email</ControlLabel>
+                    <FormControl autoFocus
+                                 type="email"
+                                 value={this.state.email}
+                                 onChange={this.handleChange}
+                                 placeholder="john.doe@example.com"
+                    />
+                    <FormControl.Feedback />
+                </FormGroup>
 
-                    <FormGroup controlId="username">
-                        <ControlLabel>Username</ControlLabel>
-                        <FormControl type="username"
-                                     value={this.state.username}
-                                     onChange={this.handleChange}
-                                     placeholder="xXexampleXx" />
-                        <FormControl.Feedback />
-                    </FormGroup>
+                <FormGroup controlId="username">
+                    <ControlLabel>Username</ControlLabel>
+                    <FormControl type="username"
+                                 value={this.state.username}
+                                 onChange={this.handleChange}
+                                 placeholder="xXexampleXx" />
+                    <FormControl.Feedback />
+                </FormGroup>
 
-                    <FormGroup
-                        controlId="password"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>Password must be at least 12 characters long</HelpBlock>
-                    </FormGroup>
+                <FormGroup
+                    controlId="password"
+                    validationState={this.getValidationState()}
+                >
+                    <ControlLabel>Password</ControlLabel>
+                    <FormControl
+                        type="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                    />
+                    <FormControl.Feedback />
+                    <HelpBlock>Password must be at least 12 characters long</HelpBlock>
+                </FormGroup>
 
-                    <FormGroup
-                        controlId="confirmPass"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Confirm password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.confirmPass}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>Must match password</HelpBlock>
-                    </FormGroup>
+                <FormGroup
+                    controlId="confirmPass"
+                    validationState={this.getValidationState()}
+                >
+                    <ControlLabel>Confirm password</ControlLabel>
+                    <FormControl
+                        type="password"
+                        value={this.state.confirmPass}
+                        onChange={this.handleChange}
+                    />
+                    <FormControl.Feedback />
+                    <HelpBlock>Must match password</HelpBlock>
+                </FormGroup>
 
-                    <Checkbox title="The website will save your credentials to immediately login">
-                        Remember details
-                    </Checkbox>
+                <Checkbox title="The website will save your credentials to immediately login">
+                    Remember details
+                </Checkbox>
 
-                    <Button type="submit" disabled={!this.getValidationBoolean()}>Register</Button>
-                </form>
-            </div>
+                <LoadingButton
+                    type="submit"
+                    disabled={!this.getValidationBoolean()}
+                    isLoading={this.state.isLoading}
+                    text="Register"
+                    loadingText="Registering..."
+                />
+            </form>
         );
     }
 
     render() {
         return(
             <div className="Register">
-                {this.state.newUser == null ? this.renderForm() : this.renderConfirmationCode()}
+                {this.state.newUser == null ? this.renderForm() : this.renderConfirmation()}
             </div>
         );
     }

@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App .navbar {
@@ -9,10 +9,7 @@
 }
 
 .App .navbar-brand {
-  font-weight: bold;
-    padding: 15px 10px 10px 20px;
+    font-weight: bold;
+    padding: 0px 10px 10px 20px;
     text-align: left;
-}
-
-.App .navbar-collapse {
 }
