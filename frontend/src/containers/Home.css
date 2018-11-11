@@ -1,0 +1,14 @@
+.Home .lander {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.Home .lander h1 {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+    color: deepskyblue;
+}
+
+.Home .lander p {
+    color: aqua;
+}

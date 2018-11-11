@@ -1,0 +1,18 @@
+.App {
+  text-align: center;
+}
+
+.App .navbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: aquamarine;
+}
+
+.App .navbar-brand {
+  font-weight: bold;
+    padding: 15px 10px 10px 20px;
+    text-align: left;
+}
+
+.App .navbar-collapse {
+}
