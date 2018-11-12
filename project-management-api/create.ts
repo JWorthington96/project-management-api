@@ -9,7 +9,7 @@ export async function main(event, context, callback) {
         Item: {
             userId: event.requestContext.identity.cognitoIdentityId,
             projectId: uuid(),
-            content: data.content,
+            name: data.name,
             attachment: data.attachment,
             createdAt: Date.now()
         }
@@ -18,8 +18,8 @@ export async function main(event, context, callback) {
     try {
         await dynamoDb.call("put", params);
         callback(null, success(params.Item));
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
         callback(null, failure({status: false}));
     }
 }
