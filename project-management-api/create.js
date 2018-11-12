@@ -18,7 +18,7 @@ export function main(event, context, callback) {
                 userId: event.requestContext.identity.cognitoIdentityId,
                 projectId: uuid(),
                 name: data.name,
-                attachment: data.attachment,
+                description: data.description,
                 createdAt: Date.now()
             }
         };
@@ -27,7 +27,7 @@ export function main(event, context, callback) {
             callback(null, success(params.Item));
         }
         catch (error) {
-            console.log(error);
+            console.log(error.message);
             callback(null, failure({ status: false }));
         }
     });
