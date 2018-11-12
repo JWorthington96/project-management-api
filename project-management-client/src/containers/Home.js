@@ -27,7 +27,7 @@ export default class Home extends Component {
     }
 
     projects() {
-        return API.get("projects", "", {});
+        return API.get("projects", "/projects", {});
     }
 
     addProject = event => {
@@ -41,8 +41,7 @@ export default class Home extends Component {
     }
     
     renderProjectsList(projects){
-        return [{}].concat(projects).map(
-            (project, i) =>
+        return projects.map( (project) =>
                 <LinkContainer key={project.projectId} to={`/projects/${project.projectId}`}>
                     <ListGroupItem header={project.name}>
                         {"Created: " + new Date(project.createdAt).toLocaleString()}
@@ -71,7 +70,7 @@ export default class Home extends Component {
                         <Glyphicon glyph="plus" />
                     </Button>
                 </ButtonToolbar>
-                <ListGroup>
+                <ListGroup className="projects-list">
                     {!this.state.isLoading && this.renderProjectsList(this.state.projects)}
                 </ListGroup>
             </div>

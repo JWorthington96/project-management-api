@@ -11,11 +11,12 @@ export default class NewProject extends Component {
         this.state = {
             isLoading: null,
             name: "",
+            description: ""
         };
     }
 
     validateForm() {
-        return this.state.name.length > 0;
+        return this.state.name.length > 0 & this.state.description.length > 0;
     }
 
     handleChange = event => {
@@ -27,7 +28,7 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         try {
-            await this.createProject({name: this.state.name, attachment: ""});
+            await this.createProject({name: this.state.name, description: this.state.description});
             this.props.history.push("/");
         } catch (error) {
             alert(error);
@@ -36,7 +37,7 @@ export default class NewProject extends Component {
     }
 
     createProject(project) {
-        return API.post("projects", "", {body: project});
+        return API.post("projects", "/projects", {body: project});
     }
 
     render() {
@@ -46,6 +47,12 @@ export default class NewProject extends Component {
                     <FormGroup controlId="name">
                         <ControlLabel>Name of project</ControlLabel>{': '}
                         <FormControl onChange={this.handleChange} value={this.state.name} />
+                    </FormGroup>
+                    <FormGroup controlId="description">
+                        <ControlLabel>Brief description</ControlLabel>{': '}
+                        <FormControl onChange={this.handleChange}
+                                     value={this.state.description}
+                                     componentClass="textarea" />
                     </FormGroup>
                     <LoadingButton
                         type="submit"

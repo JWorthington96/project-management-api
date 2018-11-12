@@ -1,9 +1,6 @@
 service:
   name: project-management-api
 
-# using serverless as the default profile
-profile: serverless-admin
-
 # serverless-webpack and serverless-offline plugins
 plugins:
   - serverless-webpack
