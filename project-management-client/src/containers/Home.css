@@ -12,3 +12,12 @@
 .Home .lander p {
     color: aqua;
 }
+
+.Home .toolbar {
+    float: right;
+    padding-right: 20px;
+}
+
+.Home .projects-list {
+    padding-top: 50px;
+}

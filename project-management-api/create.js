@@ -17,8 +17,8 @@ export function main(event, context, callback) {
             Item: {
                 userId: event.requestContext.identity.cognitoIdentityId,
                 projectId: uuid(),
-                content: data.content,
-                attachment: data.attachment,
+                name: data.name,
+                description: data.description,
                 createdAt: Date.now()
             }
         };
@@ -26,8 +26,8 @@ export function main(event, context, callback) {
             yield dynamoDb.call("put", params);
             callback(null, success(params.Item));
         }
-        catch (e) {
-            console.log(e);
+        catch (error) {
+            console.log(error.message);
             callback(null, failure({ status: false }));
         }
     });
