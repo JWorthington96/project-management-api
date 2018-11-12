@@ -37,7 +37,7 @@ functions:
     handler: create.main
     events:
       - http:
-          method: put
+          method: post
           path: projects
           cors: true
           authorizer: aws_iam
