@@ -1,7 +1,7 @@
 {
   "name": "project-management-api",
   "version": "1.0.0",
-  "description": "Serverless webpack example using Typescript",
+  "description": "Project Management backend",
   "main": "create.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

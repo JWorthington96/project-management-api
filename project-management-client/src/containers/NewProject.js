@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import {API} from "aws-amplify";
-import config from "../config";
 import "./NewProject.css";
 import LoadingButton from "../components/LoadingButton";
 
@@ -11,7 +10,7 @@ export default class NewProject extends Component {
 
         this.state = {
             isLoading: null,
-            name: ""
+            name: "",
         };
     }
 
@@ -28,7 +27,7 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         try {
-            await this.createProject({name: this.state.name});
+            await this.createProject({name: this.state.name, attachment: ""});
             this.props.history.push("/");
         } catch (error) {
             alert(error);
@@ -37,7 +36,7 @@ export default class NewProject extends Component {
     }
 
     createProject(project) {
-        return API.post("projects", "/projects", {body: project});
+        return API.post("projects", "", {body: project});
     }
 
     render() {
