@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import {Checkbox, Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import {API} from "aws-amplify";
 import "./NewProject.css";
 import LoadingButton from "../components/LoadingButton";
+import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
 
 export default class NewProject extends Component {
     constructor(props){
@@ -10,8 +11,11 @@ export default class NewProject extends Component {
 
         this.state = {
             isLoading: null,
+            userIsManager: true,
             name: "",
-            description: ""
+            description: "",
+            projectManager: this.props.username,
+            developers: [],
         };
     }
 
@@ -23,12 +27,21 @@ export default class NewProject extends Component {
         this.setState({[event.target.id]: event.target.value});
     }
 
+    handleToggle = event => {
+        this.setState({userIsManager: !this.state.userIsManager});
+    }
 
     handleSubmit = async event => {
         event.preventDefault();
         this.setState({isLoading: true});
+
         try {
-            await this.createProject({name: this.state.name, description: this.state.description});
+            await this.createProject({
+                name: this.state.name,
+                description: this.state.description,
+                projectManager: this.state.projectManager,
+                developers: this.state.developers
+            });
             this.props.history.push("/");
         } catch (error) {
             alert(error);
@@ -48,21 +61,42 @@ export default class NewProject extends Component {
                         <ControlLabel>Name of project</ControlLabel>{': '}
                         <FormControl onChange={this.handleChange} value={this.state.name} />
                     </FormGroup>
+
                     <FormGroup controlId="description">
                         <ControlLabel>Brief description</ControlLabel>{': '}
                         <FormControl onChange={this.handleChange}
                                      value={this.state.description}
                                      componentClass="textarea" />
                     </FormGroup>
-                    <LoadingButton
-                        type="submit"
-                        isLoading={this.state.isLoading}
-                        text="Create"
-                        loadingText="Creating..."
-                        disabled={!this.validateForm}
-                    />
+
+                    <FormGroup controlId="projectManager">
+                        <ControlLabel>Project Manager</ControlLabel>{': '}
+                        <FormControl onChange={this.handleChange}
+                                     value={this.state.projectManager}
+                                     disabled={this.state.userIsManager}
+                        />
+                    </FormGroup>
+
+                    <FormGroup>
+                        <Checkbox defaultChecked={this.state.userIsManager}
+                                  onChange={this.handleToggle}>
+                            I'm the project manager
+                        </Checkbox>
+                    </FormGroup>
+
+                    <DynamicDeveloperForm/>
+
+                    <FormGroup>
+                        <LoadingButton
+                            type="submit"
+                            isLoading={this.state.isLoading}
+                            text="Create"
+                            loadingText="Creating..."
+                            disabled={!this.validateForm}
+                        />
+                    </FormGroup>
                 </Form>
             </div>
-        )
+        );
     }
 }

@@ -9,37 +9,56 @@ import {Auth} from "aws-amplify";
 class App extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             isAuthenticated: false,
-            isAuthenticating: true
+            isAuthenticating: true,
+            user: {}
         };
+        this.setCurrentUser = this.setCurrentUser.bind(this);
     };
 
     async componentDidMount() {
         try {
             await Auth.currentSession();
             this.userHasAuthenticated(true);
+            this.setCurrentUser();
         } catch (error) {
-            if (error != 'No current user') alert(error);
+            if (error !== 'No current user') console.log(error);
         }
 
-        this.setState({isAuthenticating: false});
+        this.setState({isAuthenticating: false,});
     };
 
     userHasAuthenticated = authenticated => {
-        this.setState({ isAuthenticated: authenticated });
+        this.setState({isAuthenticated: authenticated});
     };
 
-    handleLogout = async e => {
+    setCurrentUser = async event => {
+        let user = {};
+        if (this.state.isAuthenticating) {
+            try {
+                user = await Auth.currentAuthenticatedUser();
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            console.error("User has not been collected")
+        }
+        console.log(user.valueOf());
+        this.setState({user: user});
+    }
+
+    handleLogout = async event => {
         await Auth.signOut();
         this.userHasAuthenticated(false);
+        this.setCurrentUser({});
         this.props.history.push("/");
     };
 
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
+            //setCurrentUser: this.setCurrentUser,
             userHasAuthenticated: this.userHasAuthenticated
         };
 
@@ -55,7 +74,13 @@ class App extends Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
-                            {this.state.isAuthenticated ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                            {this.state.isAuthenticated ?
+                                <Fragment>
+                                    <LinkContainer to="/account">
+                                        <NavItem>{this.state.user.username}</NavItem>
+                                    </LinkContainer>
+                                    <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                                </Fragment>
                                 : <Fragment>
                                     <LinkContainer to="/login">
                                         <NavItem>Login</NavItem>
