@@ -20,7 +20,7 @@ export default class Home extends Component {
             const projects = await this.projects();
             this.setState({projects});
         } catch (error) {
-            alert(error);
+            console.log(error);
         }
 
         this.setState({isLoading: false});
