@@ -26,12 +26,12 @@ export default class Register extends Component {
         const userLen = this.state.username.length;
         const passLen = this.state.password.length;
         if (emailLen > 0 && userLen > 0 && passLen > 12 &&
-            this.state.confirmPass == this.state.password) return 'success';
+            this.state.confirmPass === this.state.password) return 'success';
         else return 'error';
     }
 
     getValidationBoolean(){
-        if (this.getValidationState() == 'success') return true;
+        if (this.getValidationState() === 'success') return true;
         else return false;
     }
 

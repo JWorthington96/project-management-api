@@ -19,14 +19,14 @@ export default class Login extends Component {
     }
 
     getValidationState() {
-        const emailLen = this.state.username.length;
+        const usernameLen = this.state.username.length;
         const passLen = this.state.password.length;
-        if (emailLen > 0 && passLen > 12) return 'success';
+        if (usernameLen > 0 && passLen > 12) return 'success';
         else return 'error';
     }
 
     getValidationBoolean(){
-        if (this.getValidationState() == 'success') return true;
+        if (this.getValidationState() === 'success') return true;
         else return false;
     }
 
@@ -41,6 +41,7 @@ export default class Login extends Component {
         try {
             await Auth.signIn(this.state.username, this.state.password);
             this.props.userHasAuthenticated(true);
+            this.setState({isLoading: false});
             this.props.history.push("/");
         } catch (error) {
             if (error.message === "User is not confirmed."){
@@ -48,10 +49,9 @@ export default class Login extends Component {
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {
-                alert(error.message);
+                console.log(error);
             }
         }
-        this.setState({isLoading: false});
     }
 
     handleDismiss = event => {
@@ -65,7 +65,7 @@ export default class Login extends Component {
             await Auth.resendSignUp(this.state.username);
             this.setState({isConfirmed: true});
         } catch (error) {
-            alert(error.message);
+            console.log(error);
         }
     }
 
