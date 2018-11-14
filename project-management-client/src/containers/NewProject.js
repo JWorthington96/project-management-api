@@ -15,7 +15,7 @@ export default class NewProject extends Component {
             name: "",
             description: "",
             projectManager: this.props.username,
-            developers: [],
+            developers: []
         };
     }
 

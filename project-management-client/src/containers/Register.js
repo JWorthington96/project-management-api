@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox, OverlayTrigger, Tooltip} from "react-bootstrap";
 import "./Register.css";
 import {Auth} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -67,6 +67,13 @@ export default class Register extends Component {
     }
 
     renderForm() {
+        const tooltip = (
+            <Tooltip id="tooltip">
+                Password must be at least <strong>12 characters</strong>, contain at least
+                <strong>one capital and symbol</strong>.
+            </Tooltip>
+        );
+
         return(
             <form onSubmit={this.handleSubmit}>
                 <FormGroup controlId="email">
@@ -94,13 +101,14 @@ export default class Register extends Component {
                     validationState={this.getValidationState()}
                 >
                     <ControlLabel>Password</ControlLabel>
-                    <FormControl
-                        type="password"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                    />
+                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                        <FormControl
+                            type="password"
+                            value={this.state.password}
+                            onChange={this.handleChange}
+                        />
+                    </OverlayTrigger>
                     <FormControl.Feedback />
-                    <HelpBlock>Password must be at least 12 characters long</HelpBlock>
                 </FormGroup>
 
                 <FormGroup

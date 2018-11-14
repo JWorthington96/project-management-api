@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
+import {Alert, Button, Checkbox, ControlLabel, FormGroup, FormControl, OverlayTrigger, Tooltip} from "react-bootstrap";
 import "./Login.css";
 import {Auth} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -71,6 +71,13 @@ export default class Login extends Component {
     }
 
     render() {
+        const tooltip = (
+            <Tooltip id="tooltip">
+                Password must be at least <strong>12 characters</strong>, contain at least
+                <strong>one capital and symbol</strong>.
+            </Tooltip>
+        );
+
         return (
             <div className="Login">
                 <form onSubmit={this.handleSubmit}>
@@ -93,13 +100,14 @@ export default class Login extends Component {
                         validationState={this.getValidationState()}
                     >
                         <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
+                        <OverlayTrigger placement="bottom" overlay={tooltip}>
+                            <FormControl
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                            />
+                        </OverlayTrigger>
                         <FormControl.Feedback />
-                        <HelpBlock>Password is at least 12 characters long</HelpBlock>
                     </FormGroup>
 
                     <Checkbox title="The website will save your credentials to immediately login next time">
@@ -114,7 +122,7 @@ export default class Login extends Component {
                         loadingText="Logging in..."
                     />
 
-                    {this.state.isConfirmed ? <div></div>
+                    {this.state.isConfirmed ? null
                         : <Fragment>
                             <Alert className="alert" bsStyle="danger" onDismiss={this.handleDismiss}>
                                 <h3>Thank you again for registering!</h3>
