@@ -62,3 +62,11 @@ functions:
           path: projects/{id}
           cors: true
           authorizer: aws_iam
+  modify:
+    handler: modify.main
+    events:
+      - http:
+          method: put
+          path: projects/{id}
+          cors: true
+          authorizer: aws_iam

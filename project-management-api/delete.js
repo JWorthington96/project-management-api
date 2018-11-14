@@ -18,7 +18,7 @@ export function main(event, context, callback) {
             }
         };
         try {
-            const result = dynamoDb.call('delete', params);
+            dynamoDb.call('delete', params);
             callback(null, success({ status: true }));
         }
         catch (error) {

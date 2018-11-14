@@ -2,7 +2,10 @@
   "body": "{\"title\":\"testing123\",\"description\":\"text\",\"admin\":\"admin\",\"projectManager\":\"project manager\",\"developers\":\"[]\"}",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "user123"
+      "cognitoId": "user123"
     }
+  },
+  "pathParameters": {
+    "id": "d2192b60-e851-11e8-95a3-292b6f739720"
   }
 }

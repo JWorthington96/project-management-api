@@ -1,4 +1,4 @@
-import * as dynamoDb from "./lib/dynamodb";
+import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
@@ -11,9 +11,9 @@ export async function main(event, context, callback) {
     };
 
     try {
-        const result = await dynamoDb.call("get", params);
-        if (result.Item) {
-            callback(null, success(result.Item));
+        const response = await call("get", params);
+        if (response.Item) {
+            callback(null, success(response.Item));
         } else {
             callback(null, failure({status: false, error: "Item not found."}));
         }

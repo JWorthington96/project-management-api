@@ -1,4 +1,4 @@
-import * as dynamoDb from "./lib/dynamodb";
+import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback){
@@ -15,7 +15,7 @@ export async function main(event, context, callback){
     };
 
     try {
-        const result = await dynamoDb.call("query", params);
+        const result = await call("query", params);
         // Return the matching list of items in the response body
         callback(null, success(result.Items));
     } catch (e) {

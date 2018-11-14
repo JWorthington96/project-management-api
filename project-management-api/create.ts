@@ -1,5 +1,5 @@
 import uuid from "uuid/v1";
-import * as dynamoDb from "./lib/dynamodb";
+import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
@@ -9,7 +9,7 @@ export async function main(event, context, callback) {
         Item: {
             adminId: event.requestContext.identity.cognitoIdentityId,
             projectId: uuid(),
-            name: data.name,
+            title: data.title,
             description: data.description,
             admin: event.requestContext.identity.user,
             projectManager: data.projectManager,
@@ -19,7 +19,7 @@ export async function main(event, context, callback) {
     };
 
     try {
-        await dynamoDb.call("put", params);
+        await call("put", params);
         callback(null, success(params.Item));
     } catch (error) {
         console.error(error.message);
