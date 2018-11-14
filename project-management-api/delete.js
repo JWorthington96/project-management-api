@@ -6,29 +6,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { call } from "./lib/dynamodb";
+import * as dynamoDb from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
             TableName: "projects",
-            // KeyConditionExpression defines the condition for the query 'userId = :userId'; only returns items with
-            // matching userId keys
-            // ExpressionAttributeValues defines the value in the condition 'userId = :userId'; defines
-            // userId to be Identity Pool identity id of the authenticated user
-            KeyConditionExpression: "adminId = :adminId",
-            ExpressionAttributeValues: {
-                ":adminId": event.requestContext.identity.cognitoIdentityId
+            Key: {
+                adminId: event.requestContext.identity.cognitoIdentityId,
+                projectId: event.pathParameters.id
             }
         };
         try {
-            const result = yield call("query", params);
-            // Return the matching list of items in the response body
-            callback(null, success(result.Items));
+            dynamoDb.call('delete', params);
+            callback(null, success({ status: true }));
         }
-        catch (e) {
-            callback(null, failure({ status: false }));
+        catch (error) {
+            console.error(error);
+            callback(null, failure({ status: false, error: error.message }));
         }
     });
 }
-//# sourceMappingURL=list-projects.js.map
+//# sourceMappingURL=delete.js.map

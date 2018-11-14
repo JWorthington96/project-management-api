@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap/es";
-import {Alert, Button} from "react-bootstrap";
+import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
 import "./Login.css";
 import {Auth} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -18,16 +17,14 @@ export default class Login extends Component {
         };
     }
 
-    getValidationState() {
+    getValidationBoolean() {
         const usernameLen = this.state.username.length;
         const passLen = this.state.password.length;
-        if (usernameLen > 0 && passLen > 12) return 'success';
-        else return 'error';
+        return (usernameLen > 0 && passLen > 12);
     }
 
-    getValidationBoolean(){
-        if (this.getValidationState() === 'success') return true;
-        else return false;
+    getValidationState(){
+        return this.getValidationBoolean() ? 'success' : 'error';
     }
 
     handleChange = event => {
@@ -39,13 +36,17 @@ export default class Login extends Component {
 
         this.setState({isLoading: true});
         try {
-            await Auth.signIn(this.state.username, this.state.password);
+            let user = await Auth.signIn(this.state.username, this.state.password);
             this.props.userHasAuthenticated(true);
+            // this will store the user in App.js
+            this.props.changeCurrentUser(user);
             this.setState({isLoading: false});
             this.props.history.push("/");
         } catch (error) {
-            if (error.message === "User is not confirmed."){
+            if (error.message === "User is not confirmed.") {
                 this.setState({isConfirmed: false});
+            } else if (error.message === "") {
+                // TODO: notify user if credentials are wrong
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {

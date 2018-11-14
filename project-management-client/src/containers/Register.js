@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap/es";
-import {Button} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
 import "./Register.css";
 import {Auth} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -49,6 +48,7 @@ export default class Register extends Component {
                 password: this.state.password,
                 attributes: {email: this.state.email}
             });
+            this.props.changeCurrentUser(newUser);
             this.setState({newUser});
         } catch (e) {
             alert(e.message);

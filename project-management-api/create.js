@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import uuid from "uuid/v1";
-import * as dynamoDb from "./lib/dynamodb";
+import { call } from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -17,7 +17,7 @@ export function main(event, context, callback) {
             Item: {
                 adminId: event.requestContext.identity.cognitoIdentityId,
                 projectId: uuid(),
-                name: data.name,
+                title: data.title,
                 description: data.description,
                 admin: event.requestContext.identity.user,
                 projectManager: data.projectManager,
@@ -26,11 +26,11 @@ export function main(event, context, callback) {
             }
         };
         try {
-            yield dynamoDb.call("put", params);
+            yield call("put", params);
             callback(null, success(params.Item));
         }
         catch (error) {
-            console.log(error.message);
+            console.error(error.message);
             callback(null, failure({ status: false }));
         }
     });
