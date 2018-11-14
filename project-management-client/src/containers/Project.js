@@ -1,12 +1,16 @@
-import React, {Component} from "react";
-import {ListGroup, ListGroupItem} from "react-bootstrap";
+import React, {Component, Fragment} from "react";
+import {Button, ListGroup, ListGroupItem, Modal} from "react-bootstrap";
 import {API} from "aws-amplify";
+import LoadingButton from "../components/LoadingButton";
+import "./Project.css";
 
 export default class Project extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
+            isPageLoading: true,
+            isLoading: false,
+            confirmDelete: false,
             project: null,
             name: "",
             description: "",
@@ -22,7 +26,7 @@ export default class Project extends Component {
             const {name, description, admin, projectManager, developers} = project;
 
             this.setState({
-                isLoading: false,
+                isPageLoading: false,
                 project,
                 name,
                 description,
@@ -37,6 +41,22 @@ export default class Project extends Component {
 
     getProject() {
         return API.get("projects", `/projects/${this.props.match.params.id}`, {});
+    }
+
+    deleteProject = async event => {
+        event.preventDefault();
+        this.setState({isLoading: true});
+        try {
+            await API.del("projects", `/projects/${this.props.match.params.id}`, {});
+        } catch (error) {
+            console.error(error);
+        }
+        this.setState({isLoading: false});
+        this.props.history.push('/');
+    };
+
+    changeDeleteBool = event => {
+        this.setState({confirmDelete: !this.state.confirmDelete})
     }
 
     renderLoading() {
@@ -68,6 +88,32 @@ export default class Project extends Component {
                         }
                     </ListGroupItem>
                 </ListGroup>
+
+                <Button bsStyle="danger"
+                        onClick={this.changeDeleteBool}>
+                    Delete Project?
+                </Button>
+
+                <Modal className="delete-prompt"
+                       show={this.state.confirmDelete} >
+                    <Modal.Header>
+                        <Modal.Title>Are you sure?</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        Deleting is permanent and you <strong>won't</strong> be able to get your project
+                        back.
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={this.changeDeleteBool}>Cancel</Button>
+                        <LoadingButton bsStyle="danger"
+                                       onClick={this.deleteProject}
+                                       isLoading={this.state.isLoading}
+                                       text="Delete"
+                                       loadingText="Deleting..."/>
+                    </Modal.Footer>
+                </Modal>
             </div>
         );
     }
@@ -75,7 +121,7 @@ export default class Project extends Component {
     render() {
         return(
             <div className="Project">
-                {this.state.isLoading ? this.renderLoading() : this.renderProject()}
+                {this.state.isPageLoading ? this.renderLoading() : this.renderProject()}
             </div>
 
         );
