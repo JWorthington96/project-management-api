@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {Button, ControlLabel, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap";
 import LoadingButton from "./LoadingButton";
 

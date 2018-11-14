@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import {Button, ListGroup, ListGroupItem, Modal} from "react-bootstrap";
 import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
