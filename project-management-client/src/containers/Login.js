@@ -17,16 +17,14 @@ export default class Login extends Component {
         };
     }
 
-    getValidationState() {
+    getValidationBoolean() {
         const usernameLen = this.state.username.length;
         const passLen = this.state.password.length;
-        if (usernameLen > 0 && passLen > 12) return 'success';
-        else return 'error';
+        return (usernameLen > 0 && passLen > 12);
     }
 
-    getValidationBoolean(){
-        if (this.getValidationState() === 'success') return true;
-        else return false;
+    getValidationState(){
+        return this.getValidationBoolean() ? 'success' : 'error';
     }
 
     handleChange = event => {
