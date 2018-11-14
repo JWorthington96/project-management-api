@@ -20,6 +20,7 @@ class App extends Component {
     async componentDidMount() {
         try {
             await Auth.currentSession();
+            // this will be used to get the current user from a saved session
             await this.setCurrentUser();
             this.userHasAuthenticated(true);
         } catch (error) {
@@ -33,16 +34,20 @@ class App extends Component {
         this.setState({isAuthenticated: authenticated});
     };
 
+    changeCurrentUser = user => {
+        this.setState({user: user});
+    }
+
     setCurrentUser = async event => {
         let user = await Auth.currentAuthenticatedUser();
         console.log(user.valueOf());
-        this.setState({user: user});
+        this.changeCurrentUser(user);
     }
 
     handleLogout = async event => {
         await Auth.signOut();
         this.userHasAuthenticated(false);
-        this.setState({user: {}});
+        this.changeCurrentUser({});
         this.props.history.push("/");
     };
 
@@ -50,6 +55,7 @@ class App extends Component {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
             user: this.state.user,
+            changeCurrentUser: this.changeCurrentUser,
             userHasAuthenticated: this.userHasAuthenticated
         };
 
