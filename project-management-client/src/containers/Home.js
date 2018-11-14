@@ -45,6 +45,7 @@ export default class Home extends Component {
                 <LinkContainer key={project.projectId} to={`/projects/${project.projectId}`}>
                     <ListGroupItem header={project.name}>
                         {"Created: " + new Date(project.createdAt).toLocaleString()}
+                        <p>Project manager: {project.projectManager}</p>
                     </ListGroupItem>
                 </LinkContainer>
         );

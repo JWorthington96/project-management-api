@@ -22,7 +22,7 @@ export async function main(event, context, callback) {
         await dynamoDb.call("put", params);
         callback(null, success(params.Item));
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         callback(null, failure({status: false}));
     }
 }

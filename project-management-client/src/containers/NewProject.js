@@ -14,22 +14,23 @@ export default class NewProject extends Component {
             userIsManager: true,
             name: "",
             description: "",
-            projectManager: this.props.username,
-            developers: [],
+            admin: this.props.user.username,
+            projectManager: this.props.user.username,
+            developers: []
         };
     }
 
     validateForm() {
-        return this.state.name.length > 0 & this.state.description.length > 0;
+        return (this.state.name.length > 0 && this.state.description.length > 0);
     }
 
     handleChange = event => {
         this.setState({[event.target.id]: event.target.value});
-    }
+    };
 
     handleToggle = event => {
         this.setState({userIsManager: !this.state.userIsManager});
-    }
+    };
 
     handleSubmit = async event => {
         event.preventDefault();
@@ -39,6 +40,7 @@ export default class NewProject extends Component {
             await this.createProject({
                 name: this.state.name,
                 description: this.state.description,
+                admin: this.state.admin,
                 projectManager: this.state.projectManager,
                 developers: this.state.developers
             });
@@ -47,7 +49,7 @@ export default class NewProject extends Component {
             alert(error);
             this.setState({isLoading: false});
         }
-    }
+    };
 
     createProject(project) {
         return API.post("projects", "/projects", {body: project});
