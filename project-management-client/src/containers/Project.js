@@ -62,6 +62,11 @@ export default class Project extends Component {
                 <ListGroup className="developers">
                     <h4>Developers:</h4>
                     {this.renderUsers(this.state.developers)}
+                    <ListGroupItem>
+                        {
+                            //TODO: add the project files here
+                        }
+                    </ListGroupItem>
                 </ListGroup>
             </div>
         );
