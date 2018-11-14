@@ -48,6 +48,7 @@ export default class Register extends Component {
                 password: this.state.password,
                 attributes: {email: this.state.email}
             });
+            this.props.changeCurrentUser(newUser);
             this.setState({newUser});
         } catch (e) {
             alert(e.message);
