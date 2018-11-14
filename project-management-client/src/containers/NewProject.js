@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import {Checkbox, Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
 import {API} from "aws-amplify";
 import "./NewProject.css";
-import LoadingButton from "../components/LoadingButton";
 import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
 
 export default class NewProject extends Component {
@@ -17,11 +16,13 @@ export default class NewProject extends Component {
             admin: this.props.user.username,
             projectManager: this.props.user.username,
             developers: []
-        };
+        }
+
+        this.setDevelopers = this.setDevelopers.bind(this);
     }
 
-    validateForm() {
-        return (this.state.name.length > 0 && this.state.description.length > 0);
+    setDevelopers(developers) {
+        this.setState({developers: developers});
     }
 
     handleChange = event => {
@@ -44,6 +45,7 @@ export default class NewProject extends Component {
                 projectManager: this.state.projectManager,
                 developers: this.state.developers
             });
+            console.log(this.state.developers);
             this.props.history.push("/");
         } catch (error) {
             alert(error);
@@ -86,17 +88,11 @@ export default class NewProject extends Component {
                         </Checkbox>
                     </FormGroup>
 
-                    <DynamicDeveloperForm/>
+                    <DynamicDeveloperForm setDevelopers={this.setDevelopers}
+                                          name={this.state.name}
+                                          description={this.state.description}
+                                          projectManager={this.state.projectManager} />
 
-                    <FormGroup>
-                        <LoadingButton
-                            type="submit"
-                            isLoading={this.state.isLoading}
-                            text="Create"
-                            loadingText="Creating..."
-                            disabled={!this.validateForm}
-                        />
-                    </FormGroup>
                 </Form>
             </div>
         );
