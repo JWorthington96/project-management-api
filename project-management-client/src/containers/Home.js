@@ -43,7 +43,7 @@ export default class Home extends Component {
     renderProjectsList(projects){
         return projects.map( (project) =>
                 <LinkContainer key={project.projectId} to={`/projects/${project.projectId}`}>
-                    <ListGroupItem header={project.name}>
+                    <ListGroupItem header={project.title}>
                         {"Created: " + new Date(project.createdAt).toLocaleString()}
                         <p>Project manager: {project.projectManager}</p>
                     </ListGroupItem>

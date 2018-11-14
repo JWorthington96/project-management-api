@@ -12,7 +12,7 @@ export default class Project extends Component {
             isLoading: false,
             confirmDelete: false,
             project: null,
-            name: "",
+            title: "",
             description: "",
             admin: "",
             projectManager: "",
@@ -23,12 +23,12 @@ export default class Project extends Component {
     async componentDidMount() {
         try {
             const project = await this.getProject();
-            const {name, description, admin, projectManager, developers} = project;
+            const {title, description, admin, projectManager, developers} = project;
 
             this.setState({
                 isPageLoading: false,
                 project,
-                name,
+                title,
                 description,
                 admin,
                 projectManager,
@@ -76,7 +76,7 @@ export default class Project extends Component {
     renderProject(){
         return (
             <div>
-                <h1>{this.state.name}</h1>
+                <h1>{this.state.title}</h1>
                 <h2>{this.state.description}</h2>
                 <h3>Project manager: {this.state.projectManager}</h3>
                 <ListGroup className="developers">

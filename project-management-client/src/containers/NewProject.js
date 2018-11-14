@@ -11,7 +11,7 @@ export default class NewProject extends Component {
         this.state = {
             isLoading: null,
             userIsManager: true,
-            name: "",
+            title: "",
             description: "",
             admin: this.props.user.username,
             projectManager: this.props.user.username,
@@ -39,7 +39,7 @@ export default class NewProject extends Component {
 
         try {
             await this.createProject({
-                name: this.state.name,
+                title: this.state.title,
                 description: this.state.description,
                 admin: this.state.admin,
                 projectManager: this.state.projectManager,
@@ -61,9 +61,9 @@ export default class NewProject extends Component {
         return (
             <div className="NewProject">
                 <Form inline onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="name">
-                        <ControlLabel>Name of project</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange} value={this.state.name} />
+                    <FormGroup controlId="title">
+                        <ControlLabel>Title of project</ControlLabel>{': '}
+                        <FormControl onChange={this.handleChange} value={this.state.title} />
                     </FormGroup>
 
                     <FormGroup controlId="description">
@@ -89,7 +89,7 @@ export default class NewProject extends Component {
                     </FormGroup>
 
                     <DynamicDeveloperForm setDevelopers={this.setDevelopers}
-                                          name={this.state.name}
+                                          name={this.state.title}
                                           description={this.state.description}
                                           projectManager={this.state.projectManager} />
 
