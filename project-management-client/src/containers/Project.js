@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ListGroup} from "react-bootstrap";
+import {ListGroup, ListGroupItem} from "react-bootstrap";
 import {API} from "aws-amplify";
 
 export default class Project extends Component {
@@ -19,13 +19,16 @@ export default class Project extends Component {
     async componentDidMount() {
         try {
             const project = await this.getProject();
-            const {name, description} = project;
+            const {name, description, admin, projectManager, developers} = project;
 
             this.setState({
                 isLoading: false,
                 project,
                 name,
-                description
+                description,
+                admin,
+                projectManager,
+                developers
             });
         } catch (error) {
             console.log(error.message);
@@ -40,26 +43,26 @@ export default class Project extends Component {
         return(<h1>Loading...</h1>);
     }
 
-    /*
     renderUsers(users) {
         return users.map( (user) =>
-            <ListGroupItem header={user.name}>
-                {user.skills.toString()}
+            <ListGroupItem key={user.id} header={user.username}>
+                {
+                    // TODO: add skills in here pls
+                }
             </ListGroupItem>
         );
     }
-    */
 
     renderProject(){
         return (
             <div>
                 <h1>{this.state.name}</h1>
                 <h2>{this.state.description}</h2>
-                /*
+                <h3>Project manager: {this.state.projectManager}</h3>
                 <ListGroup className="developers">
-                    <p>{this.renderUsers(this.state.developers)}</p>
+                    <h4>Developers:</h4>
+                    {this.renderUsers(this.state.developers)}
                 </ListGroup>
-                */
             </div>
         );
     }
