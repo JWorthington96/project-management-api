@@ -54,3 +54,11 @@ functions:
           path: projects
           cors: true
           authorizer: aws_iam
+  delete:
+    handler: delete.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}
+          cors: true
+          authorizer: aws_iam
