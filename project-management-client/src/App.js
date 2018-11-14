@@ -20,8 +20,8 @@ class App extends Component {
     async componentDidMount() {
         try {
             await Auth.currentSession();
+            await this.setCurrentUser();
             this.userHasAuthenticated(true);
-            this.setCurrentUser();
         } catch (error) {
             if (error !== 'No current user') console.log(error);
         }
@@ -34,16 +34,7 @@ class App extends Component {
     };
 
     setCurrentUser = async event => {
-        let user = {};
-        if (this.state.isAuthenticating) {
-            try {
-                user = await Auth.currentAuthenticatedUser();
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            console.error("User has not been collected")
-        }
+        let user = await Auth.currentAuthenticatedUser();
         console.log(user.valueOf());
         this.setState({user: user});
     }
@@ -51,14 +42,14 @@ class App extends Component {
     handleLogout = async event => {
         await Auth.signOut();
         this.userHasAuthenticated(false);
-        this.setCurrentUser({});
+        this.setState({user: {}});
         this.props.history.push("/");
     };
 
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
-            //setCurrentUser: this.setCurrentUser,
+            user: this.state.user,
             userHasAuthenticated: this.userHasAuthenticated
         };
 

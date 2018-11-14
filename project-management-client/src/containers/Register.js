@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap/es";
-import {Button} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
 import "./Register.css";
 import {Auth} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
