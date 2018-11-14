@@ -30,7 +30,7 @@ export function main(event, context, callback) {
             callback(null, success(params.Item));
         }
         catch (error) {
-            console.log(error.message);
+            console.error(error.message);
             callback(null, failure({ status: false }));
         }
     });

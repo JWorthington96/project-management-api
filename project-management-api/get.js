@@ -13,7 +13,7 @@ export function main(event, context, callback) {
         const params = {
             TableName: "projects",
             Key: {
-                userId: event.requestContext.identity.cognitoIdentityId,
+                adminId: event.requestContext.identity.cognitoIdentityId,
                 projectId: event.pathParameters.id
             }
         };
