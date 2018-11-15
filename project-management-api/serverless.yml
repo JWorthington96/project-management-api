@@ -70,3 +70,11 @@ functions:
           path: projects/{id}
           cors: true
           authorizer: aws_iam
+  create-policy:
+    handler: create-policy.main
+    events:
+      - http:
+          method: post
+          paths: projects
+          cors: true
+          authorizer: aws_iam

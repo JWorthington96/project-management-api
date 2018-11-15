@@ -1,0 +1,25 @@
+{
+  "policyDocument": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "logs:CreateLogGroup",
+        "Resource": "*"
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:DeleteItem",
+          "dynamodb:GetItem",
+          "dynamodb:PutItem",
+          "dynamodb:Scan",
+          "dynamodb:UpdateItem"
+        ],
+        "Resource": "arn:aws:dynamodb:eu-west-2:*:*"
+      }
+    ]
+  },
+  "policyName": "allDynamoDBPermissions",
+  "description": "Access to whole DynamoDB actions (for admin role)"
+}
