@@ -1,5 +1,5 @@
 {
-  "body": "{\"title\":\"testing123\",\"description\":\"text\",\"admin\":\"admin\",\"projectManager\":\"project manager\",\"developers\":\"[]\"}",
+  "body": "{\"title\":\"testing123\",\"description\":\"text\",\"roles\":\"[]\",\"users\":\"[]\"}",
   "requestContext": {
     "identity": {
       "cognitoId": "user123"
