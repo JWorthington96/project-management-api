@@ -70,8 +70,8 @@ functions:
           path: projects/{id}
           cors: true
           authorizer: aws_iam
-  create-policy:
-    handler: create-policy.main
+  create-role:
+    handler: create-role.main
     events:
       - http:
           method: post

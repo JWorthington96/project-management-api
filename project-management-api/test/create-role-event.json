@@ -1,5 +1,17 @@
 {
-  "policyDocument": {
+  "RoleName": "AllDynamoDBPermissions",
+  "Description": "Access to whole DynamoDB actions (for admin role)",
+  "AssumeRolePolicyDocument": {
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Action": ["sts:AssumeRole"],
+      "Principal": {
+        "Service": ["dynamodb.amazonaws.com"]
+      }
+    }]
+  },
+  "PolicyDocument": {
     "Version": "2012-10-17",
     "Statement": [
       {
@@ -19,7 +31,5 @@
         "Resource": "arn:aws:dynamodb:eu-west-2:*:*"
       }
     ]
-  },
-  "policyName": "allDynamoDBPermissions",
-  "description": "Access to whole DynamoDB actions (for admin role)"
+  }
 }
