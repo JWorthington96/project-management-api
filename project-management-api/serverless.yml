@@ -75,6 +75,14 @@ functions:
     events:
       - http:
           method: post
-          paths: projects
+          paths: projects/{id}
+          cors: true
+          authorizer: aws_iam
+  delete-role:
+    handler: delete-role.main
+    events:
+      - http:
+          method: delete
+          paths: projects/{id}
           cors: true
           authorizer: aws_iam
