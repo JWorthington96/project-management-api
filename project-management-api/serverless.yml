@@ -126,3 +126,11 @@ functions:
           paths: projects/{id}
           cors: true
           authorizer: aws_iam
+  remove-user:
+    handler: remove-user.main
+    events:
+      - http:
+          method: delete
+          paths: projects/{id}
+          cors: true
+          authorizer: aws_iam
