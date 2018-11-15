@@ -1,5 +1,5 @@
 {
-  "RoleName": "AllDynamoDBPermissions",
+  "RoleName": "NewRole",
   "Description": "Access to whole DynamoDB actions (for admin role)",
   "AssumeRolePolicyDocument": {
     "Version": "2012-10-17",

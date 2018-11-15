@@ -1,0 +1,5 @@
+{
+  "RoleName": "AllDynamoDBPermissions",
+  "GroupName": "Admins",
+  "Description": "Admins will full access to the entire Dynamo Database"
+}
