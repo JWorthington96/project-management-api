@@ -8,15 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { call } from "./lib/iam";
 import { success, failure } from "./lib/response";
+import { createPolicy } from "./lib/create-policy";
+import defaultAssume from "./lib/default-assume";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const adminId = event.requestContext.identity.cognitoIdentityId;
+        const projectId = event.pathParameters.id;
+        const deleteBool = event.DeleteBoolean;
+        const getBool = event.GetBoolean;
+        const putBool = event.PutBoolean;
+        const updateBool = event.UpdateBoolean;
+        const policyDocument = JSON.stringify(createPolicy(adminId, projectId, deleteBool, getBool, putBool, updateBool));
         const policyParams = {
-            PolicyDocument: JSON.stringify(event.PolicyDocument),
+            PolicyDocument: policyDocument,
             PolicyName: event.RoleName + "Policy",
             Description: "Policy for " + event.RoleName + ":" + event.Description
         };
         const roleParams = {
-            AssumeRolePolicyDocument: JSON.stringify(event.AssumeRolePolicyDocument),
+            AssumeRolePolicyDocument: JSON.stringify(defaultAssume),
             RoleName: event.RoleName,
             Description: event.Description
         };

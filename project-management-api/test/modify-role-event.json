@@ -1,21 +1,16 @@
 {
-  "RoleName": "AllDynamoDBPermissions",
+  "RoleName": "TestRole",
   "Description": "Access to whole DynamoDB actions (for admin role)",
-  "PolicyDocument": {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": "logs:CreateLogGroup",
-        "Resource": "*"
-      },
-      {
-        "Effect": "Allow",
-        "Action": [
-          "dynamodb:DeleteItem"
-        ],
-        "Resource": "arn:aws:dynamodb:eu-west-2:*:*"
-      }
-    ]
+  "DeleteBoolean": false,
+  "GetBoolean": true,
+  "PutBoolean": true,
+  "UpdateBoolean": false,
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "eu-west-2:user123"
+    }
+  },
+  "pathParameters": {
+    "id": "f251f6c0-e930-11e8-ae23-8d5ab9deb982"
   }
 }
