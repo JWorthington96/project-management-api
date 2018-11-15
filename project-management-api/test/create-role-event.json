@@ -1,35 +1,16 @@
 {
-  "RoleName": "NewRole",
+  "RoleName": "TestRole",
   "Description": "Access to whole DynamoDB actions (for admin role)",
-  "AssumeRolePolicyDocument": {
-    "Version": "2012-10-17",
-    "Statement": [{
-      "Effect": "Allow",
-      "Action": ["sts:AssumeRole"],
-      "Principal": {
-        "Service": ["dynamodb.amazonaws.com"]
-      }
-    }]
+  "DeleteBoolean": true,
+  "GetBoolean": true,
+  "PutBoolean": true,
+  "UpdateBoolean": true,
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "eu-west-2:user123"
+    }
   },
-  "PolicyDocument": {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": "logs:CreateLogGroup",
-        "Resource": "*"
-      },
-      {
-        "Effect": "Allow",
-        "Action": [
-          "dynamodb:DeleteItem",
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:Scan",
-          "dynamodb:UpdateItem"
-        ],
-        "Resource": "arn:aws:dynamodb:eu-west-2:*:*"
-      }
-    ]
+  "pathParameters": {
+    "id": "f251f6c0-e930-11e8-ae23-8d5ab9deb982"
   }
 }
