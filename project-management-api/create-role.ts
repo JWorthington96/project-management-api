@@ -8,27 +8,23 @@ export async function main(event, context, callback) {
         Description: "Policy for " + event.RoleName + ":" + event.Description
     };
 
+    const roleParams = {
+        AssumeRolePolicyDocument: JSON.stringify(event.AssumeRolePolicyDocument),
+        RoleName: event.RoleName,
+        Description: event.Description
+    };
+
     try {
-        const policy = await call('createPolicy', policyParams);
-        let policyArn = policy.Arn;
-
-        const roleParams = {
-            AssumeRolePolicyDocument: JSON.stringify(event.AssumeRolePolicyDocument),
-            RoleName: event.RoleName,
-            Description: event.Description
-        };
-        await call('createRole', roleParams);
-
-        // hard coded the ARN as the policy object wasn't returning it's arn
-        if (policyArn === undefined) {
-            policyArn = "arn:aws:iam::401633837556:policy/" + event.RoleName + "Policy";
-        }
+        const response = await call('createPolicy', policyParams);
 
         const attachParams = {
             RoleName: event.RoleName,
-            PolicyArn: policyArn
+            PolicyArn: response.Policy.Arn
         };
+
+        await call('createRole', roleParams);
         await call('attachRolePolicy', attachParams);
+
         callback(null, success({status: true}));
     } catch (error) {
         //console.error(error);

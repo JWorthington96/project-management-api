@@ -15,23 +15,18 @@ export function main(event, context, callback) {
             PolicyName: event.RoleName + "Policy",
             Description: "Policy for " + event.RoleName + ":" + event.Description
         };
+        const roleParams = {
+            AssumeRolePolicyDocument: JSON.stringify(event.AssumeRolePolicyDocument),
+            RoleName: event.RoleName,
+            Description: event.Description
+        };
         try {
-            const policy = yield call('createPolicy', policyParams);
-            let policyArn = policy.Arn;
-            const roleParams = {
-                AssumeRolePolicyDocument: JSON.stringify(event.AssumeRolePolicyDocument),
-                RoleName: event.RoleName,
-                Description: event.Description
-            };
-            yield call('createRole', roleParams);
-            // hard coded the ARN as the policy object wasn't returning it's arn
-            if (policyArn === undefined) {
-                policyArn = "arn:aws:iam::401633837556:policy/" + event.RoleName + "Policy";
-            }
+            const response = yield call('createPolicy', policyParams);
             const attachParams = {
                 RoleName: event.RoleName,
-                PolicyArn: policyArn
+                PolicyArn: response.Policy.Arn
             };
+            yield call('createRole', roleParams);
             yield call('attachRolePolicy', attachParams);
             callback(null, success({ status: true }));
         }
