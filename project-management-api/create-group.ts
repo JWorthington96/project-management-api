@@ -3,7 +3,7 @@ import * as iam from "./lib/iam";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback){
-    const roleParams ={
+    const roleParams = {
         RoleName: event.RoleName
     };
 
