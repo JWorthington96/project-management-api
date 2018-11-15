@@ -17,14 +17,14 @@ export function main(event, context, callback) {
                 adminId: event.requestContext.identity.cognitoIdentityId,
                 projectId: event.pathParameters.id,
             },
-            UpdateExpression: "SET title = :title, description = :description, admin = :admin," +
-                "projectManager = :projectManager, developers = :developers",
+            UpdateExpression: "SET title = :title, description = :description, roles = :roles, admin = :admin," +
+                "users = :users",
             ExpressionAttributeValues: {
                 ":title": data.title ? data.title : null,
                 ":description": data.description ? data.description : null,
                 ":admin": data.admin ? data.admin : null,
-                ":projectManager": data.projectManager ? data.projectManager : null,
-                ":developers": data.developers ? data.developers : null,
+                ":roles": data.roles ? data.roles : null,
+                ":users": data.users ? data.users : null
             },
             ReturnValues: "ALL_NEW"
         };

@@ -11,9 +11,9 @@ export async function main(event, context, callback) {
             projectId: uuid(),
             title: data.title,
             description: data.description,
-            admin: event.requestContext.identity.user,
-            projectManager: data.projectManager,
-            developers: data.developers,
+            admin: data.admin,
+            roles: data.roles,
+            users: data.users,
             createdAt: Date.now()
         }
     };
