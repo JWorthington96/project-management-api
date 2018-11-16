@@ -58,31 +58,16 @@ export default class NewProject extends Component {
         return API.post("projects", "/projects", {body: project});
     }
 
-    createDefaultRoles() {
+    createDefaultRoles(projectId) {
+        const title = this.state.title.replace(/\s/g, '');
+
         const adminRole = {
-            "RoleName": this.state.title + "Admin",
-            "Description": "Access to all DynamoDB actions for project and its users",
-            "PolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Action": "logs:CreateLogGroup",
-                        "Resource": "*"
-                    },
-                    {
-                        "Effect": "Allow",
-                        "Action": [
-                            "dynamodb:DeleteItem",
-                            "dynamodb:GetItem",
-                            "dynamodb:PutItem",
-                            "dynamodb:Scan",
-                            "dynamodb:UpdateItem"
-                        ],
-                        "Resource": "arn:aws:dynamodb:" + this.props.user.id + ":" + projectId
-                    }
-                ]
-            }
+            RoleName: title + "Admin",
+            Description: "Full access of the database",
+            DeleteBoolean: true,
+            GetBoolean: true,
+            PutBoolean: true,
+            UpdateBoolean: true
         }
     }
 
