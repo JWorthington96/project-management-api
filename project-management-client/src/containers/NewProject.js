@@ -16,8 +16,9 @@ export default class NewProject extends Component {
             admin: this.props.user.username,
             projectManager: this.props.user.username,
             developers: [],
-            roles: ["Admin", "Project Manager", "Developer"]
-        }
+            roles: ["Admin", "Project Manager", "Developer"],
+            users: []
+        };
 
         this.setDevelopers = this.setDevelopers.bind(this);
     }
@@ -38,15 +39,19 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
 
+        let users = this.state.developers.push(this.state.admin);
+        if (!this.state.userIsManager) users.push(this.state.projectManager);
+
         try {
-            await this.createProject({
+            const project = await this.createProject({
                 title: this.state.title,
                 description: this.state.description,
                 admin: this.state.admin,
-                projectManager: this.state.projectManager,
-                developers: this.state.developers
+                roles: this.state.roles,
+                users: this.state.users
             });
-            console.log(this.state.developers);
+            await this.createDefaultRoles(project.projectId);
+
             this.props.history.push("/");
         } catch (error) {
             alert(error);
@@ -68,7 +73,40 @@ export default class NewProject extends Component {
             GetBoolean: true,
             PutBoolean: true,
             UpdateBoolean: true
-        }
+        };
+        const projectManagerRole = {
+            RoleName: title + "ProjectManager",
+            Description: "Full access of the database",
+            DeleteBoolean: true,
+            GetBoolean: true,
+            PutBoolean: true,
+            UpdateBoolean: true
+        };
+        const developerRole = {
+            RoleName: title + "Developer",
+            Description: "Access to viewing and updating database",
+            DeleteBoolean: false,
+            GetBoolean: true,
+            PutBoolean: true,
+            UpdateBoolean: true
+        };
+
+        API.post("projects", `/projects/roles`, {body: adminRole}).promise();
+        API.post("projects", `/projects/roles`, {body: projectManagerRole}).promise();
+        API.post("projects", `/projects/roles`, {body: developerRole}).promise();
+
+        API.post("projects", `/projects/groups`, {body: {
+            RoleName: title + "Admin", GroupName: "Admins",
+                Description: "Admins have full access of the database"
+            }}).promise();
+        API.post("projects", `/projects/groups`, {body: {
+                RoleName: title + "ProjectManager", GroupName: "ProjectManagers",
+                Description: "Project managers have full access of the database"
+            }}).promise();
+        API.post("projects", `/projects/groups`, {body: {
+                RoleName: title + "Developer", GroupName: "Developers",
+                Description: "Developers have access to viewing and updating database"
+            }}).promise();
     }
 
     render() {
