@@ -70,3 +70,67 @@ functions:
           path: projects/{id}
           cors: true
           authorizer: aws_iam
+  create-role:
+    handler: create-role.main
+    events:
+      - http:
+          method: post
+          path: projects/{id}/roles
+          cors: true
+          authorizer: aws_iam
+  delete-role:
+    handler: delete-role.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}/roles
+          cors: true
+          authorizer: aws_iam
+  modify-role:
+    handler: modify-role.main
+    events:
+      - http:
+          method: put
+          path: projects/{id}/roles
+          cors: true
+          authorizer: aws_iam
+  create-group:
+    handler: create-group.main
+    events:
+      - http:
+          method: post
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  delete-group:
+    handler: delete-group.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  modify-group:
+    handler: modify-group.main
+    events:
+      - http:
+          method: put
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  add-user:
+    handler: add-user.main
+    events:
+      - http:
+          method: post
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  remove-user:
+    handler: remove-user.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam

@@ -1,0 +1,16 @@
+{
+  "RoleName": "TestRole",
+  "Description": "Access to whole DynamoDB actions (for admin role)",
+  "DeleteBoolean": false,
+  "GetBoolean": true,
+  "PutBoolean": true,
+  "UpdateBoolean": false,
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "eu-west-2:user123"
+    }
+  },
+  "pathParameters": {
+    "id": "f251f6c0-e930-11e8-ae23-8d5ab9deb982"
+  }
+}

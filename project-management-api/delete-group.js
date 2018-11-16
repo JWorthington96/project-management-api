@@ -6,33 +6,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import uuid from "uuid/v1";
-import { call } from "./lib/dynamodb";
+import { call } from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const data = JSON.parse(event.body);
         const params = {
-            TableName: "projects",
-            Item: {
-                adminId: event.requestContext.identity.cognitoIdentityId,
-                projectId: uuid(),
-                title: data.title,
-                description: data.description,
-                admin: data.admin,
-                roles: data.roles,
-                users: data.users,
-                createdAt: Date.now()
-            }
+            GroupName: event.GroupName,
+            UserPoolId: "eu-west-2_QmN841UbB"
         };
         try {
-            yield call("put", params);
-            callback(null, success(params.Item));
+            yield call('deleteGroup', params);
+            callback(null, success({ status: true }));
         }
         catch (error) {
-            console.error(error.message);
-            callback(null, failure({ status: false }));
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
-//# sourceMappingURL=create.js.map
+//# sourceMappingURL=delete-group.js.map

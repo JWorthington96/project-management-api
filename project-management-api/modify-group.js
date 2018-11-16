@@ -6,33 +6,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import uuid from "uuid/v1";
-import { call } from "./lib/dynamodb";
+import * as iam from "./lib/iam";
+import * as cognito from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const data = JSON.parse(event.body);
-        const params = {
-            TableName: "projects",
-            Item: {
-                adminId: event.requestContext.identity.cognitoIdentityId,
-                projectId: uuid(),
-                title: data.title,
-                description: data.description,
-                admin: data.admin,
-                roles: data.roles,
-                users: data.users,
-                createdAt: Date.now()
-            }
+        const roleParams = {
+            RoleName: event.RoleName
         };
         try {
-            yield call("put", params);
-            callback(null, success(params.Item));
+            const response = yield iam.call('getRole', roleParams);
+            const groupParams = {
+                GroupName: event.GroupName,
+                Description: event.Description,
+                RoleArn: response.Role.Arn,
+                UserPoolId: "eu-west-2_QmN841UbB"
+            };
+            yield cognito.call('updateGroup', groupParams);
+            callback(null, success({ status: true }));
         }
         catch (error) {
-            console.error(error.message);
-            callback(null, failure({ status: false }));
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
-//# sourceMappingURL=create.js.map
+//# sourceMappingURL=modify-group.js.map
