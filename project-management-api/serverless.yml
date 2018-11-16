@@ -138,3 +138,19 @@ functions:
           path: projects/{id}/users
           cors: true
           authorizer: aws_iam
+  user-signup:
+    handler: user-signup.main
+    events:
+      - http:
+          method: post
+          path: users/new
+          cors: true
+          authorizer: aws_iam
+  user-confirm:
+    handler: user-confirm.main
+    events:
+      - http:
+          method: post
+          path: users/new/confirm
+          cors: true
+          authorizer: aws_iam

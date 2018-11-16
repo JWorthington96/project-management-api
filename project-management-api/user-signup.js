@@ -11,10 +11,11 @@ import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
-            ClientId: "43inla4asilb5vo5l5su5sp548",
             Username: event.Username,
             Password: event.Password,
-            UserAttributes: [{
+            ClientId: "27cus2iiajkktqa6tk984jqgqa",
+            UserAttributes: [
+                {
                     "Name": "email",
                     "Value": event.Email
                 },
@@ -24,19 +25,15 @@ export function main(event, context, callback) {
                 }
             ],
             ValidationData: null
+            //eu-west-2_7DRbUQOk6
         };
         try {
-            const response = yield call('signUp', params);
-            if (response.UserConfirmed) {
-                callback(null, success({ status: false, body: "Please confirm the hash" }));
-            }
-            else {
-                callback(null, success({ status: true }));
-            }
+            yield call('signUp', params);
+            callback(null, success({ status: true }));
         }
         catch (error) {
-            callback(null, failure({ status: false }));
+            callback(null, failure({ status: false, error: error.message }));
         }
     });
 }
-//# sourceMappingURL=authenicate-user.js.map
+//# sourceMappingURL=user-signup.js.map
