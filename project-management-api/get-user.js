@@ -6,21 +6,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { call } from "./lib/cognito-service";
-import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const params = {
-            GroupName: event.GroupName,
-            UserPoolId: "eu-west-2_QmN841UbB"
-        };
-        try {
-            yield call('deleteGroup', params);
-            callback(null, success({ status: true }));
-        }
-        catch (error) {
-            callback(null, failure({ status: false, body: error.message }));
-        }
     });
 }
-//# sourceMappingURL=delete-group.js.map
+//# sourceMappingURL=get-user.js.map

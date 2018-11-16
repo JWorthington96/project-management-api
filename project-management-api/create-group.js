@@ -6,7 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as cognito from "./lib/cognito";
+import * as cognito from "./lib/cognito-service";
 import * as iam from "./lib/iam";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {

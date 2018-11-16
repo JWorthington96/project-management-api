@@ -11,16 +11,32 @@ import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
-            GroupName: event.GroupName,
-            UserPoolId: "eu-west-2_QmN841UbB"
+            ClientId: "43inla4asilb5vo5l5su5sp548",
+            Username: event.Username,
+            Password: event.Password,
+            UserAttributes: [{
+                    "Name": "email",
+                    "Value": event.Email
+                },
+                {
+                    "Name": "custom:skills",
+                    "Value": event.Skills
+                }
+            ],
+            ValidationData: null
         };
         try {
-            yield call('deleteGroup', params);
-            callback(null, success({ status: true }));
+            const response = yield call('signUp', params);
+            if (response.UserConfirmed) {
+                callback(null, success({ status: false, body: "Please confirm the hash" }));
+            }
+            else {
+                callback(null, success({ status: true }));
+            }
         }
         catch (error) {
-            callback(null, failure({ status: false, body: error.message }));
+            callback(null, failure({ status: false }));
         }
     });
 }
-//# sourceMappingURL=delete-group.js.map
+//# sourceMappingURL=authenicate-user.js.map
