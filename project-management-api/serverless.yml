@@ -143,7 +143,7 @@ functions:
     events:
       - http:
           method: post
-          path: users/new
+          path: register
           cors: true
           authorizer: aws_iam
   user-confirm:
@@ -151,6 +151,14 @@ functions:
     events:
       - http:
           method: post
-          path: users/new/confirm
+          path: register/confirm
+          cors: true
+          authorizer: aws_iam
+  user-signin:
+    handler: user-signin.main
+    events:
+      - http:
+          method: get
+          path: login
           cors: true
           authorizer: aws_iam
