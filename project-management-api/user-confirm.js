@@ -6,28 +6,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as cognito from "./lib/cognito-service";
-import * as iam from "./lib/iam";
-import { success, failure } from "./lib/response";
+import { call } from "./lib/cognito-service";
+import { failure, success } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const roleParams = {
-            RoleName: event.RoleName
+        const params = {
+            ClientId: "27cus2iiajkktqa6tk984jqgqa",
+            ConfirmationCode: event.ConfirmationCode,
+            Username: event.Username
         };
         try {
-            const response = yield iam.call('getRole', roleParams);
-            const groupParams = {
-                GroupName: event.GroupName,
-                Description: event.Description,
-                UserPoolId: "eu-west-2_QmN841UbB",
-                RoleArn: response.Role.Arn
-            };
-            yield cognito.call('createGroup', groupParams);
+            yield call('confirmSignUp', params);
             callback(null, success({ status: true }));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: event.message }));
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
-//# sourceMappingURL=create-group.js.map
+//# sourceMappingURL=user-confirm.js.map

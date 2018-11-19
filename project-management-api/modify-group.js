@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as iam from "./lib/iam";
-import * as cognito from "./lib/cognito";
+import * as cognito from "./lib/cognito-service";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {

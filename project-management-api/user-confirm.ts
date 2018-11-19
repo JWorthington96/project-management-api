@@ -1,15 +1,16 @@
 import {call} from "./lib/cognito-service";
-import {success, failure} from "./lib/response";
+import {failure, success} from "./lib/response";
 
-export async function main(event, context, callback) {
+
+export async function main(event, context, callback){
     const params = {
-        GroupName: event.GroupName,
-        UserPoolId: "eu-west-2_QmN841UbB",
+        ClientId: "27cus2iiajkktqa6tk984jqgqa",
+        ConfirmationCode: event.ConfirmationCode,
         Username: event.Username
     };
 
     try {
-        await call('adminAddUserToGroup', params);
+        await call('confirmSignUp', params);
         callback(null, success({status: true}));
     } catch (error) {
         callback(null, failure({status: false, body: error.message}));

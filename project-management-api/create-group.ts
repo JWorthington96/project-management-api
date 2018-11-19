@@ -1,4 +1,4 @@
-import * as cognito from "./lib/cognito";
+import * as cognito from "./lib/cognito-service";
 import * as iam from "./lib/iam";
 import {success, failure} from "./lib/response";
 

@@ -26,6 +26,10 @@ provider:
       - dynamodb:PutItem
       - dynamodb:UpdateItem
       - dynamodb:DeleteItem
+      - dynamodb:DescribeStream
+      - dynamodb:GetRecords
+      - dynamodb:GetShardIterator
+      - dynamodb:ListStreams
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
 
 # API endpoints for the functions
@@ -123,7 +127,7 @@ functions:
     events:
       - http:
           method: post
-          path: projects/{id}/groups
+          path: projects/{id}/users
           cors: true
           authorizer: aws_iam
   remove-user:
@@ -131,6 +135,27 @@ functions:
     events:
       - http:
           method: delete
-          path: projects/{id}/groups
+          path: projects/{id}/users
           cors: true
           authorizer: aws_iam
+  user-signup:
+    handler: user-signup.main
+    events:
+      - http:
+          method: post
+          path: register
+          cors: true
+  user-confirm:
+    handler: user-confirm.main
+    events:
+      - http:
+          method: post
+          path: register/confirm
+          cors: true
+  user-signin:
+    handler: user-signin.main
+    events:
+      - https:
+          method: get
+          path: login
+          cors: true

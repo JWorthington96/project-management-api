@@ -1,5 +1,5 @@
 import * as iam from "./lib/iam";
-import * as cognito from "./lib/cognito"
+import * as cognito from "./lib/cognito-service"
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
