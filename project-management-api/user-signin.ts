@@ -1,33 +1,42 @@
-import uuid from "uuid/v1";
-import srp from "secure-remote-password/client";
 import {call} from "./lib/cognito-service";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const salt = srp.generateSalt();
-    const clientKey = srp.derivePrivateKey(salt, event.USERNAME, event.PASSWORD);
-    const verifier = srp.deriveVerifier(clientKey);
-
     const authParams = {
-        AuthFlow: "USERNAME_SRP_AUTH",
+        AuthFlow: "ADMIN_NO_SRP_AUTH",
         AuthParameters: {
             USERNAME: event.USERNAME,
-            SRP_A: clientKey
+            PASSWORD: event.PASSWORD
         },
-        ClientId: "27cus2iiajkktqa6tk984jqgqa"
+        ClientId: "27cus2iiajkktqa6tk984jqgqa",
+        UserPoolId: "eu-west-2_7DRbUQOk6"
     };
 
     try {
-        const response = await call('initiateAuth', authParams);
-
-        const responseParams = {
-            ChallengeName: response.ChallengeName,
-            ChallengeParameters: response.ChallengeParameters,
-            ClientId: authParams.ClientId
-        };
-
-        await call('respondToAuthChallenge', responseParams);
-        callback(null, success({status: true}));
+        const response = await call('adminInitiateAuth', authParams);
+        /*
+        if (response.ChallengeName !== undefined){
+            const challengeParams = {
+                ChallengeName: response.ChallengeName,
+                ChallengeParameters: response.ChallengeParameters,
+                ClientId: authParams.ClientId,
+                Session: response.Session
+            };
+            await call('respondToAuthChallenge', challengeParams);
+        } else {
+            const authResultParams = {
+                AuthenticationResult: response.AuthenticationResult
+            }
+        }
+        */
+        /*
+        if (response.ChallengeParameters.SRP_B === clientKey) {
+            console.log("SRP_A is equal to SRP_B");
+        } else {
+            console.log("SRP_A not equal to SRP_B");
+        }
+        */
+        callback(null, success({status: true, body: response}));
     } catch (error) {
         callback(null, failure({status: false, body: error.message}))
     }
