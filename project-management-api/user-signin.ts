@@ -39,6 +39,6 @@ export async function main(event, context, callback) {
         */
         callback(null, success({status: true, body: response}));
     } catch (error) {
-        callback(null, failure({status: false, body: error.message}))
+        callback(null, failure({status: false, body: "No username/password combination found"}));
     }
 }
