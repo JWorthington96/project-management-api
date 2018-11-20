@@ -10,8 +10,9 @@ import { call } from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const input = JSON.parse(event.body);
         const params = {
-            GroupName: event.GroupName,
+            GroupName: input.GroupName,
             UserPoolId: "eu-west-2_QmN841UbB"
         };
         try {
@@ -19,7 +20,7 @@ export function main(event, context, callback) {
             callback(null, success({ status: true }));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: error.message }));
+            callback(null, failure({ status: false, body: error }));
         }
     });
 }

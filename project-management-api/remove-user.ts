@@ -2,10 +2,11 @@ import {call} from "./lib/cognito";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const params ={
-        GroupName: event.GroupName,
-        UserPoolId: "eu-west-2_QmN841UbB",
-        Username: event.Username
+    const input = JSON.parse(event.body);
+    const params = {
+        GroupName: input.GroupName,
+        UserPoolId: "eu-west-2_7DRbUQOk6",
+        Username: input.Username
     }
 
     try {
