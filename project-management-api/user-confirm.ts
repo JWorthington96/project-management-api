@@ -3,10 +3,11 @@ import {failure, success} from "./lib/response";
 
 
 export async function main(event, context, callback){
+    const input = JSON.parse(event.body);
     const params = {
         ClientId: "27cus2iiajkktqa6tk984jqgqa",
-        ConfirmationCode: event.ConfirmationCode,
-        Username: event.Username
+        ConfirmationCode: input.ConfirmationCode,
+        Username: input.Username
     };
 
     try {

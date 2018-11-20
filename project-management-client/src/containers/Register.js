@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
+import {FormGroup, FormControl, ControlLabel, HelpBlock} from "react-bootstrap";
 import "./Register.css";
-import {Auth} from "aws-amplify";
+import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
 
 export default class Register extends Component {
@@ -43,34 +43,23 @@ export default class Register extends Component {
 
         this.setState({isLoading: true});
         try {
-            const newUser = await Auth.signUp({
-                username: this.state.username,
-                password: this.state.password,
-                attributes: {
-                    email: this.state.email,
-                    skills: this.state.skills
-                }
-
+            const newUser = await API.post("projects", "/register", {body : {
+                Username: this.state.username,
+                Password: this.state.password,
+                Email: this.state.email,
+                Skills: this.state.skills
+            }
         });
             this.props.changeCurrentUser(newUser);
             this.setState({newUser});
         } catch (error) {
             alert(error.message);
+            this.setState({isLoading: false});
         }
-
-        this.setState({isLoading: false});
+        this.props.history.push('/login/confirm');
     }
 
-    renderConfirmation() {
-        return (
-            <div className="confirmation">
-                <h1>Thank you for registering!</h1>
-                <h3>Please check your email for the code to confirm your account before signing in</h3>
-            </div>
-        );
-    }
-
-    renderForm() {
+    render() {
         return(
             <form onSubmit={this.handleSubmit}>
                 <FormGroup controlId="email">
@@ -135,14 +124,6 @@ export default class Register extends Component {
                     loadingText="Registering..."
                 />
             </form>
-        );
-    }
-
-    render() {
-        return(
-            <div className="Register">
-                {this.state.newUser == null ? this.renderForm() : this.renderConfirmation()}
-            </div>
         );
     }
 }

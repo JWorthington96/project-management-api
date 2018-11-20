@@ -10,10 +10,11 @@ import { call } from "./lib/cognito-service";
 import { failure, success } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const input = JSON.parse(event.body);
         const params = {
             ClientId: "27cus2iiajkktqa6tk984jqgqa",
-            ConfirmationCode: event.ConfirmationCode,
-            Username: event.Username
+            ConfirmationCode: input.ConfirmationCode,
+            Username: input.Username
         };
         try {
             yield call('confirmSignUp', params);
