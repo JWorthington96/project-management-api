@@ -106,10 +106,6 @@ export default class Login extends Component {
                         <HelpBlock>Password is at least 12 characters long</HelpBlock>
                     </FormGroup>
 
-                    <Checkbox title="The website will save your credentials to immediately login next time">
-                        Remember details
-                    </Checkbox>
-
                     <LoadingButton
                         type="submit"
                         disabled={!this.getValidationBoolean()}

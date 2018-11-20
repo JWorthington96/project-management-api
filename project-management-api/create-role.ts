@@ -4,31 +4,32 @@ import {createPolicy} from "./lib/create-policy";
 import defaultAssume from "./lib/default-assume";
 
 export async function main(event, context, callback) {
+    const input = JSON.parse(event.body);
     const adminId = event.requestContext.identity.cognitoIdentityId;
     const projectId = event.pathParameters.id;
-    const deleteBool = event.DeleteBoolean;
-    const getBool = event.GetBoolean;
-    const putBool = event.PutBoolean;
-    const updateBool = event.UpdateBoolean;
+    const deleteBool = input.DeleteBoolean;
+    const getBool = input.GetBoolean;
+    const putBool = input.PutBoolean;
+    const updateBool = input.UpdateBoolean;
     const policyDocument = JSON.stringify(createPolicy(adminId, projectId, deleteBool, getBool, putBool, updateBool));
 
     const policyParams = {
         PolicyDocument: policyDocument,
-        PolicyName: event.RoleName + "Policy",
-        Description: "Policy for " + event.RoleName + ":" + event.Description
+        PolicyName: input.RoleName + "Policy",
+        Description: "Policy for " + input.RoleName + ":" + input.Description
     };
 
     const roleParams = {
         AssumeRolePolicyDocument: JSON.stringify(defaultAssume),
-        RoleName: event.RoleName,
-        Description: event.Description
+        RoleName: input.RoleName,
+        Description: input.Description
     };
 
     try {
         const response = await call('createPolicy', policyParams);
 
         const attachParams = {
-            RoleName: event.RoleName,
+            RoleName: input.RoleName,
             PolicyArn: response.Policy.Arn
         };
 

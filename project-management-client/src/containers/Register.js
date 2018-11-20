@@ -13,6 +13,7 @@ export default class Register extends Component {
             isConfirmed: false,
             isLoading: false,
             email: '',
+            skills: '',
             username: '',
             password: '',
             confirmPass: '',
@@ -30,8 +31,7 @@ export default class Register extends Component {
     }
 
     getValidationBoolean(){
-        if (this.getValidationState() === 'success') return true;
-        else return false;
+        return this.getValidationState() === 'success';
     }
 
     handleChange(event){
@@ -46,12 +46,16 @@ export default class Register extends Component {
             const newUser = await Auth.signUp({
                 username: this.state.username,
                 password: this.state.password,
-                attributes: {email: this.state.email}
-            });
+                attributes: {
+                    email: this.state.email,
+                    skills: this.state.skills
+                }
+
+        });
             this.props.changeCurrentUser(newUser);
             this.setState({newUser});
-        } catch (e) {
-            alert(e.message);
+        } catch (error) {
+            alert(error.message);
         }
 
         this.setState({isLoading: false});
@@ -61,7 +65,7 @@ export default class Register extends Component {
         return (
             <div className="confirmation">
                 <h1>Thank you for registering!</h1>
-                <h3>Please check your email to confirm your account before signing in</h3>
+                <h3>Please check your email for the code to confirm your account before signing in</h3>
             </div>
         );
     }
@@ -111,15 +115,17 @@ export default class Register extends Component {
                     <FormControl
                         type="password"
                         value={this.state.confirmPass}
-                        onChange={this.handleChange}
-                    />
+                        onChange={this.handleChange} />
                     <FormControl.Feedback />
                     <HelpBlock>Must match password</HelpBlock>
                 </FormGroup>
 
-                <Checkbox title="The website will save your credentials to immediately login">
-                    Remember details
-                </Checkbox>
+                <FormGroup controlId="skills">
+                    <ControlLabel>Skills</ControlLabel>
+                    <FormControl value={this.state.skills}
+                                 onChange={this.handleChange} />
+                    <HelpBlock>Enter all your relevant skills, separated by commas</HelpBlock>
+                </FormGroup>
 
                 <LoadingButton
                     type="submit"

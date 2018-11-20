@@ -25,33 +25,29 @@ export default class DynamicDeveloperForm extends Component {
 
     addDeveloper(developer) {
         const id = this.state.currentId;
-        if (id === 0) {
-            this.setState({confirmDevelopers: false});
-        }
         const devs = this.state.currentDevelopers;
         console.log(devs.valueOf());
-        devs[id] = {id: id, username: developer};
+        devs[id] = {username: developer};
+
+        if (this.props.developers === undefined){
+            this.setState({confirmDevelopers: false})
+        } else if (devs.length !== this.props.developers.length) {
+            this.setState({confirmDevelopers: false});
+        }
         this.setState({currentId: id + 1, currentDevelopers: devs});
     }
 
     changeDeveloper(id, developer) {
         const devs = this.state.currentDevelopers;
-        devs[id] = {id: id, username: developer};
+        devs[id] = {username: developer};
         this.setState({currentDevelopers: devs});
     }
 
     deleteDeveloper(id) {
         const devs = this.state.currentDevelopers;
         devs.splice(id, 1);
-        console.log(devs.valueOf());
-        for (let i = 0; i < devs.length; i++) {
-            devs[i] = {id: i, username: devs[i].username};
-        }
-        let maxi = devs.length - 1;
-        if (maxi === 0) {
-            this.setState({confirmDevelopers: true});
-        }
-        this.setState({currentId: maxi, currentDevelopers: devs});
+        if (devs.length === 0) this.setState({confirmDevelopers: true});
+        this.setState({currentId: devs.length, currentDevelopers: devs});
     }
 
     submitDevelopers = event => {
@@ -70,17 +66,18 @@ export default class DynamicDeveloperForm extends Component {
                         deleteDeveloper={this.deleteDeveloper}
                     />
                     <NewDeveloperForm addDeveloper={this.addDeveloper}/>
-                    <Button onClick={this.submitDevelopers}>Confirm developers</Button>
+                    <Button onClick={this.submitDevelopers}
+                            disabled={this.state.confirmDevelopers}>
+                        Confirm developers
+                    </Button>
                 </div>
 
                 <FormGroup>
-                    <LoadingButton
-                        type="submit"
-                        isLoading={this.state.isLoading}
-                        text="Create"
-                        loadingText="Creating..."
-                        disabled={!this.validateForm()}
-                    />
+                    <LoadingButton onClick={this.submitDevelopers}
+                                   isLoading={this.state.isLoading}
+                                   text="Create"
+                                   loadingText="Creating..."
+                                   disabled={!this.validateForm()} />
                 </FormGroup>
             </div>
         );
@@ -101,21 +98,21 @@ class DeveloperFormList extends Component {
     };
 
     handleDelete = event => {
-        const id = event.target.id;
+        const id = Number(event.target.id);
         this.props.deleteDeveloper(id);
     }
 
     render() {
-        return this.props.developers.map( developer =>
+        return this.props.developers.map( (developer, i) =>
             <ListGroupItem>
-                <FormGroup controlId={developer.id.toString()}>
-                    {console.log(developer.id)}
+                <FormGroup controlId={i.toString()}>
+                    {console.log(i)}
                     {console.log(developer.username)}
-                    <ControlLabel>Developer {developer.id + 1}</ControlLabel>
+                    <ControlLabel>Developer {i + 1}</ControlLabel>
                     <FormControl onChange={this.handleChange} value={developer.username} />
                 </FormGroup>
 
-                <Button id={developer.id} onClick={this.handleDelete}>
+                <Button id={i.toString()} onClick={this.handleDelete}>
                     <Glyphicon glyph="minus"/>
                 </Button>
             </ListGroupItem>
