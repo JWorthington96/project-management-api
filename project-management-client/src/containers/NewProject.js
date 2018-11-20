@@ -50,8 +50,8 @@ export default class NewProject extends Component {
                 roles: this.state.roles,
                 users: this.state.users
             });
-            await this.createDefaultRoles(project.projectId);
-
+            await this.createDefaultRoles(this.projectId);
+            console.log(project);
             this.props.history.push("/");
         } catch (error) {
             alert(error);
@@ -91,19 +91,19 @@ export default class NewProject extends Component {
             UpdateBoolean: true
         };
 
-        API.post("projects", `/projects/roles`, {body: adminRole}).promise();
-        API.post("projects", `/projects/roles`, {body: projectManagerRole}).promise();
-        API.post("projects", `/projects/roles`, {body: developerRole}).promise();
+        API.post("projects", `/projects/${projectId}/roles`, {body: adminRole}).promise();
+        API.post("projects", `/projects/${projectId}/roles`, {body: projectManagerRole}).promise();
+        API.post("projects", `/projects/${projectId}/roles`, {body: developerRole}).promise();
 
-        API.post("projects", `/projects/groups`, {body: {
+        API.post("projects", `/projects/${projectId}/groups`, {body: {
             RoleName: title + "Admin", GroupName: "Admins",
                 Description: "Admins have full access of the database"
             }}).promise();
-        API.post("projects", `/projects/groups`, {body: {
+        API.post("projects", `/projects/${projectId}/groups`, {body: {
                 RoleName: title + "ProjectManager", GroupName: "ProjectManagers",
                 Description: "Project managers have full access of the database"
             }}).promise();
-        API.post("projects", `/projects/groups`, {body: {
+        API.post("projects", `/projects/${projectId}/groups`, {body: {
                 RoleName: title + "Developer", GroupName: "Developers",
                 Description: "Developers have access to viewing and updating database"
             }}).promise();
