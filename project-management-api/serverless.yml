@@ -152,7 +152,6 @@ functions:
           method: post
           path: register
           cors: true
-          authorizer: aws_iam
   user-confirm:
     handler: user-confirm.main
     events:
@@ -160,7 +159,6 @@ functions:
           method: post
           path: register/confirm
           cors: true
-          authorizer: aws_iam
   user-signin:
     handler: user-signin.main
     events:
@@ -168,4 +166,3 @@ functions:
           method: post
           path: login
           cors: true
-          authorizer: aws_iam

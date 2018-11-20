@@ -4,17 +4,17 @@ import {success, failure} from "./lib/response";
 export async function main(event, context, callback) {
     const input = JSON.parse(event.body);
     const authParams = {
-        AuthFlow: "ADMIN_NO_SRP_AUTH",
+        AuthFlow: "USER_PASSWORD_AUTH",
         AuthParameters: {
             USERNAME: input.Username,
             PASSWORD: input.Password
         },
-        ClientId: "27cus2iiajkktqa6tk984jqgqa",
-        UserPoolId: "eu-west-2_7DRbUQOk6"
+        ClientId: "27cus2iiajkktqa6tk984jqgqa"
+        //UserPoolId: "eu-west-2_7DRbUQOk6"
     };
 
     try {
-        const response = await call('adminInitiateAuth', authParams);
+        const response = await call('initiateAuth', authParams);
         /*
         if (response.ChallengeName !== undefined){
             const challengeParams = {
