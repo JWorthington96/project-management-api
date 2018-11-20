@@ -2,11 +2,12 @@ import {call} from "./lib/cognito-service";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
+    const input = JSON.parse(event.body);
     const authParams = {
         AuthFlow: "ADMIN_NO_SRP_AUTH",
         AuthParameters: {
-            USERNAME: event.USERNAME,
-            PASSWORD: event.PASSWORD
+            USERNAME: input.Username,
+            PASSWORD: input.Password
         },
         ClientId: "27cus2iiajkktqa6tk984jqgqa",
         UserPoolId: "eu-west-2_7DRbUQOk6"

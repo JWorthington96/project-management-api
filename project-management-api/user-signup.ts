@@ -2,18 +2,19 @@ import {call} from "./lib/cognito-service";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback){
+    const input = JSON.parse(event.body);
     const params = {
-        Username: event.Username,
-        Password: event.Password,
+        Username: input.Username,
+        Password: input.Password,
         ClientId: "27cus2iiajkktqa6tk984jqgqa",
         UserAttributes: [
             {
                 "Name": "email",
-                "Value": event.Email
+                "Value": input.Email
             },
             {
                 "Name": "custom:skills",
-                "Value": event.Skills
+                "Value": input.Skills
             }
         ],
         ValidationData: null

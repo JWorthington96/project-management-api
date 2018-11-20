@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
 import "./Login.css";
-import {Auth} from "aws-amplify";
+import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
 
 export default class Login extends Component {
@@ -36,7 +36,11 @@ export default class Login extends Component {
 
         this.setState({isLoading: true});
         try {
-            let user = await Auth.signIn(this.state.username, this.state.password);
+            let user = await API.post("projects", "/login", {body: {
+                    Username: this.state.username,
+                    Password: this.state.password
+                }
+            });
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
             this.props.changeCurrentUser(user);
@@ -63,7 +67,7 @@ export default class Login extends Component {
         event.preventDefault();
 
         try {
-            await Auth.resendSignUp(this.state.username);
+            //await Auth.resendSignUp(this.state.username);
             this.setState({isConfirmed: true});
         } catch (error) {
             console.log(error);
