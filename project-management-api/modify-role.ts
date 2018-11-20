@@ -3,22 +3,23 @@ import {success, failure} from "./lib/response";
 import {createPolicy} from "./lib/create-policy";
 
 export async function main(event, context, callback){
+    const input = JSON.parse(event.body);
     const adminId = event.requestContext.identity.cognitoIdentityId;
     const projectId = event.pathParameters.id;
-    const deleteBool = event.DeleteBoolean;
-    const getBool = event.GetBoolean;
-    const putBool = event.PutBoolean;
-    const updateBool = event.UpdateBoolean;
+    const deleteBool = input.DeleteBoolean;
+    const getBool = input.GetBoolean;
+    const putBool = input.PutBoolean;
+    const updateBool = input.UpdateBoolean;
     const policyDocument = JSON.stringify(createPolicy(adminId, projectId, deleteBool, getBool, putBool, updateBool));
 
     const policyParams = {
         PolicyDocument: policyDocument,
-        PolicyName: event.RoleName + "Policy",
-        RoleName: event.RoleName
+        PolicyName: input.RoleName + "Policy",
+        RoleName: input.RoleName
     };
     const roleParams = {
-        RoleName: event.RoleName,
-        Description: event.Description
+        RoleName: input.RoleName,
+        Description: input.Description
     };
 
     try {

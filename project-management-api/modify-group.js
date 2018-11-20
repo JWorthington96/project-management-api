@@ -11,16 +11,17 @@ import * as cognito from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const input = JSON.parse(event.body);
         const roleParams = {
-            RoleName: event.RoleName
+            RoleName: input.RoleName
         };
         try {
             const response = yield iam.call('getRole', roleParams);
             const groupParams = {
-                GroupName: event.GroupName,
-                Description: event.Description,
+                GroupName: input.GroupName,
+                Description: input.Description,
                 RoleArn: response.Role.Arn,
-                UserPoolId: "eu-west-2_QmN841UbB"
+                UserPoolId: "eu-west-2_7DRbUQOk6"
             };
             yield cognito.call('updateGroup', groupParams);
             callback(null, success({ status: true }));

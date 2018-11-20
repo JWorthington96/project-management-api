@@ -3,18 +3,19 @@ import * as cognito from "./lib/cognito"
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
+    const input = JSON.parse(event.body);
     const roleParams = {
-        RoleName: event.RoleName
+        RoleName: input.RoleName
     }
 
     try {
         const response = await iam.call('getRole', roleParams);
 
         const groupParams = {
-            GroupName: event.GroupName,
-            Description: event.Description,
+            GroupName: input.GroupName,
+            Description: input.Description,
             RoleArn: response.Role.Arn,
-            UserPoolId: "eu-west-2_QmN841UbB"
+            UserPoolId: "eu-west-2_7DRbUQOk6"
         }
 
         await cognito.call('updateGroup', groupParams);

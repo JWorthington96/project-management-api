@@ -10,8 +10,9 @@ import { call } from "./lib/iam";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const input = JSON.parse(event.body);
         const roleParams = {
-            RoleName: event.RoleName
+            RoleName: input.RoleName
         };
         try {
             const response = yield call('listAttachedRolePolicies', roleParams);
@@ -20,7 +21,7 @@ export function main(event, context, callback) {
             };
             const detachParams = {
                 PolicyArn: response.AttachedPolicies[0].PolicyArn,
-                RoleName: event.RoleName
+                RoleName: roleParams.RoleName
             };
             yield call('detachRolePolicy', detachParams);
             yield call('deletePolicy', policyParams);

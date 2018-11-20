@@ -7,11 +7,11 @@ export async function main(event, context, callback) {
     const params = {
         TableName: "projects",
         Item: {
+            admin: event.requestContext.identity.user,
             adminId: event.requestContext.identity.cognitoIdentityId,
             projectId: uuid(),
             title: data.title,
             description: data.description,
-            admin: data.admin,
             roles: data.roles,
             users: data.users,
             createdAt: Date.now()

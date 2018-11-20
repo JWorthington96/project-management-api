@@ -10,17 +10,18 @@ import { call } from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const input = JSON.parse(event.body);
         const params = {
-            GroupName: event.GroupName,
-            UserPoolId: "eu-west-2_QmN841UbB",
-            Username: event.Username
+            GroupName: input.GroupName,
+            UserPoolId: "eu-west-2_7DRbUQOk6",
+            Username: input.Username
         };
         try {
             yield call('adminAddUserToGroup', params);
             callback(null, success({ status: true }));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: error.message }));
+            callback(null, failure({ status: false, body: error }));
         }
     });
 }

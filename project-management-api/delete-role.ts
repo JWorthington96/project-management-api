@@ -2,8 +2,9 @@ import {call} from "./lib/iam";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback){
+    const input = JSON.parse(event.body);
     const roleParams = {
-        RoleName: event.RoleName
+        RoleName: input.RoleName
     };
 
     try {
@@ -14,7 +15,7 @@ export async function main(event, context, callback){
 
         const detachParams = {
             PolicyArn: response.AttachedPolicies[0].PolicyArn,
-            RoleName: event.RoleName
+            RoleName: roleParams.RoleName
         };
 
         await call('detachRolePolicy', detachParams);
