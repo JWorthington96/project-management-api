@@ -19,9 +19,9 @@ class App extends Component {
 
     async componentDidMount() {
         try {
-            await Auth.currentSession();
+            const user = await Auth.currentSession();
             // this will be used to get the current user from a saved session
-            await this.setCurrentUser();
+            await this.setCurrentUser(user);
             this.userHasAuthenticated(true);
         } catch (error) {
             if (error !== 'No current user') console.log(error);

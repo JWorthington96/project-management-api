@@ -3,13 +3,15 @@ import {Checkbox, Form, FormGroup, FormControl, ControlLabel} from "react-bootst
 import {API} from "aws-amplify";
 import "./NewProject.css";
 import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
+import LoadingButton from "../components/LoadingButton";
 
 export default class NewProject extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            isLoading: null,
+            isLoading: false,
+            confirmDevelopers: true,
             userIsManager: true,
             title: "",
             description: "",
@@ -23,8 +25,17 @@ export default class NewProject extends Component {
         this.setDevelopers = this.setDevelopers.bind(this);
     }
 
+    validateForm(){
+        return (this.state.title.length + this.state.description + this.state.projectManager.length) !== 0
+            && this.state.confirmDevelopers;
+    }
+
     setDevelopers(developers) {
         this.setState({developers: developers});
+    }
+
+    confirmDevelopers = boolean => {
+        this.setState({confirmDevelopers: boolean});
     }
 
     handleChange = event => {
@@ -141,10 +152,18 @@ export default class NewProject extends Component {
                     </FormGroup>
 
                     <DynamicDeveloperForm setDevelopers={this.setDevelopers}
+                                          confirmDevelopers={this.confirmDevelopers}
                                           name={this.state.title}
                                           description={this.state.description}
                                           projectManager={this.state.projectManager} />
 
+                    <FormGroup>
+                        <LoadingButton onClick={this.submitDevelopers}
+                                       isLoading={this.state.isLoading}
+                                       text="Create"
+                                       loadingText="Creating..."
+                                       disabled={this.validateForm()} />
+                    </FormGroup>
                 </Form>
             </div>
         );

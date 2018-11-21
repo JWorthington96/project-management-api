@@ -7,7 +7,6 @@ export default class DynamicDeveloperForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            confirmDevelopers: true,
             currentId: 0,
             currentDevelopers: []
         };
@@ -30,9 +29,9 @@ export default class DynamicDeveloperForm extends Component {
         devs[id] = {username: developer};
 
         if (this.props.developers === undefined){
-            this.setState({confirmDevelopers: false})
+            this.props.confirmDevelopers(true);
         } else if (devs.length !== this.props.developers.length) {
-            this.setState({confirmDevelopers: false});
+            this.props.confirmDevelopers(false);
         }
         this.setState({currentId: id + 1, currentDevelopers: devs});
     }
@@ -40,20 +39,19 @@ export default class DynamicDeveloperForm extends Component {
     changeDeveloper(id, developer) {
         const devs = this.state.currentDevelopers;
         devs[id] = {username: developer};
-        this.setState({currentDevelopers: devs});
     }
 
     deleteDeveloper(id) {
         const devs = this.state.currentDevelopers;
         devs.splice(id, 1);
-        if (devs.length === 0) this.setState({confirmDevelopers: true});
+        if (devs.length === 0) this.props.confirmDevelopers(true);
         this.setState({currentId: devs.length, currentDevelopers: devs});
     }
 
     submitDevelopers = event => {
         event.preventDefault();
-        this.setState({confirmDevelopers: true});
         this.props.setDevelopers(this.state.currentDevelopers);
+        this.props.confirmDevelopers(true);
     }
 
     render() {
@@ -71,14 +69,6 @@ export default class DynamicDeveloperForm extends Component {
                         Confirm developers
                     </Button>
                 </div>
-
-                <FormGroup>
-                    <LoadingButton onClick={this.submitDevelopers}
-                                   isLoading={this.state.isLoading}
-                                   text="Create"
-                                   loadingText="Creating..."
-                                   disabled={!this.validateForm()} />
-                </FormGroup>
             </div>
         );
     }
