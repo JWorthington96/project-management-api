@@ -1,20 +1,8 @@
-import AmazonCognitoIdentity from "amazon-cognito-identity-js";
-export function getUserPool(params) {
-    return new AmazonCognitoIdentity.CognitoUserPool(params.UserPoolData);
-}
-export function getAttributeList(params) {
-    let attributeList = [];
-    params.UserAttributes.map((attribute) => attributeList.push(new AmazonCognitoIdentity.CognitoUserAttribute(attribute)));
-    return attributeList;
-}
-export function getAuthenticationDetails(params) {
-    return new AmazonCognitoIdentity.AuthenticationDetails(params.AuthenticationData);
-}
-export function getUser(params) {
-    const userData = {
-        Username: params.Username,
-        Pool: this.getUserPool(params)
-    };
-    return new AmazonCognitoIdentity.CognitoUser(userData);
+import AWS from "aws-sdk";
+AWS.config.update({ region: "eu-west-2" });
+AWS.config.apiVersions = { cognitoidentityserviceprovider: "2016-04-18" };
+export function call(action, params) {
+    const cognito = new AWS.CognitoIdentityServiceProvider();
+    return cognito[action](params).promise();
 }
 //# sourceMappingURL=cognito.js.map

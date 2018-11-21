@@ -1,4 +1,4 @@
-import {call} from "./lib/cognito-service";
+import {call} from "./lib/cognito";
 import {failure, success} from "./lib/response";
 
 
