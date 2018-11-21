@@ -36,13 +36,12 @@ class App extends Component {
 
     changeCurrentUser = user => {
         this.setState({user: user});
-    }
+    };
 
-    setCurrentUser = async event => {
-        let user = await Auth.currentAuthenticatedUser();
-        console.log(user.valueOf());
+    setCurrentUser = async user => {
+        await Auth.currentAuthenticatedUser();
         this.changeCurrentUser(user);
-    }
+    };
 
     handleLogout = async event => {
         await Auth.signOut();

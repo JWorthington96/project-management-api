@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
 import "./Login.css";
-import {Auth} from "aws-amplify";
+import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
 
 export default class Login extends Component {
@@ -12,6 +12,7 @@ export default class Login extends Component {
         this.state = {
             isConfirmed: true,
             isLoading: false,
+            incorrect: false,
             username: '',
             password: ''
         };
@@ -21,54 +22,65 @@ export default class Login extends Component {
         const usernameLen = this.state.username.length;
         const passLen = this.state.password.length;
         return (usernameLen > 0 && passLen > 12);
-    }
+    };
 
     getValidationState(){
         return this.getValidationBoolean() ? 'success' : 'error';
-    }
+    };
 
     handleChange = event => {
         this.setState({[event.target.id]: event.target.value});
-    }
+    };
 
     handleSubmit = async e => {
         e.preventDefault();
 
         this.setState({isLoading: true});
         try {
-            let user = await Auth.signIn(this.state.username, this.state.password);
+            let response = await API.post("projects", "/login", {body: {
+                    Username: this.state.username,
+                    Password: this.state.password
+                }
+            });
+            let user = {
+                Username: this.state.username,
+                Password: this.state.password,
+                Auth: response.body.AuthenticationResult
+            };
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
             this.props.changeCurrentUser(user);
+            console.log(user.valueOf());
             this.setState({isLoading: false});
             this.props.history.push("/");
         } catch (error) {
-            if (error.message === "User is not confirmed.") {
+            if (error.message === "") {
                 this.setState({isConfirmed: false});
-            } else if (error.message === "") {
-                // TODO: notify user if credentials are wrong
+            } else if (error.message === "No username/password combination found") {
+                this.setState({incorrect: true});
+                // TODO: add prompt that shows the username or pass was incorrect
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {
                 console.log(error);
             }
         }
-    }
+    };
 
     handleDismiss = event => {
         this.setState({isConfirmed: true});
-    }
+    };
 
     handleResend = async event => {
         event.preventDefault();
 
         try {
-            await Auth.resendSignUp(this.state.username);
+            //await Auth.resendSignUp(this.state.username);
             this.setState({isConfirmed: true});
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     render() {
         return (

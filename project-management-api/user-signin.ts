@@ -1,4 +1,4 @@
-import {call} from "./lib/cognito-service";
+import {call} from "./lib/cognito";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
@@ -11,19 +11,6 @@ export async function main(event, context, callback) {
         },
         ClientId: "27cus2iiajkktqa6tk984jqgqa"
         //UserPoolId: "eu-west-2_7DRbUQOk6"
-    };
-
-    function UserSession(session){
-        this.session = session;
-    }
-
-    UserSession.prototype = {
-        setSession: function(session){
-            this.session = session;
-        },
-        getSession: function() {
-            return this.session;
-        }
     };
 
     try {
@@ -43,9 +30,14 @@ export async function main(event, context, callback) {
             }
         }
         */
-
-        const userSession = new Promise(new UserSession(response.AuthenticationResult));
-        callback(null, success({status: true, body: userSession}));
+        /*
+        if (response.ChallengeParameters.SRP_B === clientKey) {
+            console.log("SRP_A is equal to SRP_B");
+        } else {
+            console.log("SRP_A not equal to SRP_B");
+        }
+        */
+        callback(null, success({status: true, body: response}));
     } catch (error) {
         callback(null, failure({status: false, body: "No username/password combination found"}));
     }
