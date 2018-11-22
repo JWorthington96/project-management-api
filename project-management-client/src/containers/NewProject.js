@@ -15,28 +15,26 @@ export default class NewProject extends Component {
             userIsManager: true,
             title: "",
             description: "",
-            admin: this.props.user.username,
             projectManager: this.props.user.username,
             developers: [],
-            roles: ["Admin", "Project Manager", "Developer"],
-            users: []
+            roles: ["Admin", "Project Manager", "Developer"]
         };
-
         this.setDevelopers = this.setDevelopers.bind(this);
+        this.confirmDevelopers = this.confirmDevelopers.bind(this);
     }
 
     validateForm(){
-        return (this.state.title.length + this.state.description + this.state.projectManager.length) !== 0
-            && this.state.confirmDevelopers;
-    }
+        return this.state.title.length !==0 && this.state.description.length !== 0
+            && this.state.projectManager.length !== 0 && this.state.confirmDevelopers;
+    };
 
     setDevelopers(developers) {
         this.setState({developers: developers});
-    }
+    };
 
     confirmDevelopers = boolean => {
         this.setState({confirmDevelopers: boolean});
-    }
+    };
 
     handleChange = event => {
         this.setState({[event.target.id]: event.target.value});
@@ -50,22 +48,21 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
 
-        let users = this.state.developers.push(this.state.admin);
+        let users = this.state.developers.push(this.props.user.username);
         if (!this.state.userIsManager) users.push(this.state.projectManager);
 
         try {
             const project = await this.createProject({
                 title: this.state.title,
                 description: this.state.description,
-                admin: this.state.admin,
                 roles: this.state.roles,
-                users: this.state.users
+                users: users
             });
-            await this.createDefaultRoles(this.projectId);
             console.log(project);
+            //await this.createDefaultRoles(project.projectId);
             this.props.history.push("/");
         } catch (error) {
-            alert(error);
+            console.error(error);
             this.setState({isLoading: false});
         }
     };
@@ -75,6 +72,7 @@ export default class NewProject extends Component {
     }
 
     createDefaultRoles(projectId) {
+        // remove spaces
         const title = this.state.title.replace(/\s/g, '');
 
         const adminRole = {
@@ -158,11 +156,11 @@ export default class NewProject extends Component {
                                           projectManager={this.state.projectManager} />
 
                     <FormGroup>
-                        <LoadingButton onClick={this.submitDevelopers}
+                        <LoadingButton type="submit"
                                        isLoading={this.state.isLoading}
                                        text="Create"
                                        loadingText="Creating..."
-                                       disabled={this.validateForm()} />
+                                       disabled={!this.validateForm()} />
                     </FormGroup>
                 </Form>
             </div>

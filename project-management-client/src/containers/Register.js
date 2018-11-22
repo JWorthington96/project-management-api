@@ -51,7 +51,7 @@ export default class Register extends Component {
             };
             await API.post("projects", "/register", {body: newUser});
 
-            this.props.changeCurrentUser(newUser);
+            this.props.setCurrentUser(newUser);
         } catch (error) {
             console.error(error);
             this.setState({isLoading: false});

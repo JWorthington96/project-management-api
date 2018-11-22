@@ -37,19 +37,20 @@ export default class Login extends Component {
 
         this.setState({isLoading: true});
         try {
-            let response = await API.post("projects", "/login", {body: {
+            const response = await API.post("projects", "/login", {body: {
                     Username: this.state.username,
                     Password: this.state.password
                 }
             });
-            let user = {
-                Username: this.state.username,
-                Password: this.state.password,
-                Auth: response.body.AuthenticationResult
+            const user = {
+                username: this.state.username,
+                password: this.state.password,
+                auth: response.body
             };
+            localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
-            this.props.changeCurrentUser(user);
+            this.props.setCurrentUser(user);
             console.log(user.valueOf());
             this.setState({isLoading: false});
             this.props.history.push("/");
