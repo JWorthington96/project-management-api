@@ -45,11 +45,26 @@ export function main(event, context, callback) {
                     "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
                 }
             };
-            event.requestContext.identity.cognitoIdentityId = yield cognitoIdentity.call('getId', identityParams);
-            callback(null, success({ status: true, body: response.AuthenticationResult }));
+            // Gets (or generates) identity token for specified user pool login
+            const identity = yield cognitoIdentity.call('getId', identityParams);
+            const credentialParams = {
+                IdentityId: identity.IdentityId,
+                Logins: {
+                    "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
+                }
+            };
+            // Returns IAM credentials to use AWS services in the app of the specified ID
+            const credentials = yield cognitoIdentity.call('getCredentialsForIdentity', credentialParams);
+            callback(null, success({ status: true, body: {
+                    Auth: response.AuthenticationResult,
+                    IdentityId: identity.IdentityId,
+                    Credentials: credentials.Credentials
+                }
+            }));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: error }));
+            console.log(error);
+            callback(null, failure({ status: false }));
         }
     });
 }

@@ -46,7 +46,7 @@ functions:
     events:
       - http:
           method: post
-          path: projects
+          path: projects/new
           cors: true
           authorizer: aws_iam
   get:
@@ -167,11 +167,3 @@ functions:
           method: post
           path: login
           cors: true
-  user-session:
-    handler: user-session.main
-    events:
-      - http:
-          method: post
-          path: login/redirect
-          cors: true
-          authorizer: aws_iam
