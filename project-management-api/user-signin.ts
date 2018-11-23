@@ -40,13 +40,9 @@ export async function main(event, context, callback) {
                 "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
             }
         };
-        const identity = await cognitoIdentity.call('getId', identityParams);
+        event.requestContext.identity.cognitoIdentityId = await cognitoIdentity.call('getId', identityParams);
 
-        callback(null, success({status: true, body: {
-                Auth: response.AuthenticationResult,
-                IdentityId: identity.IdentityId
-            }
-        }));
+        callback(null, success({status: true, body: response.AuthenticationResult}));
     } catch (error) {
         callback(null, failure({status: false, body: error}));
     }

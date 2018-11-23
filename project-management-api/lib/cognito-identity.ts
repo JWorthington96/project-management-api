@@ -14,21 +14,9 @@ AWS.config.credentials = initialCredentials;
 console.log(AWS.config.credentials);
 */
 
-export function getCredentials(params) {
-    // temporary
-    const cognitoCredentials = new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: "eu-west-2:16e65f15-a1f6-4c57-b896-108cdd4593b6",
-        Logins: {
-            "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": params.AccessToken
-        }
-    });
-    cognitoCredentials.get(error => {
-        if (error) {
-            console.log(error);
-            throw error;
-        }
-    });
-    return cognitoCredentials;
+export function call(action: string, params){
+    const cognitoIdentity = new AWS.CognitoIdentity();
+    return cognitoIdentity[action](params).promise();
 }
 
 export function call(action: string, params){
