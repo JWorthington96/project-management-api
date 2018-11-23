@@ -6,7 +6,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { call } from "./lib/cognito";
+import * as cognito from "./lib/cognito";
+import * as cognitoIdentity from "./lib/cognito-identity";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -18,36 +19,41 @@ export function main(event, context, callback) {
                 PASSWORD: input.Password
             },
             ClientId: "27cus2iiajkktqa6tk984jqgqa"
-            //UserPoolId: "eu-west-2_7DRbUQOk6"
         };
         try {
-            const response = yield call('initiateAuth', authParams);
+            const response = yield cognito.call('initiateAuth', authParams);
             /*
-            if (response.ChallengeName !== undefined){
-                const challengeParams = {
-                    ChallengeName: response.ChallengeName,
-                    ChallengeParameters: response.ChallengeParameters,
-                    ClientId: authParams.ClientId,
-                    Session: response.Session
-                };
-                await call('respondToAuthChallenge', challengeParams);
-            } else {
-                const authResultParams = {
-                    AuthenticationResult: response.AuthenticationResult
+            // TODO: add password reset with this basic structure
+            const challengeParams = {
+                ChallengeName: response.ChallengeName,
+                ChallengeParameters: response.ChallengeParameters,
+                ClientId: "27cus2iiajkktqa6tk984jqgqa"
+            };
+            if (challengeParams.ChallengeName === undefined){
+                const authResponse = await cognito.call('respondToAuthChallenge', challengeParams);
+            }
+            */
+            /*
+            const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[0], 'base64').toString('utf8'));
+            const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
+            console.log(tokenHeader);
+            console.log(tokenBody);
+            */
+            const identityParams = {
+                IdentityPoolId: "eu-west-2:16e65f15-a1f6-4c57-b896-108cdd4593b6",
+                Logins: {
+                    "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
                 }
-            }
-            */
-            /*
-            if (response.ChallengeParameters.SRP_B === clientKey) {
-                console.log("SRP_A is equal to SRP_B");
-            } else {
-                console.log("SRP_A not equal to SRP_B");
-            }
-            */
-            callback(null, success({ status: true, body: response }));
+            };
+            const identity = yield cognitoIdentity.call('getId', identityParams);
+            callback(null, success({ status: true, body: {
+                    Auth: response.AuthenticationResult,
+                    IdentityId: identity.IdentityId
+                }
+            }));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: "No username/password combination found" }));
+            callback(null, failure({ status: false, body: error }));
         }
     });
 }
