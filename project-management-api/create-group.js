@@ -27,7 +27,8 @@ export function main(event, context, callback) {
             callback(null, success({ status: true }));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: error }));
+            console.log(error);
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }

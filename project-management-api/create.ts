@@ -3,17 +3,16 @@ import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const data = JSON.parse(event.body);
+    const input = JSON.parse(event.body);
     const params = {
         TableName: "projects",
         Item: {
-            admin: event.requestContext.identity.user,
-            adminId: event.requestContext.identity.cognitoIdentityId,
+            adminId: input.identityId,
             projectId: uuid(),
-            title: data.title,
-            description: data.description,
-            roles: data.roles,
-            users: data.users,
+            title: input.title,
+            description: input.description,
+            roles: input.roles,
+            users: input.users,
             createdAt: Date.now()
         }
     };
@@ -22,6 +21,7 @@ export async function main(event, context, callback) {
         await call("put", params);
         callback(null, success(params.Item));
     } catch (error) {
-        callback(null, failure({status: false, body: error}));
+        console.log(error);
+        callback(null, failure({status: false, body: error.message}));
     }
 }

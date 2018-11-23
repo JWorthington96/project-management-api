@@ -12,6 +12,7 @@ export async function main(event, context, callback) {
         await call('deleteGroup', params);
         callback(null, success({status: true}));
     } catch (error) {
-        callback(null, failure({status: false, body: error}));
+        console.log(error);
+        callback(null, failure({status: false, body: error.message}));
     }
 }

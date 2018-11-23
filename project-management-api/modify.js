@@ -34,7 +34,7 @@ export function main(event, context, callback) {
         }
         catch (error) {
             console.error(error);
-            callback(null, failure({ status: false }));
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }

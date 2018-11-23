@@ -27,6 +27,7 @@ export async function main(event, context, callback){
         await call('updateRole', roleParams);
         callback(null, success({status: true}));
     } catch (error) {
+        console.log(error);
         callback(null, failure({status: false, body: error.message}))
     }
 }

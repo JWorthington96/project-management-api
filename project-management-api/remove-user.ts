@@ -7,12 +7,13 @@ export async function main(event, context, callback) {
         GroupName: input.GroupName,
         UserPoolId: "eu-west-2_7DRbUQOk6",
         Username: input.Username
-    }
+    };
 
     try {
         await call('adminRemoveUserFromGroup', params);
         callback(null, success({status: true}));
     } catch (error) {
+        console.log(error);
         callback(null, failure({status: false, body: error.message}));
     }
 }

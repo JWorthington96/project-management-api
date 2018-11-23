@@ -18,7 +18,8 @@ export async function main(event, context, callback){
         const result = await call("query", params);
         // Return the matching list of items in the response body
         callback(null, success(result.Items));
-    } catch (e) {
-        callback(null, failure({status: false}));
+    } catch (error) {
+        console.log(error);
+        callback(null, failure({status: false, body: error.message}));
     }
 }
