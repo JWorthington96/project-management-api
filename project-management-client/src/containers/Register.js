@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox, OverlayTrigger, Tooltip} from "react-bootstrap";
-import "./Register.css";
-import {Auth} from "aws-amplify";
+import {FormGroup, FormControl, ControlLabel, HelpBlock} from "react-bootstrap";
 import LoadingButton from "../components/LoadingButton";
+import "./Register.css";
+import {API} from "aws-amplify";
 
 export default class Register extends Component {
     constructor(props, context){
@@ -13,6 +13,7 @@ export default class Register extends Component {
             isConfirmed: false,
             isLoading: false,
             email: '',
+            skills: '',
             username: '',
             password: '',
             confirmPass: '',
@@ -30,8 +31,7 @@ export default class Register extends Component {
     }
 
     getValidationBoolean(){
-        if (this.getValidationState() === 'success') return true;
-        else return false;
+        return this.getValidationState() === 'success';
     }
 
     handleChange(event){
@@ -43,107 +43,88 @@ export default class Register extends Component {
 
         this.setState({isLoading: true});
         try {
-            const newUser = await Auth.signUp({
-                username: this.state.username,
-                password: this.state.password,
-                attributes: {email: this.state.email}
-            });
-            this.props.changeCurrentUser(newUser);
-            this.setState({newUser});
-        } catch (e) {
-            alert(e.message);
+            const newUser = {
+                Username: this.state.username,
+                Password: this.state.password,
+                Email: this.state.email,
+                Skills: this.state.skills
+            };
+            await API.post("projects", "/register", {body: newUser});
+
+            this.props.setCurrentUser(newUser);
+        } catch (error) {
+            console.error(error);
+            this.setState({isLoading: false});
         }
+        this.props.history.push('/register/confirm');
+    };
 
-        this.setState({isLoading: false});
-    }
-
-    renderConfirmation() {
-        return (
-            <div className="confirmation">
-                <h1>Thank you for registering!</h1>
-                <h3>Please check your email to confirm your account before signing in</h3>
-            </div>
-        );
-    }
-
-    renderForm() {
-        const tooltip = (
-            <Tooltip id="tooltip">
-                Password must be at least <strong>12 characters</strong>, contain at least
-                <strong>one capital and symbol</strong>.
-            </Tooltip>
-        );
-
+    render() {
         return(
-            <form onSubmit={this.handleSubmit}>
-                <FormGroup controlId="email">
-                    <ControlLabel>Email</ControlLabel>
-                    <FormControl autoFocus
-                                 type="email"
-                                 value={this.state.email}
-                                 onChange={this.handleChange}
-                                 placeholder="john.doe@example.com"
-                    />
-                    <FormControl.Feedback />
-                </FormGroup>
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <FormGroup controlId="email">
+                        <ControlLabel>Email</ControlLabel>
+                        <FormControl autoFocus
+                                     type="email"
+                                     value={this.state.email}
+                                     onChange={this.handleChange}
+                                     placeholder="john.doe@example.com"
+                        />
+                        <FormControl.Feedback />
+                    </FormGroup>
 
-                <FormGroup controlId="username">
-                    <ControlLabel>Username</ControlLabel>
-                    <FormControl type="username"
-                                 value={this.state.username}
-                                 onChange={this.handleChange}
-                                 placeholder="xXexampleXx" />
-                    <FormControl.Feedback />
-                </FormGroup>
+                    <FormGroup controlId="username">
+                        <ControlLabel>Username</ControlLabel>
+                        <FormControl type="username"
+                                     value={this.state.username}
+                                     onChange={this.handleChange}
+                                     placeholder="xXexampleXx" />
+                        <FormControl.Feedback />
+                    </FormGroup>
 
-                <FormGroup
-                    controlId="password"
-                    validationState={this.getValidationState()}
-                >
-                    <ControlLabel>Password</ControlLabel>
-                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                    <FormGroup
+                        controlId="password"
+                        validationState={this.getValidationState()}
+                    >
+                        <ControlLabel>Password</ControlLabel>
                         <FormControl
                             type="password"
                             value={this.state.password}
                             onChange={this.handleChange}
                         />
-                    </OverlayTrigger>
-                    <FormControl.Feedback />
-                </FormGroup>
+                        <FormControl.Feedback />
+                        <HelpBlock>Password must be at least 12 characters long</HelpBlock>
+                    </FormGroup>
 
-                <FormGroup
-                    controlId="confirmPass"
-                    validationState={this.getValidationState()}
-                >
-                    <ControlLabel>Confirm password</ControlLabel>
-                    <FormControl
-                        type="password"
-                        value={this.state.confirmPass}
-                        onChange={this.handleChange}
+                    <FormGroup
+                        controlId="confirmPass"
+                        validationState={this.getValidationState()}
+                    >
+                        <ControlLabel>Confirm password</ControlLabel>
+                        <FormControl
+                            type="password"
+                            value={this.state.confirmPass}
+                            onChange={this.handleChange} />
+                        <FormControl.Feedback />
+                        <HelpBlock>Must match password</HelpBlock>
+                    </FormGroup>
+
+                    <FormGroup controlId="skills">
+                        <ControlLabel>Skills</ControlLabel>
+                        <FormControl value={this.state.skills}
+                                     onChange={this.handleChange} />
+                        <HelpBlock>Enter all your relevant skills, separated by commas</HelpBlock>
+                    </FormGroup>
+
+                    <LoadingButton
+                        type="submit"
+                        disabled={!this.getValidationBoolean()}
+                        isLoading={this.state.isLoading}
+                        text="Register"
+                        loadingText="Registering..."
                     />
-                    <FormControl.Feedback />
-                    <HelpBlock>Must match password</HelpBlock>
-                </FormGroup>
-
-                <Checkbox title="The website will save your credentials to immediately login">
-                    Remember details
-                </Checkbox>
-
-                <LoadingButton
-                    type="submit"
-                    disabled={!this.getValidationBoolean()}
-                    isLoading={this.state.isLoading}
-                    text="Register"
-                    loadingText="Registering..."
-                />
-            </form>
-        );
-    }
-
-    render() {
-        return(
-            <div className="Register">
-                {this.state.newUser == null ? this.renderForm() : this.renderConfirmation()}
+                </form>
             </div>
         );
     }

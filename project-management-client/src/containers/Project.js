@@ -1,6 +1,9 @@
 import React, {Component} from "react";
-import {ListGroup} from "react-bootstrap";
+import {Tab, Tabs} from "react-bootstrap";
+import ProjectSettings from "./ProjectSettings";
+import ProjectView from "./ProjectView";
 import {API} from "aws-amplify";
+import "./Project.css";
 
 export default class Project extends Component {
     constructor(props) {
@@ -8,24 +11,27 @@ export default class Project extends Component {
         this.state = {
             isLoading: true,
             project: null,
-            name: "",
+            title: "",
             description: "",
-            admin: "",
             projectManager: "",
-            developers: []
+            roles: [],
+            users: []
         };
     }
 
     async componentDidMount() {
         try {
             const project = await this.getProject();
-            const {name, description} = project;
+            const {title, description, projectManager, roles, users} = project;
 
             this.setState({
                 isLoading: false,
                 project,
-                name,
-                description
+                title,
+                projectManager,
+                description,
+                roles,
+                users
             });
         } catch (error) {
             console.log(error.message);
@@ -33,33 +39,27 @@ export default class Project extends Component {
     }
 
     getProject() {
-        return API.get("projects", `/projects/${this.props.match.params.id}`, {});
+        return API.get("projects", `/projects/${this.props.match.params.id}`, {queryStringParameters: {
+                identityId: this.props.user.identityId
+            }
+        });
     }
 
     renderLoading() {
         return(<h1>Loading...</h1>);
     }
 
-    /*
-    renderUsers(users) {
-        return users.map( (user) =>
-            <ListGroupItem header={user.name}>
-                {user.skills.toString()}
-            </ListGroupItem>
-        );
-    }
-    */
-
     renderProject(){
         return (
             <div>
-                <h1>{this.state.name}</h1>
-                <h2>{this.state.description}</h2>
-                /*
-                <ListGroup className="developers">
-                    <p>{this.renderUsers(this.state.developers)}</p>
-                </ListGroup>
-                */
+                <Tabs id="project-tab">
+                    <Tab eventKey={1} title="View">
+                        <ProjectView />
+                    </Tab>
+                    <Tab eventKey={2} title="Settings">
+                        <ProjectSettings />
+                    </Tab>
+                </Tabs>
             </div>
         );
     }

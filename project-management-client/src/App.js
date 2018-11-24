@@ -19,10 +19,12 @@ class App extends Component {
 
     async componentDidMount() {
         try {
-            await Auth.currentSession();
+            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
+            if (user === null) throw new Error("No current user");
             // this will be used to get the current user from a saved session
-            await this.setCurrentUser();
+            this.setCurrentUser(user);
             this.userHasAuthenticated(true);
+            console.log(user);
         } catch (error) {
             if (error !== 'No current user') console.log(error);
         }
@@ -34,20 +36,17 @@ class App extends Component {
         this.setState({isAuthenticated: authenticated});
     };
 
-    changeCurrentUser = user => {
+    setCurrentUser = user => {
         this.setState({user: user});
-    }
-
-    setCurrentUser = async event => {
-        let user = await Auth.currentAuthenticatedUser();
-        console.log(user.valueOf());
-        this.changeCurrentUser(user);
-    }
+    };
 
     handleLogout = async event => {
-        await Auth.signOut();
+        await API.post("projects", "/signout", {body: {
+                AccessToken: this.user.Auth.AccessToken
+            }
+        });
         this.userHasAuthenticated(false);
-        this.changeCurrentUser({});
+        this.setCurrentUser({});
         this.props.history.push("/");
     };
 
@@ -55,7 +54,7 @@ class App extends Component {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
             user: this.state.user,
-            changeCurrentUser: this.changeCurrentUser,
+            setCurrentUser: this.setCurrentUser,
             userHasAuthenticated: this.userHasAuthenticated
         };
 

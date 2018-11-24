@@ -19,14 +19,21 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-      - dynamodb:DescribeTable
-      - dynamodb:Query
-      - dynamodb:Scan
-      - dynamodb:GetItem
-      - dynamodb:PutItem
-      - dynamodb:UpdateItem
-      - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
+    - Effect: Allow
+      Action:
+        - congito-identity:*
+        - cognito-idp:*
+        - cognito-sync:*
+        - iam:*
+      Resource: "*"
 
 # API endpoints for the functions
 functions:
@@ -35,7 +42,7 @@ functions:
     events:
       - http:
           method: post
-          path: projects
+          path: projects/new
           cors: true
           authorizer: aws_iam
   get:
@@ -54,3 +61,105 @@ functions:
           path: projects
           cors: true
           authorizer: aws_iam
+  delete:
+    handler: delete.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}
+          cors: true
+          authorizer: aws_iam
+  modify:
+    handler: modify.main
+    events:
+      - http:
+          method: put
+          path: projects/{id}
+          cors: true
+          authorizer: aws_iam
+  create-role:
+    handler: create-role.main
+    events:
+      - http:
+          method: post
+          path: projects/{id}/roles
+          cors: true
+          authorizer: aws_iam
+  delete-role:
+    handler: delete-role.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}/roles
+          cors: true
+          authorizer: aws_iam
+  modify-role:
+    handler: modify-role.main
+    events:
+      - http:
+          method: put
+          path: projects/{id}/roles
+          cors: true
+          authorizer: aws_iam
+  create-group:
+    handler: create-group.main
+    events:
+      - http:
+          method: post
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  delete-group:
+    handler: delete-group.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  modify-group:
+    handler: modify-group.main
+    events:
+      - http:
+          method: put
+          path: projects/{id}/groups
+          cors: true
+          authorizer: aws_iam
+  add-user:
+    handler: add-user.main
+    events:
+      - http:
+          method: post
+          path: projects/{id}/users
+          cors: true
+          authorizer: aws_iam
+  remove-user:
+    handler: remove-user.main
+    events:
+      - http:
+          method: delete
+          path: projects/{id}/users
+          cors: true
+          authorizer: aws_iam
+  user-signup:
+    handler: user-signup.main
+    events:
+      - http:
+          method: post
+          path: register
+          cors: true
+  user-confirm:
+    handler: user-confirm.main
+    events:
+      - http:
+          method: post
+          path: register/confirm
+          cors: true
+          authorizer: aws_iam
+  user-signin:
+    handler: user-signin.main
+    events:
+      - http:
+          method: post
+          path: login
+          cors: true

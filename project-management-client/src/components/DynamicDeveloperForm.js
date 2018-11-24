@@ -1,62 +1,74 @@
 import React, {Component} from "react";
 import {Button, ControlLabel, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap";
+import LoadingButton from "./LoadingButton";
 
 // Component to allow the admin to add developers when creating the project
-export default class DynamicDeveloperForm extends Component{
+export default class DynamicDeveloperForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             currentId: 0,
-            developers: []
+            currentDevelopers: []
         };
         this.addDeveloper = this.addDeveloper.bind(this);
         this.changeDeveloper = this.changeDeveloper.bind(this);
         this.deleteDeveloper = this.deleteDeveloper.bind(this);
     }
 
+    validateForm() {
+        const nameLen = this.props.name.length;
+        const descLen = this.props.description.length;
+        const pmLen = this.props.projectManager.length;
+        return (nameLen > 0 && descLen > 0 && pmLen > 0 && this.state.confirmDevelopers);
+    }
+
     addDeveloper(developer) {
         const id = this.state.currentId;
-        const devs = this.state.developers;
+        const devs = this.state.currentDevelopers;
         console.log(devs.valueOf());
-        devs[id] = {id: id, username: developer};
-        this.setState({currentId: id+1, developers: devs});
-        /*
-        this.setState(previousState => {
-            return {
-                developers: {...previousState.developers, this.state.i: developer},
-                i: previousState.i + 1
-            }
-        });
-        */
+        devs[id] = {username: developer};
+
+        if (this.props.developers === undefined){
+            this.props.confirmDevelopers(true);
+        } else if (devs.length !== this.props.developers.length) {
+            this.props.confirmDevelopers(false);
+        }
+        this.setState({currentId: id + 1, currentDevelopers: devs});
     }
 
     changeDeveloper(id, developer) {
-        const devs = this.state.developers;
-        devs[id] = {id: id, username: developer};
-        this.setState({developers: devs});
+        const devs = this.state.currentDevelopers;
+        devs[id] = {username: developer};
     }
 
     deleteDeveloper(id) {
-        const devs = this.state.developers;
-        const newDevs = [];
+        const devs = this.state.currentDevelopers;
         devs.splice(id, 1);
-        console.log(devs.valueOf());
-        for (let i = 0; i < devs.length; i++){
-            devs[i] = {id: i, username: devs[i].username};
-        }
-        let maxi = devs.length - 1;
-        this.setState({currentId: maxi, developers: devs});
+        if (devs.length === 0) this.props.confirmDevelopers(true);
+        this.setState({currentId: devs.length, currentDevelopers: devs});
+    }
+
+    submitDevelopers = event => {
+        event.preventDefault();
+        this.props.setDevelopers(this.state.currentDevelopers);
+        this.props.confirmDevelopers(true);
     }
 
     render() {
-        return(
-            <div className="developers">
-                <DeveloperFormList
-                    developers={this.state.developers}
-                    changeDeveloper={this.changeDeveloper}
-                    deleteDeveloper={this.deleteDeveloper}
-                />
-                <NewDeveloperForm addDeveloper={this.addDeveloper} />
+        return (
+            <div>
+                <div className="developers">
+                    <DeveloperFormList
+                        developers={this.state.currentDevelopers}
+                        changeDeveloper={this.changeDeveloper}
+                        deleteDeveloper={this.deleteDeveloper}
+                    />
+                    <NewDeveloperForm addDeveloper={this.addDeveloper}/>
+                    <Button onClick={this.submitDevelopers}
+                            disabled={this.state.confirmDevelopers}>
+                        Confirm developers
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -70,27 +82,27 @@ class DeveloperFormList extends Component {
     }
 
     handleChange = event => {
-        const id = event.target.id;
+        const id = Number(event.target.id);
         const value = event.target.value;
         this.props.changeDeveloper(id, value);
     };
 
     handleDelete = event => {
-        const id = event.target.id;
+        const id = Number(event.target.id);
         this.props.deleteDeveloper(id);
     }
 
     render() {
-        return this.props.developers.map( developer =>
+        return this.props.developers.map( (developer, i) =>
             <ListGroupItem>
-                <FormGroup controlId={developer.id.toString()}>
-                    {console.log(developer.id)}
+                <FormGroup controlId={i.toString()}>
+                    {console.log(i)}
                     {console.log(developer.username)}
-                    <ControlLabel>Developer {developer.id + 1}</ControlLabel>
+                    <ControlLabel>Developer {i + 1}</ControlLabel>
                     <FormControl onChange={this.handleChange} value={developer.username} />
                 </FormGroup>
 
-                <Button id={developer.id} onClick={this.handleDelete}>
+                <Button id={i.toString()} onClick={this.handleDelete}>
                     <Glyphicon glyph="minus"/>
                 </Button>
             </ListGroupItem>

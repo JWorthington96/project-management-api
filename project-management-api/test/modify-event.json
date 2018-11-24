@@ -1,0 +1,11 @@
+{
+  "body": "{\"title\":\"testing123\",\"description\":\"text\",\"admin\":\"admin\",\"roles\":\"[]\",\"users\":\"[]\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoId": "user123"
+    }
+  },
+  "pathParameters": {
+    "id": "d2192b60-e851-11e8-95a3-292b6f739720"
+  }
+}

@@ -1,28 +1,28 @@
 import uuid from "uuid/v1";
-import * as dynamoDb from "./lib/dynamodb";
+import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const data = JSON.parse(event.body);
+    const input = JSON.parse(event.body);
     const params = {
         TableName: "projects",
         Item: {
-            adminId: event.requestContext.identity.cognitoIdentityId,
+            adminId: input.identityId,
             projectId: uuid(),
-            name: data.name,
-            description: data.description,
-            admin: event.requestContext.identity.user,
-            projectManager: data.projectManager,
-            developers: data.developers,
+            title: input.title,
+            description: input.description,
+            projectManager: input.projectManger,
+            roles: input.roles,
+            users: input.users,
             createdAt: Date.now()
         }
     };
 
     try {
-        await dynamoDb.call("put", params);
+        await call("put", params);
         callback(null, success(params.Item));
     } catch (error) {
-        console.log(error.message);
-        callback(null, failure({status: false}));
+        console.log(error);
+        callback(null, failure({status: false, body: error.message}));
     }
 }

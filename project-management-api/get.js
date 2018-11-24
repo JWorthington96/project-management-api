@@ -6,29 +6,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as dynamoDb from "./lib/dynamodb";
+import { call } from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
             TableName: "projects",
             Key: {
-                userId: event.requestContext.identity.cognitoIdentityId,
+                adminId: event.queryStringParameters.identityId,
                 projectId: event.pathParameters.id
             }
         };
         try {
-            const result = yield dynamoDb.call("get", params);
-            if (result.Item) {
-                callback(null, success(result.Item));
+            const response = yield call("get", params);
+            if (response.Item) {
+                callback(null, success(response.Item));
             }
             else {
                 callback(null, failure({ status: false, error: "Item not found." }));
             }
         }
-        catch (e) {
-            console.log(e);
-            callback(null, failure({ status: false }));
+        catch (error) {
+            console.log(error);
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }

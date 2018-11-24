@@ -6,28 +6,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as dynamoDb from "./lib/dynamodb";
+import { call } from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
             TableName: "projects",
-            // KeyConditionExpression defines the condition for the query 'userId = :userId'; only returns items with
-            // matching userId keys
-            // ExpressionAttributeValues defines the value in the condition 'userId = :userId'; defines
-            // userId to be Identity Pool identity id of the authenticated user
+            // KeyConditionExpression defines the condition for the query 'adminId = :identity'; only returns items with
+            // matching adminId keys
+            // ExpressionAttributeValues defines the value in the condition 'adminId = :adminId'; defines
+            // adminId to be Identity Pool identity id of the authenticated user
             KeyConditionExpression: "adminId = :adminId",
             ExpressionAttributeValues: {
-                ":adminId": event.requestContext.identity.cognitoIdentityId
+                ":adminId": event.queryStringParameters.identityId
             }
         };
         try {
-            const result = yield dynamoDb.call("query", params);
+            const result = yield call("query", params);
             // Return the matching list of items in the response body
             callback(null, success(result.Items));
         }
-        catch (e) {
-            callback(null, failure({ status: false }));
+        catch (error) {
+            console.log(error);
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
