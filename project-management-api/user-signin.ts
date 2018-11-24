@@ -27,15 +27,13 @@ export async function main(event, context, callback) {
         }
         */
 
-        /*
         const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[0], 'base64').toString('utf8'));
         const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
         console.log(tokenHeader);
         console.log(tokenBody);
-        */
 
         const identityParams = {
-            IdentityPoolId: "eu-west-2:16e65f15-a1f6-4c57-b896-108cdd4593b6",
+            IdentityPoolId: "eu-west-2:b21c24c2-a661-4a66-9c5a-d8b51f02f3f3",
             Logins: {
                 "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
             }
@@ -49,13 +47,13 @@ export async function main(event, context, callback) {
                 "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
             }
         };
-        // Returns IAM credentials to use AWS services in the app of the specified ID
+        // Returns IAM credentials to use AWS services in the app of the specified ID, kept from the user to prevent
+        // security flaws
         const credentials = await cognitoIdentity.call('getCredentialsForIdentity', credentialParams);
 
         callback(null, success({status: true, body: {
                 Auth: response.AuthenticationResult,
-                IdentityId: identity.IdentityId,
-                Credentials: credentials.Credentials
+                IdentityId: credentials.IdentityId
             }
         }));
     } catch (error) {

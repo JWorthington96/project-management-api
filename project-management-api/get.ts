@@ -2,10 +2,11 @@ import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
+    const input = JSON.parse(event.body);
     const params = {
         TableName: "projects",
         Key: {
-            adminId: event.requestContext.identity.cognitoIdentityId,
+            adminId: input.identityId,
             projectId: event.pathParameters.id
         }
     };

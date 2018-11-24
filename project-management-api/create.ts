@@ -11,6 +11,7 @@ export async function main(event, context, callback) {
             projectId: uuid(),
             title: input.title,
             description: input.description,
+            projectManager: input.projectManger,
             roles: input.roles,
             users: input.users,
             createdAt: Date.now()
