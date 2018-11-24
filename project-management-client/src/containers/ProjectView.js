@@ -10,6 +10,7 @@ export default class Project extends Component {
             project: null,
             title: this.props.title,
             description: this.props.description,
+            projectManager: this.props.projectManager,
             roles: this.props.roles,
             users: this.props.users
         };

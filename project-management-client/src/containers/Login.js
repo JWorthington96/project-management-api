@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
+import {Alert, Button, ControlLabel, FormGroup, FormControl, HelpBlock} from "react-bootstrap";
 import "./Login.css";
 import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -34,8 +34,8 @@ export default class Login extends Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-
         this.setState({isLoading: true});
+
         try {
             const response = await API.post("projects", "/login", {body: {
                     Username: this.state.username,
@@ -45,7 +45,7 @@ export default class Login extends Component {
             const user = {
                 username: this.state.username,
                 password: this.state.password,
-                auth: response.body
+                identityId: response.body.IdentityId
             };
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
@@ -123,7 +123,7 @@ export default class Login extends Component {
                         loadingText="Logging in..."
                     />
 
-                    {this.state.isConfirmed ? <div></div>
+                    {this.state.isConfirmed ? null
                         : <Fragment>
                             <Alert className="alert" bsStyle="danger" onDismiss={this.handleDismiss}>
                                 <h3>Thank you again for registering!</h3>

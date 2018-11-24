@@ -24,6 +24,7 @@ class App extends Component {
             // this will be used to get the current user from a saved session
             this.setCurrentUser(user);
             this.userHasAuthenticated(true);
+            console.log(user);
         } catch (error) {
             if (error !== 'No current user') console.log(error);
         }

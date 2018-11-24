@@ -13,6 +13,7 @@ export default class Project extends Component {
             project: null,
             title: "",
             description: "",
+            projectManager: "",
             roles: [],
             users: []
         };
@@ -21,12 +22,13 @@ export default class Project extends Component {
     async componentDidMount() {
         try {
             const project = await this.getProject();
-            const {title, description, roles, users} = project;
+            const {title, description, projectManager, roles, users} = project;
 
             this.setState({
                 isLoading: false,
                 project,
                 title,
+                projectManager,
                 description,
                 roles,
                 users

@@ -53,7 +53,9 @@ export default class NewProject extends Component {
 
         try {
             const project = await this.createProject({
+                identityId: this.props.user.identityId,
                 title: this.state.title,
+                projectManager: this.state.projectManager,
                 description: this.state.description,
                 roles: this.state.roles,
                 users: users
@@ -68,7 +70,7 @@ export default class NewProject extends Component {
     };
 
     createProject(project) {
-        return API.post("projects", "/projects", {body: project});
+        return API.post("projects", "/projects/new", {body: project});
     }
 
     createDefaultRoles(projectId) {

@@ -15,9 +15,13 @@ export default class Home extends Component {
 
     async componentDidMount() {
         if (!this.props.isAuthenticated) return;
+        console.log(this.props.user);
 
         try {
-            const projects = await this.projects();
+            const projects = await API.get("projects", "/projects", {queryStringParameters: {
+                    identityId: this.props.user.identityId
+                }
+            });
             this.setState({projects});
         } catch (error) {
             console.log(error);
@@ -26,19 +30,15 @@ export default class Home extends Component {
         this.setState({isLoading: false});
     }
 
-    projects() {
-        return API.get("projects", "/projects", {});
-    }
-
     addProject = event => {
         event.preventDefault();
         this.props.history.push("/projects/new");
-    }
+    };
 
     handleProjectClick = event => {
         event.preventDefault();
         this.props.push(event.currentTarget.getAttribute("href"));
-    }
+    };
     
     renderProjectsList(projects){
         return projects.map( (project) =>
