@@ -41,7 +41,10 @@ class App extends Component {
     };
 
     handleLogout = async event => {
-        await Auth.signOut();
+        await API.post("projects", "/signout", {body: {
+                AccessToken: this.user.Auth.AccessToken
+            }
+        });
         this.userHasAuthenticated(false);
         this.setCurrentUser({});
         this.props.history.push("/");

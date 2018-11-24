@@ -45,6 +45,7 @@ export default class Login extends Component {
             const user = {
                 username: this.state.username,
                 password: this.state.password,
+                auth: response.body.Auth,
                 identityId: response.body.IdentityId
             };
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
