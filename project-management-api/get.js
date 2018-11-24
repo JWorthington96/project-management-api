@@ -10,11 +10,10 @@ import { call } from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const input = JSON.parse(event.body);
         const params = {
             TableName: "projects",
             Key: {
-                adminId: input.identityId,
+                adminId: event.queryStringParameters.identityId,
                 projectId: event.pathParameters.id
             }
         };
