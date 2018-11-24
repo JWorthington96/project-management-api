@@ -7,27 +7,10 @@
   <component name="ChangeListManager">
     <list default="true" id="deac8038-83bd-4dd3-90c8-211ecb37eaf7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/create.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/create.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/create.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/create.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/create.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/create.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-management-api/get.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/get.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-management-api/get.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/get.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-management-api/get.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/get.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/list-projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/list-projects.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/list-projects.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/list-projects.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/list-projects.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/list-projects.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/test/create-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/test/create-event.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/test/user-session-event.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/user-signin.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-signin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/user-signin.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-signin.js.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-api/user-signin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-signin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Project.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Project.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -126,17 +109,17 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="3794" />
+          <entry key="js" value="3854" />
           <entry key="json" value="225" />
-          <entry key="ts" value="7987" />
+          <entry key="ts" value="7997" />
           <entry key="yml" value="283" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="225" />
-          <entry key="JavaScript" value="3794" />
-          <entry key="TypeScript" value="7987" />
+          <entry key="JavaScript" value="3854" />
+          <entry key="TypeScript" value="7997" />
           <entry key="YAML" value="283" />
         </counts>
       </usages-collector>
@@ -202,18 +185,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/project-management-api/list-projects.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
-              <folding>
-                <element signature="e#0#36#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/NewProject.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -226,11 +197,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
+            <state relative-caret-position="334">
+              <caret line="42" column="54" lean-forward="true" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -251,22 +222,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-api/serverless.yml">
+        <entry file="file://$PROJECT_DIR$/project-management-api/get.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="34" column="15" selection-start-line="34" selection-start-column="15" selection-end-line="34" selection-end-column="15" />
+            <state relative-caret-position="119">
+              <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
+              <folding>
+                <element signature="e#0#36#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-api/get.ts">
+        <entry file="file://$PROJECT_DIR$/project-management-api/serverless.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-              <folding>
-                <element signature="e#0#36#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="578">
+              <caret line="34" column="15" selection-start-line="34" selection-start-column="15" selection-end-line="34" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -349,13 +320,13 @@
         <option value="$PROJECT_DIR$/project-management-client/src/containers/Login.js" />
         <option value="$PROJECT_DIR$/project-management-api/create.ts" />
         <option value="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" />
-        <option value="$PROJECT_DIR$/project-management-api/get.ts" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/Project.js" />
         <option value="$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js" />
         <option value="$PROJECT_DIR$/project-management-api/serverless.yml" />
         <option value="$PROJECT_DIR$/project-management-client/src/App.js" />
         <option value="$PROJECT_DIR$/project-management-client/src/containers/Home.js" />
         <option value="$PROJECT_DIR$/project-management-api/list-projects.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/get.ts" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/Project.js" />
       </list>
     </option>
   </component>
@@ -606,12 +577,12 @@
       <workItem from="1542979178538" duration="403000" />
       <workItem from="1542979608702" duration="5590000" />
       <workItem from="1542994068021" duration="13662000" />
-      <workItem from="1543056192595" duration="3258000" />
+      <workItem from="1543056192595" duration="3668000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="219829000" />
+    <option name="totallyTimeSpent" value="220239000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -966,26 +937,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/get.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="4" column="41" selection-start-line="4" selection-start-column="41" selection-end-line="4" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Login.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -1006,6 +957,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/list-projects.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Home.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -1013,12 +974,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/list-projects.ts">
+    <entry file="file://$PROJECT_DIR$/project-management-api/get.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="119">
+          <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
           <folding>
             <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="42" column="54" lean-forward="true" selection-start-line="42" selection-start-column="54" selection-end-line="42" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
