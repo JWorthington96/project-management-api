@@ -42,9 +42,14 @@ export default class Login extends Component {
                     Password: this.state.password
                 }
             });
+            const attributes = await API.get("projects", "/users", {queryStringParameters: {
+                    AccessToken: response.Auth.AccessToken
+                }
+            });
             const user = {
                 username: this.state.username,
                 password: this.state.password,
+                attributes: attributes.UserAttributes,
                 auth: response.body.Auth,
                 identityId: response.body.IdentityId
             };

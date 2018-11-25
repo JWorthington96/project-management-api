@@ -15,7 +15,7 @@ export default class Account extends Component {
             email: this.props.user.attributes.email,
             oldPassword: "",
             newPassword: "",
-            skills: ["example1", "example2"]
+            skills: this.props.user.attributes.skills
         };
     }
 
@@ -27,7 +27,7 @@ export default class Account extends Component {
         this.setState({[event.target.id]: event.target.value});
     };
 
-    handleSubmit = async event => {
+    handleSubmitPassword = async event => {
         event.preventDefault();
         this.setState({isLoading: true});
 
@@ -51,10 +51,15 @@ export default class Account extends Component {
     }
 
     render() {
-        const tooltip = (
-            <Tooltip id="tooltip">
+        const usernameTooltip = (
+            <Tooltip id="usernameTooltip">
+                Cannot change username.
+            </Tooltip>
+        );
+        const passwordTooltip = (
+            <Tooltip id="passwordTooltip">
                 Password must be at least <strong>12 characters</strong>, contain at least
-                 <strong>one capital and symbol</strong>.
+                <strong>one capital and symbol</strong>.
             </Tooltip>
         );
 
@@ -63,14 +68,34 @@ export default class Account extends Component {
                 <ListGroup>
                     <ListGroupItem>
                         <h3>Username: {this.state.username}</h3>
-                    </ListGroupItem>
-                    <ListGroupItem>
-                        <h3>Email: {this.state.email}</h3>
+                        <HelpBlock>Cannot change username</HelpBlock>
+                        <Form onSubmit={this.handleSubmit}>
+                            <FormGroup>
+                                <ControlLabel>Username:</ControlLabel>
+                                <OverlayTrigger placement="bottom"
+                                                overlay={usernameTooltip}>
+                                    <FormControl value={this.state.username}
+                                                 disabled={true} />
+                                </OverlayTrigger>
+                            </FormGroup>
+                            <FormGroup controlId="email">
+                                <ControlLabel>Email:</ControlLabel>
+                                <FormControl value={this.state.email}
+                                             onChange={this.handleChange} />
+                            </FormGroup>
+                            <FormGroup controlId="skills">
+                                <ControlLabel>Skills:</ControlLabel>
+                                <FormControl value={this.state.skills}
+                                             onChange={this.handleChange} />
+                                // TODO: make changing (and adding) skills UI similar to 
+                            <h3>Email: {this.state.email}</h3>
+                            <h3>Skills: {this.state.skills}</h3>
+                        </Form>
                     </ListGroupItem>
                     <ListGroupItem>
                         <Checkbox onChange={this.handleCheckbox}>Change password</Checkbox>
                         {this.state.changePassword ?
-                            <Form inline onSubmit={this.handleSubmit}>
+                            <Form inline onSubmit={this.handleSubmitPassword}>
                                 <FormGroup controlId="oldPassword"
                                            validationState={this.getValidationState()} >
                                     <ControlLabel>Old password:</ControlLabel>
@@ -98,9 +123,6 @@ export default class Account extends Component {
                                                loadingText="Changing..." />
                             </Form>
                             : null }
-                    </ListGroupItem>
-                    <ListGroupItem>
-                        <h3>Skills: {this.state.skills}</h3>
                     </ListGroupItem>
                 </ListGroup>
             </div>
