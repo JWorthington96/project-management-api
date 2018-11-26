@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap";
+import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap"
+import {API} from "aws-amplify";
 
 // Component to allow the admin to add developers when creating the project
 export default class DynamicDeveloperForm extends Component {
@@ -9,6 +10,7 @@ export default class DynamicDeveloperForm extends Component {
             currentId: 0,
             currentDevelopers: []
         };
+
         this.addDeveloper = this.addDeveloper.bind(this);
         this.changeDeveloper = this.changeDeveloper.bind(this);
         this.deleteDeveloper = this.deleteDeveloper.bind(this);
