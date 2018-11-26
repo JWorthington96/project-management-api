@@ -149,6 +149,14 @@ functions:
           path: projects/{id}/users
           cors: true
           authorizer: ${self:custom.authorizer.main}
+  list-users:
+    handler: list-users.main
+    events:
+      - http:
+          method: get
+          path: users/list
+          cors: true
+          authorizer: ${self:custom.authorizer.main}
   user-signup:
     handler: user-signup.main
     events:
