@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { call } from "./lib/iam";
 import { success, failure } from "./lib/response";
 import { createPolicy } from "./lib/create-policy";
-import defaultAssume from "./lib/default-assume";
+import defaultAssume from "./lib/default-trust-policy";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const input = JSON.parse(event.body);

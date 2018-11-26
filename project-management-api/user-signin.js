@@ -6,6 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+const crypto = require('crypto');
 import * as cognito from "./lib/cognito";
 import * as cognitoIdentity from "./lib/cognito-identity";
 import { success, failure } from "./lib/response";
@@ -22,23 +23,6 @@ export function main(event, context, callback) {
         };
         try {
             const response = yield cognito.call('initiateAuth', authParams);
-            /*
-            // TODO: add password reset with this basic structure
-            const challengeParams = {
-                ChallengeName: response.ChallengeName,
-                ChallengeParameters: response.ChallengeParameters,
-                ClientId: "27cus2iiajkktqa6tk984jqgqa"
-            };
-            if (challengeParams.ChallengeName === undefined){
-                const authResponse = await cognito.call('respondToAuthChallenge', challengeParams);
-            }
-            */
-            /*
-            const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[0], 'base64').toString('utf8'));
-            const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
-            console.log(tokenHeader);
-            console.log(tokenBody);
-            */
             const identityParams = {
                 IdentityPoolId: "eu-west-2:16e65f15-a1f6-4c57-b896-108cdd4593b6",
                 Logins: {

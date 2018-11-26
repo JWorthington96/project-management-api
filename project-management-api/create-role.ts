@@ -1,7 +1,7 @@
 import {call} from "./lib/iam";
 import {success, failure} from "./lib/response";
 import {createPolicy} from "./lib/create-policy";
-import defaultAssume from "./lib/default-assume";
+import defaultAssume from "./lib/default-trust-policy";
 
 export async function main(event, context, callback) {
     const input = JSON.parse(event.body);
