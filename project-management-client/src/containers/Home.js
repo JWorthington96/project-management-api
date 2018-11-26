@@ -18,13 +18,19 @@ export default class Home extends Component {
         console.log(this.props.user);
 
         try {
-            const projects = await API.get("projects", "/projects", {queryStringParameters: {
-                    identityId: this.props.user.identityId
+            const projects = await API.get("projects", "/projects",
+                {
+                    headers: {
+                        Authorization: this.props.user.auth.AccessToken
+                    },
+                    queryStringParameters: {
+                        identityId: this.props.user.identityId
+                    }
                 }
-            });
+            );
             this.setState({projects});
         } catch (error) {
-            console.log(error);
+            console.error(error.response);
         }
 
         this.setState({isLoading: false});
@@ -44,8 +50,8 @@ export default class Home extends Component {
         return projects.map( (project) =>
                 <LinkContainer key={project.projectId} to={`/projects/${project.projectId}`}>
                     <ListGroupItem header={project.title}>
-                        {"Created: " + new Date(project.createdAt).toLocaleString()}
-                        <p>Project manager: {project.projectManager}</p>
+                        {"Created: " + new Date(project.createdAt).toLocaleString()} <br/>
+                        Project manager: {project.projectManager}
                     </ListGroupItem>
                 </LinkContainer>
         );

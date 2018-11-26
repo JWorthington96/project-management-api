@@ -40,7 +40,11 @@ export default class ProjectSettings extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         try {
-            await API.put("projects", `projects/${this.props.projectId}`, {});
+            await API.put("projects", `projects/${this.props.projectId}`, {
+                headers: {
+                    Authorization: this.props.user.auth.AccessToken
+                }
+            });
         } catch (error) {
             console.error(error);
             this.setState({isLoading: false});
@@ -52,7 +56,11 @@ export default class ProjectSettings extends Component {
         event.preventDefault();
         this.setState({isDeleteLoading: true});
         try {
-            await API.del("projects", `/projects/${this.props.match.params.id}`, {});
+            await API.del("projects", `/projects/${this.props.match.params.id}`, {
+                headers: {
+                    Authorization: this.props.user.auth.AccessToken
+                }
+            });
         } catch (error) {
             console.error(error);
         }

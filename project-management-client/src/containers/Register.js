@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {FormGroup, FormControl, ControlLabel, HelpBlock} from "react-bootstrap";
+import {ControlLabel, FormGroup, FormControl, HelpBlock, OverlayTrigger, Tooltip} from "react-bootstrap";
 import LoadingButton from "../components/LoadingButton";
 import "./Register.css";
 import {API} from "aws-amplify";
@@ -60,6 +60,11 @@ export default class Register extends Component {
     };
 
     render() {
+        const tooltip =
+            <Tooltip>
+                Password must be at least 8 characters long.
+            </Tooltip>;
+
         return(
             <div>
                 <form onSubmit={this.handleSubmit}>
@@ -83,19 +88,20 @@ export default class Register extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
 
-                    <FormGroup
-                        controlId="password"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>Password must be at least 12 characters long</HelpBlock>
-                    </FormGroup>
+                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                        <FormGroup
+                            controlId="password"
+                            validationState={this.getValidationState()}
+                        >
+                            <ControlLabel>Password</ControlLabel>
+                            <FormControl
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                            />
+                            <FormControl.Feedback />
+                        </FormGroup>
+                    </OverlayTrigger>
 
                     <FormGroup
                         controlId="confirmPass"

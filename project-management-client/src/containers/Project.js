@@ -39,7 +39,11 @@ export default class Project extends Component {
     }
 
     getProject() {
-        return API.get("projects", `/projects/${this.props.match.params.id}`, {queryStringParameters: {
+        return API.get("projects", `/projects/${this.props.match.params.id}`, {
+            headers: {
+                Authorization: this.props.user.auth.AccessToken
+            },
+            queryStringParameters: {
                 identityId: this.props.user.identityId
             }
         });

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, ControlLabel, FormGroup, FormControl, HelpBlock} from "react-bootstrap";
+import {Alert, Button, ControlLabel, FormGroup, FormControl, OverlayTrigger, Tooltip} from "react-bootstrap";
 import "./Login.css";
 import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -37,16 +37,23 @@ export default class Login extends Component {
         this.setState({isLoading: true});
 
         try {
-            const response = await API.post("projects", "/login", {body: {
+            const response = (await API.post("projects", "/login", {body: {
                     Username: this.state.username,
                     Password: this.state.password
                 }
-            });
+            })).body;
+
+            const attributes = (await API.get("projects", "/users", {headers: {
+                    Authorization: response.Auth.AccessToken
+                }
+            })).body;
+
             const user = {
                 username: this.state.username,
                 password: this.state.password,
-                auth: response.body.Auth,
-                identityId: response.body.IdentityId
+                attributes: attributes.UserAttributes,
+                auth: response.Auth,
+                identityId: response.IdentityId
             };
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
@@ -64,7 +71,9 @@ export default class Login extends Component {
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {
-                console.log(error);
+                console.error(error);
+                console.error(error.response);
+                this.setState({isLoading: false});
             }
         }
     };
@@ -85,6 +94,11 @@ export default class Login extends Component {
     };
 
     render() {
+        const tooltip =
+            <Tooltip>
+                Password is at least 8 characters long.
+            </Tooltip>;
+
         return (
             <div className="Login">
                 <form onSubmit={this.handleSubmit}>
@@ -102,19 +116,20 @@ export default class Login extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
 
-                    <FormGroup
-                        controlId="password"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>Password is at least 12 characters long</HelpBlock>
-                    </FormGroup>
+                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                        <FormGroup
+                            controlId="password"
+                            validationState={this.getValidationState()}
+                        >
+                            <ControlLabel>Password</ControlLabel>
+                            <FormControl
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                            />
+                            <FormControl.Feedback />
+                        </FormGroup>
+                    </OverlayTrigger>
 
                     <LoadingButton
                         type="submit"

@@ -170,16 +170,6 @@ functions:
           method: post
           path: login
           cors: true
-<<<<<<< Updated upstream
-  user-session:
-    handler: user-session.main
-    events:
-      - http:
-          method: post
-          path: login/redirect
-          cors: true
-          authorizer: aws_iam
-=======
   user-signout:
     handler: user-signout.main
     events:
@@ -208,4 +198,3 @@ functions:
           path: users/{id}
           cors: true
           authorizer: ${self:custom.authorizer.main}
->>>>>>> Stashed changes

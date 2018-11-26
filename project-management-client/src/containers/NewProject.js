@@ -70,7 +70,12 @@ export default class NewProject extends Component {
     };
 
     createProject(project) {
-        return API.post("projects", "/projects/new", {body: project});
+        return API.post("projects", "/projects/new", {
+            headers: {
+                Authorization: this.props.user.auth.AccessToken
+            },
+            body: project
+        });
     }
 
     createDefaultRoles(projectId) {
