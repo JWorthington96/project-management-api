@@ -12,12 +12,6 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-  authorizer:
-    users:
-      name: authorize-user
-      type: TOKEN
-      identitySource: method.request.header.Authorization
-      identityValidationExpression: Bearer (.*)
 
 provider:
   name: aws
@@ -32,10 +26,6 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-        - dynamodb:DescribeStream
-        - dynamodb:GetRecords
-        - dynamodb:GetShardIterator
-        - dynamodb:ListStreams
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
     - Effect: Allow
       Action:
@@ -47,16 +37,14 @@ provider:
 
 # API endpoints for the functions
 functions:
-  authorize-user:
-    handler: authorizer.main
   create:
     handler: create.main
     events:
       - http:
           method: post
-          path: projects
+          path: projects/new
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   get:
     handler: get.main
     events:
@@ -64,7 +52,7 @@ functions:
           method: get
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   list:
     handler: list-projects.main
     events:
@@ -72,7 +60,7 @@ functions:
           method: get
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   delete:
     handler: delete.main
     events:
@@ -80,7 +68,7 @@ functions:
           method: delete
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   modify:
     handler: modify.main
     events:
@@ -88,7 +76,7 @@ functions:
           method: put
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   create-role:
     handler: create-role.main
     events:
@@ -96,7 +84,7 @@ functions:
           method: post
           path: projects/{id}/roles
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   delete-role:
     handler: delete-role.main
     events:
@@ -104,7 +92,7 @@ functions:
           method: delete
           path: projects/{id}/roles
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   modify-role:
     handler: modify-role.main
     events:
@@ -112,7 +100,7 @@ functions:
           method: put
           path: projects/{id}/roles
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   create-group:
     handler: create-group.main
     events:
@@ -120,7 +108,7 @@ functions:
           method: post
           path: projects/{id}/groups
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   delete-group:
     handler: delete-group.main
     events:
@@ -128,7 +116,7 @@ functions:
           method: delete
           path: projects/{id}/groups
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   modify-group:
     handler: modify-group.main
     events:
@@ -136,7 +124,7 @@ functions:
           method: put
           path: projects/{id}/groups
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   add-user:
     handler: add-user.main
     events:
@@ -144,7 +132,7 @@ functions:
           method: post
           path: projects/{id}/users
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   remove-user:
     handler: remove-user.main
     events:
@@ -152,7 +140,7 @@ functions:
           method: delete
           path: projects/{id}/users
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: aws_iam
   user-signup:
     handler: user-signup.main
     events:
@@ -167,49 +155,38 @@ functions:
           method: post
           path: register/confirm
           cors: true
+          authorizer: aws_iam
   user-signin:
     handler: user-signin.main
     events:
-      - http:
-          method: post
-          path: login
-          cors: true
-<<<<<<< Updated upstream
-  user-session:
-    handler: user-session.main
-    events:
-      - http:
-          method: post
-          path: login/redirect
-          cors: true
-          authorizer: aws_iam
-=======
+    - http:
+        method: post
+        path: login
+        cors: true
   user-signout:
     handler: user-signout.main
     events:
-      - http:
-          method: post
-          path: logout
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  user-get:
-    handler: user-get.main
+    - http:
+        method: post
+        path: signout
+        cors: true
+        authorizer: aws_iam
+  user-attributes:
+    handler: user-attributes.main
     events:
       - http:
           method: get
           path: users
           request:
             parameters:
-              querystrings:
+              queryStrings:
                 AccessToken: true
           cors: true
-          authorizer: ${self:custom.authorizer.main}
-  user-modify-attributes:
+  user-modify:
     handler: user-modify-attributes.main
     events:
       - http:
-          method: put
-          path: users/{id}
+          method: post
+          path: users
           cors: true
-          authorizer: ${self:custom.authorizer.main}
->>>>>>> Stashed changes
+          authorizer: aws_iam
