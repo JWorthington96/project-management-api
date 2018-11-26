@@ -12,7 +12,7 @@ export async function main(event, context, callback) {
             title: input.title,
             description: input.description,
             projectManager: input.projectManager,
-            roles: input.roles,
+            projectRoles: input.projectRoles,
             users: input.users,
             createdAt: Date.now()
         }

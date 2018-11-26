@@ -13,7 +13,7 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
   authorizer:
-    users:
+    main:
       name: authorize-user
       type: TOKEN
       identitySource: method.request.header.Authorization

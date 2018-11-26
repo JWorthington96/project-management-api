@@ -1,5 +1,6 @@
 import {failure} from "./lib/response";
 
+// Resource needs a leading slash, effect is either "Allow" or "Deny"
 const createPolicy = (principalId, effect, resource) => {
     const response = {};
     response[principalId] = principalId;
@@ -10,11 +11,29 @@ const createPolicy = (principalId, effect, resource) => {
         const statement = {};
         statement["Action"] = 'execute-api:Invoke';
         statement["Effect"] = effect;
-        statement["Resource"] = resource;
+        statement["Resource"] = "arn:aws:execute-api:eu-west-2:401633837556:tjj2y50rl6" + resource;
         policyDocument["Statement"][0] = statement;
         response["policyDocument"] = policyDocument;
     }
     return response;
+};
+
+const addToPolicy = (policy, effect, resource) => {
+    const newPolicy = policy;
+    if (effect && resource) {
+        const statement = {};
+        statement["Action"] = 'execute-api:Invoke';
+        statement["Effect"] = effect;
+        statement["Resource"] = "arn:aws:execute-api:eu-west-2:401633837556:tjj2y50rl6" + resource;
+        newPolicy["policyDocument"]["Statement"].push(statement);
+    }
+    console.log(newPolicy);
+    return newPolicy;
+};
+
+// Denies all resources
+const denyPolicy = (principalId) => {
+    createPolicy(principalId, "Deny", "*");
 };
 
 export function main(event, context, callback) {
@@ -29,6 +48,7 @@ export function main(event, context, callback) {
 
     switch (tokenBody.iss) {
         case "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6":
+            const projectIds = tokenBody['cognito:projects'].split(',');
             callback(null, createPolicy(tokenBody['cognito:username'], "Allow", "*"));
             break;
         default:

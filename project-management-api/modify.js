@@ -14,22 +14,22 @@ export function main(event, context, callback) {
         const params = {
             TableName: "projects",
             Key: {
-                adminId: event.requestContext.identity.cognitoIdentityId,
+                adminId: event.queryStringParameters.IdentityId,
                 projectId: event.pathParameters.id,
             },
-            UpdateExpression: "SET title = :title, description = :description, roles = :roles, admin = :admin," +
-                "users = :users",
+            UpdateExpression: "SET title = :title, description = :description, projectRoles = :projectRoles," +
+                "projectManager = :projectManager, users = :users",
             ExpressionAttributeValues: {
                 ":title": data.title ? data.title : null,
                 ":description": data.description ? data.description : null,
-                ":admin": data.admin ? data.admin : null,
-                ":roles": data.roles ? data.roles : null,
+                ":projectManager": data.projectManager ? data.projectManager : null,
+                ":projectRoles": data.projectRoles ? data.projectRoles : null,
                 ":users": data.users ? data.users : null
             },
             ReturnValues: "ALL_NEW"
         };
         try {
-            call('update', params);
+            yield call('update', params);
             callback(null, success({ status: true }));
         }
         catch (error) {
