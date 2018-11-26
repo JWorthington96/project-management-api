@@ -17,7 +17,7 @@ const createPolicy = (principalId, effect, resource) => {
     return response;
 };
 
-export function user(event, context, callback) {
+export function main(event, context, callback) {
     if (typeof event.authorizationToken === 'undefined') {
         callback(null, failure({status: false, body: "Unauthorized"}));
     }
