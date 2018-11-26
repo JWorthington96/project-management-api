@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Checkbox, Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import {Checkbox, ControlLabel, Form, FormGroup, FormControl, ListGroup, ListGroupItem} from "react-bootstrap";
 import {API} from "aws-amplify";
 import "./NewProject.css";
 import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
@@ -17,7 +17,7 @@ export default class NewProject extends Component {
             description: "",
             projectManager: this.props.user.username,
             developers: [],
-            roles: ["Admin", "Project Manager", "Developer"]
+            projectRoles: ["Admin", "Project Manager", "Developer"]
         };
         this.setDevelopers = this.setDevelopers.bind(this);
         this.confirmDevelopers = this.confirmDevelopers.bind(this);
@@ -48,8 +48,12 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
 
-        let users = this.state.developers.push(this.props.user.username);
-        if (!this.state.userIsManager) users.push(this.state.projectManager);
+        let users = [];
+        for (let i = 0; i < this.state.developers.length; i++){
+            users.push(this.state.developers[i]);
+        }
+        users.push({username: this.props.user.username});
+        if (!this.state.userIsManager) users.push({username: this.state.projectManager});
 
         try {
             const project = await this.createProject({
@@ -57,20 +61,20 @@ export default class NewProject extends Component {
                 title: this.state.title,
                 projectManager: this.state.projectManager,
                 description: this.state.description,
-                roles: this.state.roles,
+                projectRoles: this.state.projectRoles,
                 users: users
             });
             console.log(project);
             //await this.createDefaultRoles(project.projectId);
             this.props.history.push("/");
         } catch (error) {
-            console.error(error);
+            console.error(error.response);
             this.setState({isLoading: false});
         }
     };
 
     createProject(project) {
-        return API.post("projects", "/projects/new", {
+        return API.post("projects", "/projects", {
             headers: {
                 Authorization: this.props.user.auth.AccessToken
             },
@@ -128,48 +132,55 @@ export default class NewProject extends Component {
     render() {
         return (
             <div className="NewProject">
-                <Form inline onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="title">
-                        <ControlLabel>Title of project</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange} value={this.state.title} />
-                    </FormGroup>
+                <ListGroup>
+                    <ListGroupItem>
+                        <Form inline onSubmit={this.handleSubmit}>
+                            <FormGroup controlId="title">
+                                <ControlLabel>Title of project</ControlLabel>{': '}
+                                <FormControl onChange={this.handleChange} value={this.state.title} />
+                            </FormGroup>
 
-                    <FormGroup controlId="description">
-                        <ControlLabel>Brief description</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange}
-                                     value={this.state.description}
-                                     componentClass="textarea" />
-                    </FormGroup>
+                            <FormGroup controlId="description">
+                                <ControlLabel>Brief description</ControlLabel>{': '}
+                                <FormControl onChange={this.handleChange}
+                                             value={this.state.description}
+                                             componentClass="textarea" />
+                            </FormGroup>
 
-                    <FormGroup controlId="projectManager">
-                        <ControlLabel>Project Manager</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange}
-                                     value={this.state.projectManager}
-                                     disabled={this.state.userIsManager}
-                        />
-                    </FormGroup>
+                            <FormGroup controlId="projectManager">
+                                <ControlLabel>Project Manager</ControlLabel>{': '}
+                                <FormControl onChange={this.handleChange}
+                                             value={this.state.projectManager}
+                                             disabled={this.state.userIsManager}
+                                />
+                            </FormGroup>
 
-                    <FormGroup>
-                        <Checkbox defaultChecked={this.state.userIsManager}
-                                  onChange={this.handleToggle}>
-                            I'm the project manager
-                        </Checkbox>
-                    </FormGroup>
+                            <FormGroup>
+                                <Checkbox defaultChecked={this.state.userIsManager}
+                                          onChange={this.handleToggle}>
+                                    I'm the project manager
+                                </Checkbox>
+                            </FormGroup>
 
-                    <DynamicDeveloperForm setDevelopers={this.setDevelopers}
-                                          confirmDevelopers={this.confirmDevelopers}
-                                          name={this.state.title}
-                                          description={this.state.description}
-                                          projectManager={this.state.projectManager} />
+                            <FormGroup>
+                                <LoadingButton type="submit"
+                                               isLoading={this.state.isLoading}
+                                               text="Create"
+                                               loadingText="Creating..."
+                                               disabled={!this.validateForm()} />
+                            </FormGroup>
+                        </Form>
+                    </ListGroupItem>
 
-                    <FormGroup>
-                        <LoadingButton type="submit"
-                                       isLoading={this.state.isLoading}
-                                       text="Create"
-                                       loadingText="Creating..."
-                                       disabled={!this.validateForm()} />
-                    </FormGroup>
-                </Form>
+                    <ListGroupItem>
+                        <h4>*OPTIONAL* Add known developers</h4>
+                        <DynamicDeveloperForm setDevelopers={this.setDevelopers}
+                                              confirmDevelopers={this.confirmDevelopers}
+                                              name={this.state.title}
+                                              description={this.state.description}
+                                              projectManager={this.state.projectManager} />
+                    </ListGroupItem>
+                </ListGroup>
             </div>
         );
     }
