@@ -11,6 +11,7 @@ function buildResponse(statusCode, body) {
         // enabling CORS
         headers: {
             "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "'Authorization,custom_header'",
             "Access-Control-Allow-Credentials": true
         },
         body: JSON.stringify(body)

@@ -9,11 +9,19 @@ export async function main(event, context, callback) {
         Item: {
             adminId: input.identityId,
             projectId: uuid(),
+<<<<<<< Updated upstream
+            title: data.title,
+            description: data.description,
+            admin: data.admin,
+            roles: data.roles,
+            users: data.users,
+=======
             title: input.title,
             description: input.description,
-            projectManager: input.projectManger,
+            projectManager: input.projectManager,
             roles: input.roles,
             users: input.users,
+>>>>>>> Stashed changes
             createdAt: Date.now()
         }
     };

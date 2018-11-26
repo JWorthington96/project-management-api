@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 import * as cognito from "./lib/cognito";
 import * as cognitoIdentity from "./lib/cognito-identity";
 import {success, failure} from "./lib/response";
@@ -15,22 +16,18 @@ export async function main(event, context, callback) {
 
     try {
         const response = await cognito.call('initiateAuth', authParams);
-        /*
-        // TODO: add password reset with this basic structure
-        const challengeParams = {
-            ChallengeName: response.ChallengeName,
-            ChallengeParameters: response.ChallengeParameters,
-            ClientId: "27cus2iiajkktqa6tk984jqgqa"
-        };
-        if (challengeParams.ChallengeName === undefined){
-            const authResponse = await cognito.call('respondToAuthChallenge', challengeParams);
-        }
-        */
 
+<<<<<<< Updated upstream
+        /*
         const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[0], 'base64').toString('utf8'));
         const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
+=======
+        const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[0], 'base64').toString('utf8'));
+        const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[1], 'base64').toString('utf8'));
+>>>>>>> Stashed changes
         console.log(tokenHeader);
         console.log(tokenBody);
+
 
         const identityParams = {
             IdentityPoolId: "eu-west-2:b21c24c2-a661-4a66-9c5a-d8b51f02f3f3",
@@ -38,24 +35,30 @@ export async function main(event, context, callback) {
                 "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
             }
         };
-        // Gets (or generates) identity token for specified user pool login
-        const identity = await cognitoIdentity.call('getId', identityParams);
+<<<<<<< Updated upstream
+        event.requestContext.identity.cognitoIdentityId = await cognitoIdentity.call('getId', identityParams);
 
-        const credentialParams = {
-            IdentityId: identity.IdentityId,
-            Logins: {
-                "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
-            }
-        };
-        // Returns IAM credentials to use AWS services in the app of the specified ID, kept from the user to prevent
-        // security flaws
+        callback(null, success({status: true, body: response.AuthenticationResult}));
+=======
+        const openIdToken = await cognitoIdentity.call('getOpenIdToken', credentialParams);
+        console.log(openIdToken);
+
+        const oidHeader = JSON.parse(Buffer.from(openIdToken.Token.split('.')[0], 'base64').toString('utf8'));
+        const oidBody = JSON.parse(Buffer.from(openIdToken.Token.split('.')[1], 'base64').toString('utf8'));
+        console.log(oidHeader);
+        console.log(oidBody);
+
         const credentials = await cognitoIdentity.call('getCredentialsForIdentity', credentialParams);
+        console.log(credentials);
 
         callback(null, success({status: true, body: {
                 Auth: response.AuthenticationResult,
-                IdentityId: credentials.IdentityId
+                Credentials: credentials.Credentials,
+                IdentityId: identity.IdentityId,
+                OpenId: openIdToken.Token
             }
         }));
+>>>>>>> Stashed changes
     } catch (error) {
         console.log(error);
         callback(null, failure({status: false, body: error.message}));

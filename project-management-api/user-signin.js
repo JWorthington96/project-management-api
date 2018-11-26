@@ -6,6 +6,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+const crypto = require('crypto');
 import * as cognito from "./lib/cognito";
 import * as cognitoIdentity from "./lib/cognito-identity";
 import { success, failure } from "./lib/response";
@@ -22,6 +23,7 @@ export function main(event, context, callback) {
         };
         try {
             const response = yield cognito.call('initiateAuth', authParams);
+<<<<<<< Updated upstream
             /*
             // TODO: add password reset with this basic structure
             const challengeParams = {
@@ -35,6 +37,10 @@ export function main(event, context, callback) {
             */
             const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[0], 'base64').toString('utf8'));
             const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
+=======
+            const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[0], 'base64').toString('utf8'));
+            const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[1], 'base64').toString('utf8'));
+>>>>>>> Stashed changes
             console.log(tokenHeader);
             console.log(tokenBody);
             const identityParams = {
@@ -43,6 +49,10 @@ export function main(event, context, callback) {
                     "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
                 }
             };
+<<<<<<< Updated upstream
+            event.requestContext.identity.cognitoIdentityId = yield cognitoIdentity.call('getId', identityParams);
+            callback(null, success({ status: true, body: response.AuthenticationResult }));
+=======
             // Gets (or generates) identity token for specified user pool login
             const identity = yield cognitoIdentity.call('getId', identityParams);
             const credentialParams = {
@@ -51,14 +61,22 @@ export function main(event, context, callback) {
                     "cognito-idp.eu-west-2.amazonaws.com/eu-west-2_7DRbUQOk6": response.AuthenticationResult.IdToken
                 }
             };
-            // Returns IAM credentials to use AWS services in the app of the specified ID, kept from the user to prevent
-            // security flaws
+            const openIdToken = yield cognitoIdentity.call('getOpenIdToken', credentialParams);
+            console.log(openIdToken);
+            const oidHeader = JSON.parse(Buffer.from(openIdToken.Token.split('.')[0], 'base64').toString('utf8'));
+            const oidBody = JSON.parse(Buffer.from(openIdToken.Token.split('.')[1], 'base64').toString('utf8'));
+            console.log(oidHeader);
+            console.log(oidBody);
             const credentials = yield cognitoIdentity.call('getCredentialsForIdentity', credentialParams);
+            console.log(credentials);
             callback(null, success({ status: true, body: {
                     Auth: response.AuthenticationResult,
-                    IdentityId: credentials.IdentityId
+                    Credentials: credentials.Credentials,
+                    IdentityId: identity.IdentityId,
+                    OpenId: openIdToken.Token
                 }
             }));
+>>>>>>> Stashed changes
         }
         catch (error) {
             console.log(error);

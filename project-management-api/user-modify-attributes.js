@@ -6,36 +6,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import uuid from "uuid/v1";
-import { call } from "./lib/dynamodb";
+import { call } from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const input = JSON.parse(event.body);
         const params = {
-            TableName: "projects",
-            Item: {
-                adminId: input.identityId,
-                projectId: uuid(),
-<<<<<<< Updated upstream
-                title: data.title,
-                description: data.description,
-                admin: data.admin,
-                roles: data.roles,
-                users: data.users,
-=======
-                title: input.title,
-                description: input.description,
-                projectManager: input.projectManager,
-                roles: input.roles,
-                users: input.users,
->>>>>>> Stashed changes
-                createdAt: Date.now()
-            }
+            AccessToken: input.AccessToken,
+            UserAttributes: [
+                {
+                    Name: "email",
+                    Value: input.Email
+                },
+                {
+                    Name: "custom:skills",
+                    Value: input.Skills
+                }
+            ]
         };
         try {
-            yield call("put", params);
-            callback(null, success(params.Item));
+            yield call('updateUserAttributes', params);
+            callback(null, success({ status: true }));
         }
         catch (error) {
             console.log(error);
@@ -43,4 +34,4 @@ export function main(event, context, callback) {
         }
     });
 }
-//# sourceMappingURL=create.js.map
+//# sourceMappingURL=user-modify-attributes.js.map
