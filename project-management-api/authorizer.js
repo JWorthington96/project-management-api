@@ -30,7 +30,7 @@ const addToPolicy = (policy, effect, resource) => {
 };
 // Denies all resources
 const denyPolicy = (principalId) => {
-    createPolicy(principalId, "Deny", "*");
+    return createPolicy(principalId, "Deny", "*");
 };
 export function main(event, context, callback) {
     if (typeof event.authorizationToken === 'undefined') {
