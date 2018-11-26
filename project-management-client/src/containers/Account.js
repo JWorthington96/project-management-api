@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Checkbox, ControlLabel, Form, FormGroup, FormControl, ListGroup, ListGroupItem,
+import {Checkbox, ControlLabel, Form, FormGroup, FormControl, HelpBlock, ListGroup, ListGroupItem,
         OverlayTrigger, Tooltip} from "react-bootstrap";
 import LoadingButton from "../components/LoadingButton";
-import {Auth} from "aws-amplify";
+import {Auth, API} from "aws-amplify";
 
 export default class Account extends Component {
     constructor(props){
@@ -11,6 +11,8 @@ export default class Account extends Component {
         this.state = {
             changePassword: false,
             isLoading: false,
+            attributesLoading: false,
+            passwordLoading: false,
             username: this.props.user.username,
             email: this.props.user.attributes.email,
             oldPassword: "",
@@ -25,6 +27,30 @@ export default class Account extends Component {
 
     handleChange = event => {
         this.setState({[event.target.id]: event.target.value});
+    };
+
+    handleChangeSkills = event => {
+        const skills = event.target.value.split(', ');
+        this.setState({skills: skills});
+    };
+
+    handleSubmit = async event => {
+        event.preventDefault();
+
+        try {
+            await API.post("projects", "/users", {
+                headers: {
+                    Authorization: this.props.user.auth.AccessToken
+                },
+                body: {
+                    AccessToken: this.props.user.auth.AccessToken,
+                    Email: this.state.email,
+                    Skills: this.state.skills
+                }
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     handleSubmitPassword = async event => {
@@ -85,11 +111,15 @@ export default class Account extends Component {
                             </FormGroup>
                             <FormGroup controlId="skills">
                                 <ControlLabel>Skills:</ControlLabel>
-                                <FormControl value={this.state.skills}
-                                             onChange={this.handleChange} />
-                                // TODO: make changing (and adding) skills UI similar to 
-                            <h3>Email: {this.state.email}</h3>
-                            <h3>Skills: {this.state.skills}</h3>
+                                <FormControl value={this.state.skills.join(', ')}
+                                             onChange={this.handleChangeSkills} />
+                                // TODO: make changing (and adding) skills UI similar to the one for adding developers
+                                // to a new project
+                            </FormGroup>
+                            <LoadingButton type="submit"
+                                           isLoading={this.state.attributesLoading}
+                                           text="Submit changes"
+                                           loadingText="Submitting..." />
                         </Form>
                     </ListGroupItem>
                     <ListGroupItem>
@@ -99,7 +129,7 @@ export default class Account extends Component {
                                 <FormGroup controlId="oldPassword"
                                            validationState={this.getValidationState()} >
                                     <ControlLabel>Old password:</ControlLabel>
-                                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                                    <OverlayTrigger placement="bottom" overlay={passwordTooltip}>
                                         <FormControl type="password"
                                                      value={this.state.oldPassword}
                                                      onChange={this.handleChange} />
@@ -109,7 +139,7 @@ export default class Account extends Component {
                                 <FormGroup controlId="newPassword"
                                            validationState={this.getValidationState()} >
                                     <ControlLabel>New password:</ControlLabel>
-                                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                                    <OverlayTrigger placement="bottom" overlay={passwordTooltip}>
                                         <FormControl type="password"
                                                      value={this.state.newPassword}
                                                      onChange={this.handleChange} />
@@ -118,7 +148,7 @@ export default class Account extends Component {
                                 </FormGroup>
                                 <LoadingButton type="submit"
                                                disabled={!this.getValidationBoolean}
-                                               isLoading={this.state.isLoading}
+                                               isLoading={this.state.passwordLoading}
                                                text="Change"
                                                loadingText="Changing..." />
                             </Form>
