@@ -24,7 +24,7 @@ export default class Project extends Component {
                 project
             });
         } catch (error) {
-            console.log(error.message);
+            console.log(error.response);
         }
     }
 
@@ -32,9 +32,6 @@ export default class Project extends Component {
         return API.get("projects", `/projects/${this.props.match.params.id}`, {
             headers: {
                 Authorization: "Bearer " + this.props.user.auth.AccessToken
-            },
-            queryStringParameters: {
-                identityId: this.props.user.identityId
             }
         });
     }
@@ -46,17 +43,20 @@ export default class Project extends Component {
     renderProject(){
         return (
             <div>
-                <Tabs id="project-tab">
-                    <Tab eventKey={1} title="View">
-                        <ProjectView project={this.state.project} />
-                    </Tab>
-                    <Tab eventKey={2} title="Settings">
-                        <ProjectSettings project={this.state.project}
-                                         hist={this.props.history}
-                                         match={this.props.match}
-                                         user={this.props.user} />
-                    </Tab>
-                </Tabs>
+                {this.state.project.projectManager === this.props.user.username ?
+                    <Tabs id="project-tab">
+                        <Tab eventKey={1} title="View">
+                            <ProjectView project={this.state.project} />
+                        </Tab>
+                        <Tab eventKey={2} title="Settings">
+                            <ProjectSettings project={this.state.project}
+                                             hist={this.props.history}
+                                             match={this.props.match}
+                                             user={this.props.user} />
+                        </Tab>
+                    </Tabs> :
+                    <ProjectView project={this.state.project}/>
+                }
             </div>
         );
     }

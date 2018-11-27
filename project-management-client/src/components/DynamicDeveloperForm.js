@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap"
-import {API} from "aws-amplify";
 
 // Component to allow the admin to add developers when creating the project
 export default class DynamicDeveloperForm extends Component {
@@ -19,8 +18,7 @@ export default class DynamicDeveloperForm extends Component {
     addDeveloper(developer) {
         const id = this.state.currentId;
         const devs = this.state.currentDevelopers;
-        console.log(devs.valueOf());
-        devs[id] = {username: developer};
+        devs[id] = developer;
 
         if (this.props.developers === undefined){
             this.props.confirmDevelopers(true);
@@ -32,7 +30,7 @@ export default class DynamicDeveloperForm extends Component {
 
     changeDeveloper(id, developer) {
         const devs = this.state.currentDevelopers;
-        devs[id] = {username: developer};
+        devs[id] = developer;
     }
 
     deleteDeveloper(id) {
@@ -90,8 +88,6 @@ class DeveloperFormList extends Component {
         return this.props.developers.map( (developer, i) =>
             <ListGroupItem key={i}>
                 <FormGroup controlId={i.toString()}>
-                    {console.log(i)}
-                    {console.log(developer.username)}
                     <ControlLabel>Developer {i + 1}</ControlLabel>
                     <FormControl onChange={this.handleChange} value={developer.username} />
                 </FormGroup>

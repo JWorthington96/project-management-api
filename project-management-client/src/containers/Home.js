@@ -24,7 +24,7 @@ export default class Home extends Component {
                         Authorization: "Bearer " + this.props.user.auth.AccessToken
                     },
                     queryStringParameters: {
-                        IdentityId: this.props.user.identityId
+                        username: this.props.user.username
                     }
                 }
             );

@@ -18,8 +18,7 @@ export default class NewProject extends Component {
             title: "",
             description: "",
             projectManager: this.props.user.username,
-            developers: [],
-            projectRoles: ["Project Manager", "Developer"]
+            developers: []
         };
 
         this.setDevelopers = this.setDevelopers.bind(this);
@@ -75,15 +74,14 @@ export default class NewProject extends Component {
         for (let i = 0; i < this.state.developers.length; i++){
             users.push(this.state.developers[i]);
         }
-        if (this.state.userIsManager) users.push({username: this.state.projectManager});
+        users.push(this.state.projectManager);
 
         try {
             const project = await this.createProject({
-                identityId: this.props.user.identityId,
                 title: this.state.title,
                 projectManager: this.state.projectManager,
                 description: this.state.description,
-                projectRoles: this.state.projectRoles,
+                developers: this.state.developers,
                 users: users
             });
             console.log(project);
