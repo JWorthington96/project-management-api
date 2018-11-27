@@ -22,10 +22,10 @@ export function main(event, context, callback) {
         };
         try {
             const response = yield cognito.call('initiateAuth', authParams);
-            const tokenHeader = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[0], 'base64').toString('utf8'));
-            const tokenBody = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[1], 'base64').toString('utf8'));
-            console.log(tokenHeader);
-            console.log(tokenBody);
+            const accessToken = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[1], 'base64').toString('utf8'));
+            console.log(accessToken);
+            const idToken = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
+            console.log(idToken);
             const identityParams = {
                 IdentityPoolId: "eu-west-2:b21c24c2-a661-4a66-9c5a-d8b51f02f3f3",
                 Logins: {
@@ -33,18 +33,6 @@ export function main(event, context, callback) {
                 }
             };
             const identity = yield cognitoIdentity.call('getId', identityParams);
-            /*
-            const openIdToken = await cognitoIdentity.call('getOpenIdToken', credentialParams);
-            console.log(openIdToken);
-    
-            const oidHeader = JSON.parse(Buffer.from(openIdToken.Token.split('.')[0], 'base64').toString('utf8'));
-            const oidBody = JSON.parse(Buffer.from(openIdToken.Token.split('.')[1], 'base64').toString('utf8'));
-            console.log(oidHeader);
-            console.log(oidBody);
-    
-            const credentials = await cognitoIdentity.call('getCredentialsForIdentity', credentialParams);
-            console.log(credentials);
-            */
             callback(null, success({ status: true, body: {
                     Auth: response.AuthenticationResult,
                     IdentityId: identity.IdentityId

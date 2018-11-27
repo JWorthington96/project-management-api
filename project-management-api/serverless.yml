@@ -18,6 +18,11 @@ custom:
       type: TOKEN
       identitySource: method.request.header.Authorization
       identityValidationExpression: Bearer (.*)
+    basic:
+      name: authorize-basic
+      type: TOKEN
+      identitySource: method.request.header.Authorization
+      identityValidationExpression: Bearer (.*)
 
 provider:
   name: aws
@@ -44,7 +49,9 @@ provider:
 # API endpoints for the functions
 functions:
   authorize-user:
-    handler: authorizer.main
+    handler: authorizer-projects.main
+  authorize-basic:
+    handler: authorizer-basic.main
   create:
     handler: create.main
     events:
@@ -52,7 +59,7 @@ functions:
           method: post
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.basic}
   get:
     handler: get.main
     events:
@@ -60,7 +67,7 @@ functions:
           method: get
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.basic}
   list:
     handler: list-projects.main
     events:
@@ -68,7 +75,7 @@ functions:
           method: get
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.basic}
   delete:
     handler: delete.main
     events:
@@ -189,7 +196,7 @@ functions:
               querystrings:
                 AccessToken: true
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.basic}
   user-modify-attributes:
     handler: user-modify-attributes.main
     events:
