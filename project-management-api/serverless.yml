@@ -163,7 +163,7 @@ functions:
           method: get
           path: users/list
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   user-signup:
     handler: user-signup.main
     events:

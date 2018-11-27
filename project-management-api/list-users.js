@@ -7,21 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { call } from "./lib/cognito";
-import { failure } from "./lib/response";
+import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
-            UserPoolId: "eu-west-2_7DRbUQOk6",
-            AttributesToGet: [
-                "username",
-                "email",
-                "custom:skills",
-                "custom:projects"
-            ]
+            UserPoolId: "eu-west-2_7DRbUQOk6"
         };
         try {
             const users = yield call('listUsers', params);
-            callback(users.Users);
+            callback(null, success(users));
         }
         catch (error) {
             console.log(error);
