@@ -21,6 +21,7 @@ export function main(event, context, callback) {
                 description: input.description,
                 projectManager: input.projectManager,
                 users: input.users,
+                usernames: input.usernames,
                 createdAt: Date.now()
             }
         };
