@@ -9,12 +9,13 @@ export async function main(event, context, callback) {
             projectId: event.pathParameters.id
         },
         UpdateExpression: "SET status = :status, title = :title, description = :description," +
-            "projectManager = :projectManager, users = :users",
+            "projectManager = :projectManager, developers = :developers, users = :users",
         ExpressionAttributeValues: {
             ":status": input.status ? input.status : null,
             ":title": input.title ? input.title : null,
             ":description": input.description ? input.description : null,
             ":projectManager": input.projectManager ? input.projectManager : null,
+            ":developers": input.developers ? input.developers : null,
             ":users": input.users ? input.users : null
         },
         ReturnValues: "ALL_NEW"

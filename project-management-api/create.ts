@@ -12,8 +12,8 @@ export async function main(event, context, callback) {
             title: input.title,
             description: input.description,
             projectManager: input.projectManager,
+            developers: input.developers,
             users: input.users,
-            usernames: input.usernames,
             createdAt: Date.now()
         }
     };
