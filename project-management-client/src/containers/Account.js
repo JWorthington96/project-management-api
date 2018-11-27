@@ -11,14 +11,22 @@ export default class Account extends Component {
         this.state = {
             changePassword: false,
             isLoading: false,
-            attributesLoading: false,
+            emailLoading: false,
+            skillsLoading: false,
             passwordLoading: false,
             username: this.props.user.username,
-            email: this.props.user.attributes.email,
+            email: "",
             oldPassword: "",
             newPassword: "",
-            skills: this.props.user.attributes.skills
+            skills: ""
         };
+    }
+
+    async componentDidMount() {
+        this.props.user.attributes.map( (attribute) => {
+            if (attribute.Name === "email") this.setState({email: attribute.Value});
+            if (attribute.Name === "custom:skills") this.setState({skills: attribute.Value});
+        });
     }
 
     handleCheckbox = event => {
@@ -29,28 +37,54 @@ export default class Account extends Component {
         this.setState({[event.target.id]: event.target.value});
     };
 
-    handleChangeSkills = event => {
-        const skills = event.target.value.split(', ');
-        this.setState({skills: skills});
+    handleSubmitEmail = async event => {
+        await this.handleSubmit(event, true);
     };
 
-    handleSubmit = async event => {
+    handleSubmitSkills = async event => {
+        await this.handleSubmit(event, false);
+    };
+
+    handleSubmit = async (event, email) => {
         event.preventDefault();
 
         try {
-            await API.post("projects", "/users", {
+            const input = {
                 headers: {
-                    Authorization: this.props.user.auth.AccessToken
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
                 },
                 body: {
                     AccessToken: this.props.user.auth.AccessToken,
-                    Email: this.state.email,
-                    Skills: this.state.skills
+                    UserAttributes: [
+                        {
+                            Name: "",
+                            Value: ""
+                        }
+                    ]
                 }
-            });
+            };
+            if (email) {
+                this.setState({emailLoading: true});
+                input.body.UserAttributes.Name = "email";
+                input.body.UserAttributes.Value = this.state.email;
+            } else {
+                this.setState({skillsLoading: true});
+                input.body.UserAttributes.Name = "custom:skills";
+                input.body.UserAttributes.Value = this.state.email;
+            }
+            await API.put("projects", "/users", input);
         } catch (error) {
-            console.error(error);
+            this.setState({
+                emailLoading: false,
+                skillsLoading: false
+            });
+            console.error(error.response);
         }
+
+        this.setState({
+            emailLoading: false,
+            skillsLoading: false
+        });
     };
 
     handleSubmitPassword = async event => {
@@ -93,31 +127,41 @@ export default class Account extends Component {
             <div className="Account">
                 <ListGroup>
                     <ListGroupItem>
-                        <h3>Username: {this.state.username}</h3>
-                        <HelpBlock>Cannot change username</HelpBlock>
-                        <Form onSubmit={this.handleSubmit}>
-                            <FormGroup>
-                                <ControlLabel>Username:</ControlLabel>
-                                <OverlayTrigger placement="bottom"
-                                                overlay={usernameTooltip}>
-                                    <FormControl value={this.state.username}
-                                                 disabled={true} />
-                                </OverlayTrigger>
-                            </FormGroup>
+                        <FormGroup>
+                            <ControlLabel>Username:</ControlLabel>
+                            <OverlayTrigger placement="bottom"
+                                            overlay={usernameTooltip}>
+                                <FormControl value={this.state.username}
+                                             disabled={true} />
+                            </OverlayTrigger>
+                        </FormGroup>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        <Form inline onSubmit={this.handleSubmit}>
                             <FormGroup controlId="email">
-                                <ControlLabel>Email:</ControlLabel>
+                                <ControlLabel>Email</ControlLabel>{": "}
                                 <FormControl value={this.state.email}
                                              onChange={this.handleChange} />
                             </FormGroup>
+                            <LoadingButton type="submit"
+                                           isLoading={this.state.emailLoading}
+                                           text="Submit changes"
+                                           loadingText="Submitting..." />
+                        </Form>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        <Form inline onSubmit={this.handleSubmitSkills}>
                             <FormGroup controlId="skills">
-                                <ControlLabel>Skills:</ControlLabel>
-                                <FormControl value={this.state.skills.join(', ')}
-                                             onChange={this.handleChangeSkills} />
-                                // TODO: make changing (and adding) skills UI similar to the one for adding developers
-                                // to a new project
+                                <ControlLabel>Skills</ControlLabel>{": "}
+                                <FormControl value={this.state.skills}
+                                             onChange={this.handleChange} />
+                                {
+                                    // TODO: make changing (and adding) skills UI similar to the one for adding developers
+                                    // to a new project
+                                }
                             </FormGroup>
                             <LoadingButton type="submit"
-                                           isLoading={this.state.attributesLoading}
+                                           isLoading={this.state.skillsLoading}
                                            text="Submit changes"
                                            loadingText="Submitting..." />
                         </Form>
