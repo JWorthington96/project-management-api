@@ -21,10 +21,10 @@ export default class Home extends Component {
             const projects = await API.get("projects", "/projects",
                 {
                     headers: {
-                        Authorization: this.props.user.auth.AccessToken
+                        Authorization: "Bearer " + this.props.user.auth.AccessToken
                     },
                     queryStringParameters: {
-                        identityId: this.props.user.identityId
+                        IdentityId: this.props.user.identityId
                     }
                 }
             );

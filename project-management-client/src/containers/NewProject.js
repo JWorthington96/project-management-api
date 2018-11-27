@@ -19,7 +19,7 @@ export default class NewProject extends Component {
             description: "",
             projectManager: this.props.user.username,
             developers: [],
-            projectRoles: ["Admin", "Project Manager", "Developer"]
+            projectRoles: ["Project Manager", "Developer"]
         };
 
         this.setDevelopers = this.setDevelopers.bind(this);
@@ -75,8 +75,7 @@ export default class NewProject extends Component {
         for (let i = 0; i < this.state.developers.length; i++){
             users.push(this.state.developers[i]);
         }
-        users.push({username: this.props.user.username});
-        if (!this.state.userIsManager) users.push({username: this.state.projectManager});
+        if (this.state.userIsManager) users.push({username: this.state.projectManager});
 
         try {
             const project = await this.createProject({
@@ -99,7 +98,7 @@ export default class NewProject extends Component {
     createProject(project) {
         return API.post("projects", "/projects", {
             headers: {
-                Authorization: this.props.user.auth.AccessToken
+                Authorization: "Bearer " + this.props.user.auth.AccessToken
             },
             body: project
         });

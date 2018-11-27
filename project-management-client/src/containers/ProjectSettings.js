@@ -41,7 +41,7 @@ export default class ProjectSettings extends Component {
         try {
             await API.put("projects", `/projects/${this.props.project.projectId}`, {
                 headers: {
-                    Authorization: this.props.user.auth.AccessToken
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
                 },
                 body: {
                     title: this.state.title,
@@ -64,7 +64,7 @@ export default class ProjectSettings extends Component {
         try {
             await API.del("projects", `/projects/${this.props.match.params.id}`, {
                 headers: {
-                    Authorization: this.props.user.auth.AccessToken
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
                 },
                 queryStringParameters: {
                     IdentityId: this.props.user.identityId

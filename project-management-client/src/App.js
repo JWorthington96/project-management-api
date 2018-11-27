@@ -53,6 +53,7 @@ class App extends Component {
             });
             */
             await Auth.signOut();
+            localStorage.removeItem("ProjectManagerSession");
             this.userHasAuthenticated(false);
             this.setCurrentUser({});
             this.props.history.push("/");
