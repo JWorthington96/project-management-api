@@ -7,16 +7,9 @@ export async function main(event, context, callback){
         // FilterExpression will search for any attributes in users with the given values
         // ExpressionAttributeValues defines the value in the conditions :userValue1 and :userValue2; retrieves any
         // project the given username is in (either as a project manager or developer)
-        FilterExpression: "contains (users, :userValue1) OR (users, :userValue2)",
+        FilterExpression: "usernames contains :username",
         ExpressionAttributeValues: {
-            ":userValue1": {
-                "username": event.queryStringParameters.username,
-                "role": "Project Manager"
-            },
-            ":userValue2": {
-                "username": event.queryStringParameters.username,
-                "role": "Developer"
-            }
+            ":username": event.queryStringParameters.username
         }
     };
 
