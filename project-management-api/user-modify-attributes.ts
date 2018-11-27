@@ -3,16 +3,13 @@ import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback){
     const input = JSON.parse(event.body);
+    console.log(input);
     const params = {
         AccessToken: input.AccessToken,
         UserAttributes: [
             {
-                Name: "email",
-                Value: input.Email
-            },
-            {
-                Name: "custom:skills",
-                Value: input.Skills
+                Name: input.Name,
+                Value: input.Value
             }
         ]
     };

@@ -35,7 +35,8 @@ export function main(event, context, callback) {
             const identity = yield cognitoIdentity.call('getId', identityParams);
             callback(null, success({ status: true, body: {
                     Auth: response.AuthenticationResult,
-                    IdentityId: identity.IdentityId
+                    IdentityId: identity.IdentityId,
+                    sub: accessToken.sub
                 }
             }));
         }

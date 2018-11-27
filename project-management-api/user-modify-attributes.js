@@ -11,16 +11,13 @@ import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const input = JSON.parse(event.body);
+        console.log(input);
         const params = {
             AccessToken: input.AccessToken,
             UserAttributes: [
                 {
-                    Name: "email",
-                    Value: input.Email
-                },
-                {
-                    Name: "custom:skills",
-                    Value: input.Skills
+                    Name: input.Name,
+                    Value: input.Value
                 }
             ]
         };

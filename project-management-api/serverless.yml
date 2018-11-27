@@ -18,8 +18,8 @@ custom:
       type: TOKEN
       identitySource: method.request.header.Authorization
       identityValidationExpression: Bearer (.*)
-    basic:
-      name: authorize-basic
+    default:
+      name: authorize-default
       type: TOKEN
       identitySource: method.request.header.Authorization
       identityValidationExpression: Bearer (.*)
@@ -50,8 +50,8 @@ provider:
 functions:
   authorize-user:
     handler: authorizer-projects.main
-  authorize-basic:
-    handler: authorizer-basic.main
+  authorize-default:
+    handler: authorizer-default.main
   create:
     handler: create.main
     events:
@@ -59,7 +59,7 @@ functions:
           method: post
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.basic}
+          authorizer: ${self:custom.authorizer.default}
   get:
     handler: get.main
     events:
@@ -67,7 +67,7 @@ functions:
           method: get
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.basic}
+          authorizer: ${self:custom.authorizer.default}
   list:
     handler: list-projects.main
     events:
@@ -75,7 +75,7 @@ functions:
           method: get
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.basic}
+          authorizer: ${self:custom.authorizer.default}
   delete:
     handler: delete.main
     events:
@@ -204,12 +204,12 @@ functions:
               querystrings:
                 AccessToken: true
           cors: true
-          authorizer: ${self:custom.authorizer.basic}
+          authorizer: ${self:custom.authorizer.default}
   user-modify-attributes:
     handler: user-modify-attributes.main
     events:
       - http:
           method: put
-          path: users/{id}
+          path: users
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}

@@ -31,7 +31,8 @@ export async function main(event, context, callback) {
 
         callback(null, success({status: true, body: {
                 Auth: response.AuthenticationResult,
-                IdentityId: identity.IdentityId
+                IdentityId: identity.IdentityId,
+                sub: accessToken.sub
             }
         }));
     } catch (error) {
