@@ -2,10 +2,10 @@ import {call} from "./lib/cognito";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    console.log(event.requestContext);
-    console.log(context);
+    console.log(event.headers.Authorization);
+    const token = event.headers.Authorization.split('Bearer')[1].trim();
     const params = {
-        AccessToken: event.headers.Authorization
+        AccessToken: token
     };
 
     try {
@@ -13,10 +13,6 @@ export async function main(event, context, callback) {
         callback(null, success({status: true, body: user}));
     } catch (error) {
         console.log(error);
-        callback(null, failure({status: false, body: {
-                error: error.message,
-                context: event.requestContext
-            }
-        }));
+        callback(null, failure({status: false, body: {error: error.message}}));
     }
 }
