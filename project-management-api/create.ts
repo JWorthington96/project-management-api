@@ -7,12 +7,11 @@ export async function main(event, context, callback) {
     const params = {
         TableName: "projects",
         Item: {
-            adminId: input.identityId,
             projectId: uuid(),
+            status: "pending",
             title: input.title,
             description: input.description,
             projectManager: input.projectManager,
-            projectRoles: input.projectRoles,
             users: input.users,
             createdAt: Date.now()
         }

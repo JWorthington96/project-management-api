@@ -13,7 +13,6 @@ export function main(event, context, callback) {
         const params = {
             TableName: "projects",
             Key: {
-                adminId: event.queryStringParameters.identityId,
                 projectId: event.pathParameters.id
             }
         };

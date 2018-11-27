@@ -2,21 +2,20 @@ import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const data = JSON.parse(event.body);
+    const input = JSON.parse(event.body);
     const params = {
         TableName: "projects",
         Key: {
-            adminId: event.queryStringParameters.IdentityId,
-            projectId: event.pathParameters.id,
+            projectId: event.pathParameters.id
         },
-        UpdateExpression: "SET title = :title, description = :description, projectRoles = :projectRoles," +
+        UpdateExpression: "SET status = :status, title = :title, description = :description," +
             "projectManager = :projectManager, users = :users",
         ExpressionAttributeValues: {
-            ":title": data.title ? data.title : null,
-            ":description": data.description ? data.description : null,
-            ":projectManager": data.projectManager ? data.projectManager : null,
-            ":projectRoles": data.projectRoles ? data.projectRoles : null,
-            ":users": data.users ? data.users : null
+            ":status": input.status ? input.status : null,
+            ":title": input.title ? input.title : null,
+            ":description": input.description ? input.description : null,
+            ":projectManager": input.projectManager ? input.projectManager : null,
+            ":users": input.users ? input.users : null
         },
         ReturnValues: "ALL_NEW"
     };
