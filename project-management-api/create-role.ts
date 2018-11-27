@@ -1,7 +1,7 @@
 import {call} from "./lib/iam";
 import {success, failure} from "./lib/response";
 import {createPolicy} from "./lib/create-policy";
-import defaultAssume from "./lib/default-assume";
+import defaultTrust from "./lib/default-trust-policy";
 
 export async function main(event, context, callback) {
     const input = JSON.parse(event.body);
@@ -20,7 +20,7 @@ export async function main(event, context, callback) {
     };
 
     const roleParams = {
-        AssumeRolePolicyDocument: JSON.stringify(defaultAssume),
+        AssumeRolePolicyDocument: JSON.stringify(defaultTrust),
         RoleName: input.RoleName,
         Description: input.Description
     };

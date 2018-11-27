@@ -20,7 +20,7 @@ export function main(event, context, callback) {
                 },
                 {
                     Name: "custom:skills",
-                    Value: input.skills
+                    Value: input.Skills
                 }
             ]
         };

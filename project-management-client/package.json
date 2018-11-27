@@ -25,6 +25,7 @@
   ],
   "devDependencies": {
     "aws-amplify": "^1.1.10",
+    "aws-api-gateway-client": "^0.2.16",
     "react": "^16.6.3",
     "react-bootstrap": "^0.32.4"
   }

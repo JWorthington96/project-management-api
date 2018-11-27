@@ -6,7 +6,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="deac8038-83bd-4dd3-90c8-211ecb37eaf7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Account.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Account.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project-management-api/user-modify-attributes.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/lib/response.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/lib/response.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/lib/response.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/lib/response.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/lib/response.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/lib/response.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/list-projects.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/list-projects.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/list-projects.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/list-projects.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/serverless.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/test/authorize-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/test/authorize-event.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/test/user-get-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/test/user-get-event.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/test/user-signin-event.json" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/test/user-signin-event.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/user-get.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-get.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/user-get.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-get.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/user-get.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-get.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/user-signin.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-signin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/user-signin.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-signin.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-api/user-signin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-api/user-signin.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/Project.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/Project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project-management-client/src/containers/ProjectSettings.js" beforeDir="false" afterPath="$PROJECT_DIR$/project-management-client/src/containers/ProjectSettings.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -21,60 +44,67 @@
     <session id="-378845291">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="10" />
+          <entry key="project.closed" value="13" />
+          <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.4" value="1" />
-          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.5" value="3" />
           <entry key="project.open.time.6" value="6" />
-          <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="11" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.open.time.9" value="3" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="6" />
+          <entry key="TypeScriptServerServiceImpl" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="950" />
           <entry key="html" value="160" />
-          <entry key="js" value="24686" />
-          <entry key="json" value="720" />
-          <entry key="ts" value="4736" />
-          <entry key="yml" value="635" />
+          <entry key="js" value="28889" />
+          <entry key="json" value="893" />
+          <entry key="ts" value="10504" />
+          <entry key="yml" value="2357" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="950" />
           <entry key="HTML" value="160" />
-          <entry key="JSON" value="720" />
-          <entry key="JavaScript" value="24686" />
-          <entry key="TypeScript" value="4736" />
-          <entry key="YAML" value="635" />
+          <entry key="JSON" value="893" />
+          <entry key="JavaScript" value="28889" />
+          <entry key="TypeScript" value="10504" />
+          <entry key="YAML" value="2357" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="css" value="20" />
+          <entry key="LICENSE" value="1" />
+          <entry key="css" value="21" />
+          <entry key="example" value="1" />
           <entry key="html" value="1" />
-          <entry key="js" value="79" />
-          <entry key="json" value="31" />
+          <entry key="js" value="122" />
+          <entry key="json" value="39" />
           <entry key="map" value="5" />
-          <entry key="ts" value="34" />
-          <entry key="yml" value="7" />
+          <entry key="md" value="1" />
+          <entry key="ts" value="82" />
+          <entry key="yml" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="20" />
+          <entry key="CSS" value="21" />
           <entry key="HTML" value="1" />
-          <entry key="JSON" value="30" />
-          <entry key="JavaScript" value="79" />
+          <entry key="JSON" value="38" />
+          <entry key="JavaScript" value="122" />
+          <entry key="Markdown" value="1" />
+          <entry key="PLAIN_TEXT" value="2" />
           <entry key="SourceMap" value="5" />
-          <entry key="TypeScript" value="34" />
-          <entry key="YAML" value="7" />
+          <entry key="TypeScript" value="82" />
+          <entry key="YAML" value="14" />
           <entry key="tsconfig" value="1" />
         </counts>
       </usages-collector>
@@ -88,7 +118,7 @@
           <entry key="json" value="15" />
           <entry key="png" value="1" />
           <entry key="svg" value="1" />
-          <entry key="ts" value="73" />
+          <entry key="ts" value="72" />
           <entry key="yml" value="3" />
         </counts>
       </usages-collector>
@@ -99,40 +129,40 @@
           <entry key="JSON" value="15" />
           <entry key="JavaScript" value="36" />
           <entry key="SVG" value="1" />
-          <entry key="TypeScript" value="73" />
+          <entry key="TypeScript" value="72" />
           <entry key="YAML" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="5035" />
+          <entry key="js" value="3958" />
           <entry key="json" value="225" />
-          <entry key="ts" value="9197" />
+          <entry key="ts" value="8439" />
           <entry key="yml" value="283" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="225" />
-          <entry key="JavaScript" value="5035" />
-          <entry key="TypeScript" value="9197" />
+          <entry key="JavaScript" value="3958" />
+          <entry key="TypeScript" value="8439" />
           <entry key="YAML" value="283" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="8" />
+          <entry key="project.closed" value="7" />
           <entry key="project.open.time.12" value="1" />
-          <entry key="project.open.time.6" value="4" />
+          <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="3" />
           <entry key="project.open.time.8" value="3" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.opened" value="11" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="TypeScriptServerServiceImpl" value="13" />
+          <entry key="TypeScriptServerServiceImpl" value="12" />
         </counts>
       </usages-collector>
     </session>
@@ -140,33 +170,81 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-api/lib/response.ts">
+        <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="40" selection-start-column="40" selection-end-column="40" />
+            <state relative-caret-position="251">
+              <caret line="33" column="42" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-client/src/index.js">
+        <entry file="file://$PROJECT_DIR$/project-management-api/authorizer-projects.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+            <state relative-caret-position="1146">
+              <caret line="75" column="29" lean-forward="true" selection-start-line="75" selection-start-column="29" selection-end-line="75" selection-end-column="29" />
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="e#42#102#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Account.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project-management-api/authorizer-basic.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="43" column="18" selection-start-line="43" selection-start-column="18" selection-end-line="43" selection-end-column="18" />
+            <state relative-caret-position="170">
+              <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
+              <folding>
+                <element signature="e#95#155#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project-management-api/user-get.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+              <folding>
+                <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project-management-api/list-projects.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="13" column="9" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#36#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/ProjectSettings.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="625">
+              <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project-management-api/user-signin.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="30" column="77" selection-start-line="30" selection-start-column="77" selection-end-line="30" selection-end-column="77" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -175,11 +253,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Login.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-646">
-              <caret line="4" column="56" selection-start-line="4" selection-start-column="56" selection-end-line="4" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#49#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="262">
+              <caret line="48" column="35" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="47" />
             </state>
           </provider>
         </entry>
@@ -187,8 +262,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/NewProject.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="557">
-              <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+            <state relative-caret-position="357">
+              <caret line="54" column="12" selection-start-line="54" selection-start-column="12" selection-end-line="54" selection-end-column="12" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -196,41 +271,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/project-management-api/lib/response.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/ProjectSettings.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="12" column="54" selection-start-line="12" selection-start-column="54" selection-end-line="12" selection-end-column="54" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project-management-api/serverless.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="727">
-              <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+            <state relative-caret-position="272">
+              <caret line="16" column="45" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -269,57 +314,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/project-management-api/test/modify-role-event.json" />
-        <option value="$PROJECT_DIR$/project-management-api/respond-to-challenge.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/initiate-auth.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/sha-256.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/secure-remote-protocol.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/test/user-signin.json" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/RegisterConfirm.ts" />
-        <option value="$PROJECT_DIR$/project-management-client/src/Routes.js" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/RegisterConfirm.js" />
-        <option value="$PROJECT_DIR$/project-management-client/src/components/DynamicDeveloperForm.js" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/Register.js" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/s3.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/test/user-session.json" />
-        <option value="$PROJECT_DIR$/project-management-api/user-session.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/test/user-session-event.json" />
-        <option value="$PROJECT_DIR$/project-management-api/test/user-signin-event.json" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/cognito-credentials.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/cognito.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/cognito-identity.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/dynamodb.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/lib/iam.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/create-group.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/add-user.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/create-role.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/delete-group.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/delete-role.ts" />
         <option value="$PROJECT_DIR$/project-management-api/modify-group.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/modify.ts" />
         <option value="$PROJECT_DIR$/project-management-api/modify-role.ts" />
         <option value="$PROJECT_DIR$/project-management-api/remove-user.ts" />
         <option value="$PROJECT_DIR$/project-management-api/user-confirm.ts" />
         <option value="$PROJECT_DIR$/project-management-api/user-signup.ts" />
         <option value="$PROJECT_DIR$/project-management-api/lib/sts.ts" />
         <option value="$PROJECT_DIR$/project-management-api/test/create-event.json" />
-        <option value="$PROJECT_DIR$/project-management-api/user-signin.ts" />
-        <option value="$PROJECT_DIR$/project-management-client/src/config.js" />
-        <option value="$PROJECT_DIR$/project-management-api/create.ts" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js" />
-        <option value="$PROJECT_DIR$/project-management-api/serverless.yml" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/Home.js" />
-        <option value="$PROJECT_DIR$/project-management-api/list-projects.ts" />
         <option value="$PROJECT_DIR$/project-management-api/get.ts" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/Project.js" />
         <option value="$PROJECT_DIR$/project-management-api/lib/create-policy.ts" />
         <option value="$PROJECT_DIR$/project-management-api/user-signout.ts" />
-        <option value="$PROJECT_DIR$/project-management-client/src/App.js" />
-        <option value="$PROJECT_DIR$/project-management-client/src/containers/Login.js" />
         <option value="$PROJECT_DIR$/project-management-api/user-modify.ts" />
-        <option value="$PROJECT_DIR$/project-management-api/user-attributes.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/user-modify-attributes.ts" />
         <option value="$PROJECT_DIR$/project-management-client/src/containers/Account.js" />
+        <option value="$PROJECT_DIR$/project-management-api/user-attributes.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/serverlesscopy.yml" />
+        <option value="$PROJECT_DIR$/project-management-api/README.md" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/default-trust-policy.ts" />
+        <option value="$PROJECT_DIR$/project-management-client/src/components/Session.js" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/Register.js" />
+        <option value="$PROJECT_DIR$/project-management-client/src/components/DynamicDeveloperForm.js" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js" />
+        <option value="$PROJECT_DIR$/project-management-api/delete.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/modify.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/create.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/create-role.ts" />
+        <option value="$PROJECT_DIR$/project-management-client/src/config.js" />
+        <option value="$PROJECT_DIR$/project-management-client/src/App.js" />
+        <option value="$PROJECT_DIR$/project-management-api/test/user-signin-event.json" />
+        <option value="$PROJECT_DIR$/project-management-api/test/authorize-user-event.json" />
+        <option value="$PROJECT_DIR$/project-management-api/test/user-get-event.json" />
+        <option value="$PROJECT_DIR$/project-management-client/src/index.js" />
+        <option value="$PROJECT_DIR$/project-management-api/user-get.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/basic-authorizer.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/authorizer.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/auth-policy.ts" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/Login.js" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/cognito-identity.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/cognito.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/dynamodb.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/iam.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/serverless.yml" />
+        <option value="$PROJECT_DIR$/project-management-api/test/authorize-event.json" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/Home.js" />
+        <option value="$PROJECT_DIR$/project-management-api/list-projects.ts" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/Project.js" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/ProjectSettings.js" />
+        <option value="$PROJECT_DIR$/project-management-api/user-signin.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/authorizer-projects.ts" />
+        <option value="$PROJECT_DIR$/project-management-api/authorizer-basic.ts" />
+        <option value="$PROJECT_DIR$/project-management-client/src/containers/NewProject.js" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/response.ts" />
       </list>
     </option>
   </component>
@@ -2641,8 +2686,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="170" />
-    <option name="y" value="-15" />
+    <option name="x" value="379" />
+    <option name="y" value="-28" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -2696,6 +2741,59 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
+              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -2730,53 +2828,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project-management-api" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project-management-api" type="462c0819:PsiDirectoryNode" />
-              <item name="project-management-client" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="containers" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2786,18 +2837,11 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
-    <property name="ts.external.directory.path" value="C:\Users\joshw\Work\COMP3207\IndividualProject\project-management-api\project-management-api\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\project-management-api\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\joshw\Work\COMP3207\IndividualProject\project-management-api\project-management-api" />
-      <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\project-management-api\test" />
-      <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\frontend\src" />
-      <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\frontend\src\containers" />
-      <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api" />
-      <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\lib" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\project-management-api" />
       <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\frontend\src" />
       <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\frontend\src\containers" />
       <recent name="C:\Users\Josh\Work\COMP3207\IndividualCoursework\project-management-api\lib" />
@@ -2869,11 +2913,16 @@
       <workItem from="1543082026642" duration="1754000" />
       <workItem from="1543086116356" duration="2050000" />
       <workItem from="1543089938118" duration="2997000" />
+      <workItem from="1543152145625" duration="4799000" />
+      <workItem from="1543157747771" duration="18398000" />
+      <workItem from="1543241984460" duration="9793000" />
+      <workItem from="1543275165114" duration="630000" />
+      <workItem from="1543320142557" duration="17747000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="228149000" />
+    <option name="totallyTimeSpent" value="290307000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2893,7 +2942,7 @@
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49966952" weight="0.32765958" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49966952" weight="0.3275488" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.329718" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4976867" weight="0.39858156" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -2902,8 +2951,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" weight="0.3286334" />
       <window_info anchor="bottom" id="TypeScript" order="9" weight="0.3286334" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50033045" side_tool="true" weight="0.39858156" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.329718" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50033045" side_tool="true" weight="0.39804772" />
       <window_info anchor="bottom" id="Inspection Results" order="12" sideWeight="0.49966952" weight="0.32907802" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -2937,24 +2986,26 @@
     <option name="exactExcludedFiles">
       <list>
         <option value="$PROJECT_DIR$/project-management-api/modify-group.js" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/auth-policy.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/remove-user.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/delete-group.js" />
         <option value="$PROJECT_DIR$/project-management-api/modify.js" />
+        <option value="$PROJECT_DIR$/project-management-api/lib/auth-policy.js" />
         <option value="$PROJECT_DIR$/project-management-api/modify.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/delete-group.js.map" />
+        <option value="$PROJECT_DIR$/project-management-api/authorizer.js" />
         <option value="$PROJECT_DIR$/project-management-api/modify-group.js.map" />
-        <option value="$PROJECT_DIR$/project-management-api/user-signout.js.map" />
-        <option value="$PROJECT_DIR$/project-management-api/user-signout.js" />
         <option value="$PROJECT_DIR$/project-management-client/src/containers/RegisterConfirm.js" />
         <option value="$PROJECT_DIR$/project-management-api/lib/cognito-identity.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/lib/cognito-identity.js" />
         <option value="$PROJECT_DIR$/project-management-api/user-signin.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/user-signin.js" />
-        <option value="$PROJECT_DIR$/project-management-api/user-attributes.js" />
-        <option value="$PROJECT_DIR$/project-management-api/user-attributes.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/remove-user.js" />
         <option value="$PROJECT_DIR$/project-management-api/add-user.js" />
+        <option value="$PROJECT_DIR$/project-management-api/user-signout.js" />
+        <option value="$PROJECT_DIR$/project-management-api/user-signout.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/create-group.js.map" />
+        <option value="$PROJECT_DIR$/project-management-api/user-modify-attributes.js.map" />
         <option value="$PROJECT_DIR$/project-management-api/create-group.js" />
       </list>
     </option>
@@ -2974,311 +3025,327 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/response.ts">
+    <entry file="file://$PROJECT_DIR$/project-management-api/serverlesscopy.yml" />
+    <entry file="file://$PROJECT_DIR$/project-management-api/user-modify-attributes.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="40" selection-start-column="40" selection-end-column="40" />
+        <state relative-caret-position="136">
+          <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/cognito-service.ts" />
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/create-policy.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider" />
+    <entry file="file://$PROJECT_DIR$/project-management-api/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="68">
+            <caret line="4" column="95" selection-start-line="4" selection-start-column="95" selection-end-line="4" selection-end-column="95" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/LICENSE" />
+    <entry file="file://$PROJECT_DIR$/project-management-api/handler.js" />
+    <entry file="file://$PROJECT_DIR$/project-management-api/env.example" />
+    <entry file="file://$PROJECT_DIR$/project-management-api/package.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/source-map-install.js">
+    <entry file="file://$PROJECT_DIR$/project-management-api/create.js">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Account.js" />
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/components/Session.js" />
+    <entry file="file://$USER_HOME$/Downloads/cup_custom_authorizer_lambda_function_blueprint/authorizer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5304" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/default-trust-policy.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Register.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
+        <state relative-caret-position="17">
+          <caret line="1" column="46" selection-start-line="1" selection-start-column="46" selection-end-line="1" selection-end-column="46" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/s3.ts" />
-    <entry file="file://$PROJECT_DIR$/project-management-api/test/user-session-event.json" />
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/components/LoadingButton.js">
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/NewProject.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/create.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+        <state relative-caret-position="255">
+          <caret line="15" column="31" lean-forward="true" selection-start-line="15" selection-start-column="31" selection-end-line="15" selection-end-column="31" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/components/DynamicDeveloperForm.js">
+    <entry file="file://$PROJECT_DIR$/project-management-api/create-role.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="49" column="78" selection-start-line="49" selection-start-column="78" selection-end-line="49" selection-end-column="78" />
+        <state relative-caret-position="238">
+          <caret line="17" column="46" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/index.js">
+    <entry file="file://$PROJECT_DIR$/project-management-api/modify.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
-          <caret line="17" column="6" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+          <caret line="18" column="52" selection-start-line="18" selection-start-column="52" selection-end-line="18" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/get.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/delete.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="7" column="59" selection-start-line="7" selection-start-column="59" selection-end-line="7" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/App.test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/cognito-credentials.ts" />
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/default-assume.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/iam.ts">
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+        <state relative-caret-position="323">
+          <caret line="55" column="36" selection-start-line="55" selection-start-column="36" selection-end-line="55" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/dynamodb.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="28" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/cognito.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/user-session.ts" />
-    <entry file="file://$PROJECT_DIR$/project-management-api/add-user.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/create-group.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="45" lean-forward="true" selection-start-line="23" selection-start-column="45" selection-end-line="23" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/create-role.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="41" column="66" selection-start-line="41" selection-start-column="66" selection-end-line="41" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/delete-group.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="21" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/delete.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/modify.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="66" selection-start-line="28" selection-start-column="66" selection-end-line="28" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/modify-group.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" column="66" selection-start-line="24" selection-start-column="66" selection-end-line="24" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/modify-role.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="30" column="66" selection-start-line="30" selection-start-column="66" selection-end-line="30" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/remove-user.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="66" selection-start-line="16" selection-start-column="66" selection-end-line="16" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/user-signup.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="66" selection-start-line="28" selection-start-column="66" selection-end-line="28" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/user-confirm.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" lean-forward="true" selection-start-column="35" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/delete-role.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="26" column="66" selection-start-line="26" selection-start-column="66" selection-end-line="26" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/webpack.config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/RegisterConfirm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="44" column="41" selection-start-line="44" selection-start-column="41" selection-end-line="44" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/cognito-identity.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="28" lean-forward="true" selection-start-line="3" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/sts.ts" />
     <entry file="file://$PROJECT_DIR$/project-management-api/test/user-signin-event.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="1" column="37" selection-start-line="1" selection-start-column="37" selection-end-line="1" selection-end-column="37" />
+          <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/test/create-event.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/project-management-api/test/user-policy.json">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/list-projects.ts">
+    <entry file="file://$PROJECT_DIR$/project-management-api/test/user-get-event.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/get.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="48" selection-start-line="7" selection-start-column="48" selection-end-line="7" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/lib/create-policy.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="25" column="6" lean-forward="true" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project-management-client/src/config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="72" selection-start-line="7" selection-start-column="72" selection-end-line="7" selection-end-column="72" />
+        <state relative-caret-position="255">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js">
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="12" column="54" selection-start-line="12" selection-start-column="54" selection-end-line="12" selection-end-column="54" />
+        <state relative-caret-position="357">
+          <caret line="28" column="43" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/user-signin.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-465" />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/aws-sdk-custom.js">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/user-signout.ts">
+    <entry file="file://$PROJECT_DIR$/project-management-api/.webpack/service/authorizer.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/source-map-install.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/webpack.config.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+        <state relative-caret-position="493">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/App.js">
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/create-policy.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="47" column="41" selection-start-line="47" selection-start-column="41" selection-end-line="47" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="357">
+          <caret line="21" column="28" selection-start-line="21" selection-start-column="28" selection-end-line="21" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/auth-policy.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/cognito-identity.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="32" selection-start-line="2" selection-start-column="32" selection-end-line="2" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/cognito.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/dynamodb.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="24" selection-start-line="1" selection-start-column="24" selection-end-line="1" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/iam.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" selection-start-column="24" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="69" column="52" selection-start-line="69" selection-start-column="52" selection-end-line="69" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/test/authorize-event.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="1082" selection-start-line="1" selection-start-column="1082" selection-end-line="1" selection-end-column="1082" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Home.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="24" column="15" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
+        <state relative-caret-position="357">
+          <caret line="25" column="44" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/NewProject.js">
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+        <state relative-caret-position="262">
+          <caret line="48" column="35" selection-start-line="48" selection-start-column="35" selection-end-line="48" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="33" column="42" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/ProjectView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="26" column="51" selection-start-line="26" selection-start-column="51" selection-end-line="26" selection-end-column="51" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Project.js">
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/components/DynamicDeveloperForm.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/create.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" column="48" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
+        <state relative-caret-position="713">
+          <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
           <folding>
-            <element signature="e#0#27#0" expanded="true" />
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/serverless.yml">
+    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/ProjectSettings.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="727">
-          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-client/src/containers/Login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-646">
-          <caret line="4" column="56" selection-start-line="4" selection-start-column="56" selection-end-line="4" selection-end-column="56" />
+        <state relative-caret-position="625">
+          <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
           <folding>
-            <element signature="e#0#49#0" expanded="true" />
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project-management-api/user-modify-attributes.ts">
+    <entry file="file://$PROJECT_DIR$/project-management-api/user-signin.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="40" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+        <state relative-caret-position="510">
+          <caret line="30" column="77" selection-start-line="30" selection-start-column="77" selection-end-line="30" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/list-projects.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="9" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/user-get.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/authorizer-basic.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="42" lean-forward="true" selection-start-line="10" selection-start-column="42" selection-end-line="10" selection-end-column="42" />
+          <folding>
+            <element signature="e#95#155#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/authorizer-projects.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1146">
+          <caret line="75" column="29" lean-forward="true" selection-start-line="75" selection-start-column="29" selection-end-line="75" selection-end-column="29" />
+          <folding>
+            <element signature="e#42#102#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/create-policy.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="54" column="12" selection-start-line="54" selection-start-column="12" selection-end-line="54" selection-end-column="12" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
           </folding>
@@ -3299,6 +3366,13 @@
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project-management-api/lib/response.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="45" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
         </state>
       </provider>
     </entry>

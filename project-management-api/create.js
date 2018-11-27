@@ -19,8 +19,8 @@ export function main(event, context, callback) {
                 projectId: uuid(),
                 title: input.title,
                 description: input.description,
-                projectManager: input.projectManger,
-                roles: input.roles,
+                projectManager: input.projectManager,
+                projectRoles: input.projectRoles,
                 users: input.users,
                 createdAt: Date.now()
             }

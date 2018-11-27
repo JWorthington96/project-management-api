@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {Button, ControlLabel, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap";
-import LoadingButton from "./LoadingButton";
+import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap"
+import {API} from "aws-amplify";
 
 // Component to allow the admin to add developers when creating the project
 export default class DynamicDeveloperForm extends Component {
@@ -10,16 +10,10 @@ export default class DynamicDeveloperForm extends Component {
             currentId: 0,
             currentDevelopers: []
         };
+
         this.addDeveloper = this.addDeveloper.bind(this);
         this.changeDeveloper = this.changeDeveloper.bind(this);
         this.deleteDeveloper = this.deleteDeveloper.bind(this);
-    }
-
-    validateForm() {
-        const nameLen = this.props.name.length;
-        const descLen = this.props.description.length;
-        const pmLen = this.props.projectManager.length;
-        return (nameLen > 0 && descLen > 0 && pmLen > 0 && this.state.confirmDevelopers);
     }
 
     addDeveloper(developer) {
@@ -48,27 +42,27 @@ export default class DynamicDeveloperForm extends Component {
         this.setState({currentId: devs.length, currentDevelopers: devs});
     }
 
-    submitDevelopers = event => {
+    handleSubmit = event => {
         event.preventDefault();
         this.props.setDevelopers(this.state.currentDevelopers);
         this.props.confirmDevelopers(true);
-    }
+    };
 
     render() {
         return (
-            <div>
-                <div className="developers">
+            <div className="developers">
+                <Form onSubmit={this.handleSubmit}>
                     <DeveloperFormList
                         developers={this.state.currentDevelopers}
                         changeDeveloper={this.changeDeveloper}
                         deleteDeveloper={this.deleteDeveloper}
                     />
                     <NewDeveloperForm addDeveloper={this.addDeveloper}/>
-                    <Button onClick={this.submitDevelopers}
+                    <Button type="submit"
                             disabled={this.state.confirmDevelopers}>
                         Confirm developers
                     </Button>
-                </div>
+                </Form>
             </div>
         );
     }
@@ -90,11 +84,11 @@ class DeveloperFormList extends Component {
     handleDelete = event => {
         const id = Number(event.target.id);
         this.props.deleteDeveloper(id);
-    }
+    };
 
     render() {
         return this.props.developers.map( (developer, i) =>
-            <ListGroupItem>
+            <ListGroupItem key={i}>
                 <FormGroup controlId={i.toString()}>
                     {console.log(i)}
                     {console.log(developer.username)}

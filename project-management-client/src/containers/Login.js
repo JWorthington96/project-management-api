@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, ControlLabel, FormGroup, FormControl, HelpBlock} from "react-bootstrap";
+import {Alert, Button, ControlLabel, FormGroup, FormControl, OverlayTrigger, Tooltip} from "react-bootstrap";
 import "./Login.css";
 import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -37,21 +37,26 @@ export default class Login extends Component {
         this.setState({isLoading: true});
 
         try {
-            const response = await API.post("projects", "/login", {body: {
+            const response = (await API.post("projects", "/login", {body: {
                     Username: this.state.username,
                     Password: this.state.password
                 }
-            });
-            const attributes = await API.get("projects", "/users", {queryStringParameters: {
-                    AccessToken: response.Auth.AccessToken
+            })).body;
+            console.log(response);
+
+            const attributes = (await API.get("projects", "/users", {
+                headers: {
+                    Authorization: "Bearer " + response.Auth.AccessToken
                 }
-            });
+            })).body;
+            console.log(attributes);
+
             const user = {
                 username: this.state.username,
                 password: this.state.password,
                 attributes: attributes.UserAttributes,
-                auth: response.body.Auth,
-                identityId: response.body.IdentityId
+                auth: response.Auth,
+                identityId: response.IdentityId
             };
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
@@ -69,7 +74,9 @@ export default class Login extends Component {
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {
-                console.log(error);
+                console.error(error);
+                console.error(error.response);
+                this.setState({isLoading: false});
             }
         }
     };
@@ -90,12 +97,10 @@ export default class Login extends Component {
     };
 
     render() {
-        const tooltip = (
-            <Tooltip id="tooltip">
-                Password must be at least <strong>12 characters</strong>, contain at least
-                <strong>one capital and symbol</strong>.
-            </Tooltip>
-        );
+        const tooltip =
+            <Tooltip>
+                Password is at least 8 characters long.
+            </Tooltip>;
 
         return (
             <div className="Login">
@@ -114,20 +119,20 @@ export default class Login extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
 
-                    <FormGroup
-                        controlId="password"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Password</ControlLabel>
-                        <OverlayTrigger placement="bottom" overlay={tooltip}>
+                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                        <FormGroup
+                            controlId="password"
+                            validationState={this.getValidationState()}
+                        >
+                            <ControlLabel>Password</ControlLabel>
                             <FormControl
                                 type="password"
                                 value={this.state.password}
                                 onChange={this.handleChange}
                             />
-                        </OverlayTrigger>
-                        <FormControl.Feedback />
-                    </FormGroup>
+                            <FormControl.Feedback />
+                        </FormGroup>
+                    </OverlayTrigger>
 
                     <LoadingButton
                         type="submit"

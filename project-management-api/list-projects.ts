@@ -10,7 +10,7 @@ export async function main(event, context, callback){
         // adminId to be Identity Pool identity id of the authenticated user
         KeyConditionExpression: "adminId = :adminId",
         ExpressionAttributeValues: {
-            ":adminId": event.queryStringParameters.identityId
+            ":adminId": event.queryStringParameters.IdentityId
         }
     };
 

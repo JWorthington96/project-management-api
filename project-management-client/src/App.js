@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 import Routes from "./Routes";
 import './App.css';
-import {Auth} from "aws-amplify";
+import {Auth, API} from "aws-amplify";
 
 class App extends Component {
     constructor(props) {
@@ -26,7 +26,7 @@ class App extends Component {
             this.userHasAuthenticated(true);
             console.log(user);
         } catch (error) {
-            if (error !== 'No current user') console.log(error);
+            if (error !== 'No current user') console.error(error.response);
         }
 
         this.setState({isAuthenticating: false,});
@@ -41,13 +41,25 @@ class App extends Component {
     };
 
     handleLogout = async event => {
-        await API.post("projects", "/signout", {body: {
-                AccessToken: this.user.Auth.AccessToken
-            }
-        });
-        this.userHasAuthenticated(false);
-        this.setCurrentUser({});
-        this.props.history.push("/");
+        try {
+            /*
+            await API.post("projects", "/signout", {
+                headers: {
+                    Authorization: this.state.user.auth.AccessToken
+                },
+                body: {
+                    AccessToken: this.state.user.auth.AccessToken
+                }
+            });
+            */
+            await Auth.signOut();
+            localStorage.removeItem("ProjectManagerSession");
+            this.userHasAuthenticated(false);
+            this.setCurrentUser({});
+            this.props.history.push("/");
+        } catch (error) {
+            console.error(error.response);
+        }
     };
 
     render() {

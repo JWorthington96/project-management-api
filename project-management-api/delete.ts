@@ -5,10 +5,10 @@ export async function main(event, context, callback) {
     const params = {
         TableName: "projects",
         Key: {
-            adminId: event.requestContext.identity.cognitoIdentityId,
+            adminId: event.queryStringParameters.IdentityId,
             projectId: event.pathParameters.id
         }
-    }
+    };
 
     try {
         dynamoDb.call('delete', params);

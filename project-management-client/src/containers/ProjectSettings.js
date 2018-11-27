@@ -21,10 +21,9 @@ export default class ProjectSettings extends Component {
             isLoading: false,
             isDeleteLoading: false,
             confirmDelete: false,
-            title: this.props.title,
-            description: this.props.description,
-            roles: this.props.roles,
-            users: this.props.users
+            project: this.props.project,
+            title: this.props.project.title,
+            description: this.props.project.description
         }
     }
 
@@ -40,9 +39,20 @@ export default class ProjectSettings extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         try {
-            await API.put("projects", `projects/${this.props.projectId}`, {});
+            await API.put("projects", `/projects/${this.props.project.projectId}`, {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                },
+                body: {
+                    title: this.state.title,
+                    description: this.state.description
+                },
+                queryStringParameters: {
+                    IdentityId: this.props.user.identityId
+                }
+            });
         } catch (error) {
-            console.error(error);
+            console.error(error.response);
             this.setState({isLoading: false});
         }
         this.setState({isLoading: false});
@@ -52,16 +62,23 @@ export default class ProjectSettings extends Component {
         event.preventDefault();
         this.setState({isDeleteLoading: true});
         try {
-            await API.del("projects", `/projects/${this.props.match.params.id}`, {});
+            await API.del("projects", `/projects/${this.props.match.params.id}`, {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                },
+                queryStringParameters: {
+                    IdentityId: this.props.user.identityId
+                }
+            });
         } catch (error) {
-            console.error(error);
+            console.error(error.response);
         }
         this.setState({isDeleteLoading: false});
-        this.props.history.push('/');
+        this.props.hist.push('/');
     };
 
     renderRoles(){
-        return this.state.roles.map( (role, i) =>
+        return this.state.project.projectRoles.map( (role, i) =>
             <tr>
                 <td>{i.toString()}</td>
                 <td>{role.name}</td>
@@ -71,7 +88,7 @@ export default class ProjectSettings extends Component {
     }
 
     renderUsers(){
-        return this.state.users.map( (user, i) =>
+        return this.state.project.users.map( (user, i) =>
             <tr>
                 <td>{i.toString()}</td>
                 <td>{user.username}</td>
@@ -87,18 +104,18 @@ export default class ProjectSettings extends Component {
                 <PageHeader>Project Settings</PageHeader>
                 <ListGroup>
                     <ListGroupItem>
-                        <h1>Change project details</h1>
+                        <h2>Change project details</h2>
                         <Form onSubmit={this.handleSubmit}>
                             <FormGroup controlId="title">
-                                <ControlLabel>Title:</ControlLabel>{": "}
+                                <ControlLabel>Title</ControlLabel>{": "}
                                 <FormControl value={this.state.title}
-                                             placeholder={this.props.title}
+                                             placeholder={this.props.project.title}
                                              onChange={this.handleChange} />
                             </FormGroup>
                             <FormGroup controlId="description">
-                                <ControlLabel>Title:</ControlLabel>{": "}
+                                <ControlLabel>Description</ControlLabel>{": "}
                                 <FormControl value={this.state.description}
-                                             placeholder={this.props.description}
+                                             placeholder={this.props.project.description}
                                              onChange={this.handleChange} />
                             </FormGroup>
                             <LoadingButton type="submit"
@@ -159,7 +176,7 @@ export default class ProjectSettings extends Component {
                         <Button onClick={this.changeDeleteBool}>Cancel</Button>
                         <LoadingButton bsStyle="danger"
                                        onClick={this.deleteProject}
-                                       isLoading={this.state.isLoading}
+                                       isLoading={this.state.isDeleteLoading}
                                        text="Delete"
                                        loadingText="Deleting..."/>
                     </Modal.Footer>

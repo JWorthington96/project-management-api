@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { call } from "./lib/iam";
 import { success, failure } from "./lib/response";
 import { createPolicy } from "./lib/create-policy";
-import defaultAssume from "./lib/default-assume";
+import defaultTrust from "./lib/default-trust-policy";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const input = JSON.parse(event.body);
@@ -26,7 +26,7 @@ export function main(event, context, callback) {
             Description: "Policy for " + input.RoleName + ":" + input.Description
         };
         const roleParams = {
-            AssumeRolePolicyDocument: JSON.stringify(defaultAssume),
+            AssumeRolePolicyDocument: JSON.stringify(defaultTrust),
             RoleName: input.RoleName,
             Description: input.Description
         };
