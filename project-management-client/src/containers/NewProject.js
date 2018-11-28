@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Checkbox, ControlLabel, Form, FormGroup, FormControl, ListGroup, ListGroupItem} from "react-bootstrap";
-import {API} from "aws-amplify";
-import "./NewProject.css";
 import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
 import LoadingButton from "../components/LoadingButton";
+import {API} from "aws-amplify";
+import "./NewProject.css";
 
 export default class NewProject extends Component {
     constructor(props){
@@ -13,11 +13,9 @@ export default class NewProject extends Component {
             isLoading: true,
             isSubmitting: false,
             confirmDevelopers: true,
-            userIsManager: true,
             siteUsers: [],
             title: "",
             description: "",
-            projectManager: this.props.user.username,
             developers: []
         };
 
@@ -29,16 +27,16 @@ export default class NewProject extends Component {
         try {
             const users = await API.get("projects", "/users/list", {
                 headers: {
-                    Authorization: this.props.user.auth.AccessToken
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
                 }
             });
 
             let siteUsers = [];
-            users.map( (user) => {
+            users.Users.map( (user) => {
                 siteUsers.push(user.Username);
             });
-            console.log(siteUsers);
             this.setState({siteUsers: siteUsers});
+            console.log(this.state.siteUsers);
         } catch (error) {
             console.error(error.response);
         }
@@ -62,10 +60,6 @@ export default class NewProject extends Component {
         this.setState({[event.target.id]: event.target.value});
     };
 
-    handleToggle = event => {
-        this.setState({userIsManager: !this.state.userIsManager});
-    };
-
     handleSubmit = async event => {
         event.preventDefault();
         this.setState({isSubmitting: true});
@@ -79,7 +73,7 @@ export default class NewProject extends Component {
         try {
             const project = await this.createProject({
                 title: this.state.title,
-                projectManager: this.state.projectManager,
+                projectManager: this.props.user.username,
                 description: this.state.description,
                 developers: this.state.developers,
                 users: users
@@ -155,7 +149,7 @@ export default class NewProject extends Component {
                 {!this.state.isLoading ?
                     <ListGroup>
                         <ListGroupItem>
-                            <Form inline onSubmit={this.handleSubmit}>
+                            <Form onSubmit={this.handleSubmit}>
                                 <FormGroup controlId="title">
                                     <ControlLabel>Title of project</ControlLabel>{': '}
                                     <FormControl onChange={this.handleChange} value={this.state.title}/>
@@ -165,22 +159,7 @@ export default class NewProject extends Component {
                                     <ControlLabel>Brief description</ControlLabel>{': '}
                                     <FormControl onChange={this.handleChange}
                                                  value={this.state.description}
-                                                 componentClass="textarea"/>
-                                </FormGroup>
-
-                                <FormGroup controlId="projectManager">
-                                    <ControlLabel>Project Manager</ControlLabel>{': '}
-                                    <FormControl onChange={this.handleChange}
-                                                 value={this.state.projectManager}
-                                                 disabled={this.state.userIsManager}
-                                    />
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <Checkbox defaultChecked={this.state.userIsManager}
-                                              onChange={this.handleToggle}>
-                                        I'm the project manager
-                                    </Checkbox>
+                                                 componentClass="textarea" />
                                 </FormGroup>
 
                                 <FormGroup>
@@ -188,7 +167,7 @@ export default class NewProject extends Component {
                                                    isLoading={this.state.isSubmitting}
                                                    text="Create"
                                                    loadingText="Creating..."
-                                                   disabled={!this.validateForm()}/>
+                                                   disabled={!this.validateForm()} />
                                 </FormGroup>
                             </Form>
                         </ListGroupItem>
@@ -199,7 +178,8 @@ export default class NewProject extends Component {
                                                   confirmDevelopers={this.confirmDevelopers}
                                                   name={this.state.title}
                                                   description={this.state.description}
-                                                  projectManager={this.state.projectManager}/>
+                                                  projectManager={this.props.user.username}
+                                                  siteUsers={this.state.siteUsers} />
                         </ListGroupItem>
                     </ListGroup>
                     :

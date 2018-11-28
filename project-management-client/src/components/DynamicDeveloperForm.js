@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap"
+import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem, Modal} from "react-bootstrap"
 
 // Component to allow the admin to add developers when creating the project
 export default class DynamicDeveloperForm extends Component {
@@ -19,6 +19,7 @@ export default class DynamicDeveloperForm extends Component {
         const id = this.state.currentId;
         const devs = this.state.currentDevelopers;
         devs[id] = developer;
+        console.log(devs);
 
         if (this.props.developers === undefined){
             this.props.confirmDevelopers(true);
@@ -55,7 +56,9 @@ export default class DynamicDeveloperForm extends Component {
                         changeDeveloper={this.changeDeveloper}
                         deleteDeveloper={this.deleteDeveloper}
                     />
-                    <NewDeveloperForm addDeveloper={this.addDeveloper}/>
+                    <NewDeveloperForm addDeveloper={this.addDeveloper}
+                                      projectManager={this.props.projectManager}
+                                      siteUsers={this.props.siteUsers} />
                     <Button type="submit"
                             disabled={this.state.confirmDevelopers}>
                         Confirm developers
@@ -89,7 +92,7 @@ class DeveloperFormList extends Component {
             <ListGroupItem key={i}>
                 <FormGroup controlId={i.toString()}>
                     <ControlLabel>Developer {i + 1}</ControlLabel>
-                    <FormControl onChange={this.handleChange} value={developer.username} />
+                    <FormControl onChange={this.handleChange} value={developer} />
                 </FormGroup>
 
                 <Button id={i.toString()} onClick={this.handleDelete}>
@@ -106,7 +109,9 @@ class NewDeveloperForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            newDeveloper: ""
+            newDeveloper: "",
+            managerError: false,
+            error: false
         };
     }
 
@@ -115,13 +120,56 @@ class NewDeveloperForm extends Component {
     };
 
     handleAdd = event => {
+        if (this.state.newDeveloper === this.props.projectManager){
+            this.setState({
+                managerError: true,
+                error: true
+            });
+        } else if (this.props.siteUsers.includes(this.state.newDeveloper)){
+            this.handleIgnore(event);
+        } else {
+            this.setState({error: true});
+        }
+    };
+
+    handleIgnore = event => {
         event.preventDefault();
         this.props.addDeveloper(this.state.newDeveloper);
-        this.setState({newDeveloper: ""});
+        this.setState({
+            newDeveloper: "",
+            error: false
+        });
+    };
+
+    handleClose = () => {
+        this.setState({error: false});
     };
 
     validateForm(){
         return this.state.newDeveloper.length > 0;
+    }
+
+    renderModal() {
+        return (
+            <Modal show={this.state.error}>
+                <Modal.Header>
+                    Error!
+                </Modal.Header>
+                <Modal.Body>
+                    {this.state.managerError ?
+                        <h4>You cannot add yourself as a developer, this is implied (and can be changed later).</h4>
+                        :
+                        <h4>User not found in user base.</h4>
+                    }
+                </Modal.Body>
+                <Modal.Footer>
+                    {this.state.managerError ? null :
+                        <Button onClick={this.handleIgnore}>Add anyway</Button>
+                    }
+                    <Button onClick={this.handleClose}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+        );
     }
 
     render() {
@@ -135,6 +183,7 @@ class NewDeveloperForm extends Component {
                 <Button disabled={!this.validateForm()} onClick={this.handleAdd}>
                     <Glyphicon glyph="plus" />
                 </Button>
+                {this.renderModal()}
             </ListGroupItem>
         );
     }
