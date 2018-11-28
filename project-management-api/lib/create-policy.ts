@@ -5,9 +5,11 @@ export function createPolicy(adminId: string, projectId: string,
     let actions = [];
 
     deleteBool ? actions.push("dynamodb:DeleteItem") : null;
-    getBool ? actions.push("dynamodb:GetItem") : null;
+    if(getBool) {
+        actions.push("dynamodb:GetItem");
+        actions.push("dynamodb:Query")
+    }
     putBool ? actions.push("dynamodb:PutItem") : null;
-    actions.push("dynamodb:Scan");
     updateBool ? actions.push("dynamodb:UpdateItem") : null;
 
     const statement = [
@@ -21,7 +23,7 @@ export function createPolicy(adminId: string, projectId: string,
             Action: actions,
             Resource: "arn:aws:dynamodb:" + adminId + ":projects/" + projectId
         }
-    ]
+    ];
 
     const policyDocument = {
         Version: "2012-10-17",

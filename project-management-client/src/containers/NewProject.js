@@ -1,151 +1,142 @@
 import React, {Component} from "react";
-import {Checkbox, Form, FormGroup, FormControl, ControlLabel} from "react-bootstrap";
+import {Checkbox, ControlLabel, Form, FormGroup, FormControl, ListGroup, ListGroupItem} from "react-bootstrap";
+import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
+import LoadingButton from "../components/LoadingButton";
 import {API} from "aws-amplify";
 import "./NewProject.css";
-import DynamicDeveloperForm from "../components/DynamicDeveloperForm";
 
 export default class NewProject extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            isLoading: null,
-            userIsManager: true,
+            isLoading: true,
+            isSubmitting: false,
+            confirmDevelopers: true,
+            siteUsers: [],
             title: "",
             description: "",
-            admin: this.props.user.username,
-            projectManager: this.props.user.username,
-            developers: [],
-            roles: ["Admin", "Project Manager", "Developer"],
-            users: []
+            developers: []
         };
 
         this.setDevelopers = this.setDevelopers.bind(this);
+        this.confirmDevelopers = this.confirmDevelopers.bind(this);
     }
+
+    async componentDidMount() {
+        try {
+            const users = await API.get("projects", "/users/list", {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                }
+            });
+
+            let siteUsers = [];
+            users.Users.map( (user) => {
+                siteUsers.push(user.Username);
+            });
+            this.setState({siteUsers: siteUsers});
+            console.log(this.state.siteUsers);
+        } catch (error) {
+            console.error(error.response);
+        }
+        this.setState({isLoading: false});
+    };
+
+    validateForm(){
+        return this.state.title.length !==0 && this.state.description.length !== 0
+            && this.state.projectManager.length !== 0 && this.state.confirmDevelopers;
+    };
 
     setDevelopers(developers) {
         this.setState({developers: developers});
-    }
+    };
+
+    confirmDevelopers = boolean => {
+        this.setState({confirmDevelopers: boolean});
+    };
 
     handleChange = event => {
         this.setState({[event.target.id]: event.target.value});
     };
 
-    handleToggle = event => {
-        this.setState({userIsManager: !this.state.userIsManager});
-    };
-
     handleSubmit = async event => {
         event.preventDefault();
-        this.setState({isLoading: true});
+        this.setState({isSubmitting: true});
 
-        let users = this.state.developers.push(this.state.admin);
-        if (!this.state.userIsManager) users.push(this.state.projectManager);
+        let users = [];
+        for (let i = 0; i < this.state.developers.length; i++){
+            users.push(this.state.developers[i]);
+        }
+        users.push(this.state.projectManager);
 
         try {
             const project = await this.createProject({
                 title: this.state.title,
+                projectManager: this.props.user.username,
                 description: this.state.description,
-                admin: this.state.admin,
-                roles: this.state.roles,
-                users: this.state.users
+                developers: this.state.developers,
+                users: users
             });
-            await this.createDefaultRoles(this.projectId);
             console.log(project);
             this.props.history.push("/");
         } catch (error) {
-            alert(error);
-            this.setState({isLoading: false});
+            console.error(error.response);
+            this.setState({isSubmitting: false});
         }
     };
 
     createProject(project) {
-        return API.post("projects", "/projects", {body: project});
-    }
-
-    createDefaultRoles(projectId) {
-        const title = this.state.title.replace(/\s/g, '');
-
-        const adminRole = {
-            RoleName: title + "Admin",
-            Description: "Full access of the database",
-            DeleteBoolean: true,
-            GetBoolean: true,
-            PutBoolean: true,
-            UpdateBoolean: true
-        };
-        const projectManagerRole = {
-            RoleName: title + "ProjectManager",
-            Description: "Full access of the database",
-            DeleteBoolean: true,
-            GetBoolean: true,
-            PutBoolean: true,
-            UpdateBoolean: true
-        };
-        const developerRole = {
-            RoleName: title + "Developer",
-            Description: "Access to viewing and updating database",
-            DeleteBoolean: false,
-            GetBoolean: true,
-            PutBoolean: true,
-            UpdateBoolean: true
-        };
-
-        API.post("projects", `/projects/${projectId}/roles`, {body: adminRole}).promise();
-        API.post("projects", `/projects/${projectId}/roles`, {body: projectManagerRole}).promise();
-        API.post("projects", `/projects/${projectId}/roles`, {body: developerRole}).promise();
-
-        API.post("projects", `/projects/${projectId}/groups`, {body: {
-            RoleName: title + "Admin", GroupName: "Admins",
-                Description: "Admins have full access of the database"
-            }}).promise();
-        API.post("projects", `/projects/${projectId}/groups`, {body: {
-                RoleName: title + "ProjectManager", GroupName: "ProjectManagers",
-                Description: "Project managers have full access of the database"
-            }}).promise();
-        API.post("projects", `/projects/${projectId}/groups`, {body: {
-                RoleName: title + "Developer", GroupName: "Developers",
-                Description: "Developers have access to viewing and updating database"
-            }}).promise();
+        return API.post("projects", "/projects", {
+            headers: {
+                Authorization: "Bearer " + this.props.user.auth.AccessToken
+            },
+            body: project
+        });
     }
 
     render() {
         return (
             <div className="NewProject">
-                <Form inline onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="title">
-                        <ControlLabel>Title of project</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange} value={this.state.title} />
-                    </FormGroup>
+                {!this.state.isLoading ?
+                    <ListGroup>
+                        <ListGroupItem>
+                            <Form onSubmit={this.handleSubmit}>
+                                <FormGroup controlId="title">
+                                    <ControlLabel>Title of project</ControlLabel>{': '}
+                                    <FormControl onChange={this.handleChange} value={this.state.title}/>
+                                </FormGroup>
 
-                    <FormGroup controlId="description">
-                        <ControlLabel>Brief description</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange}
-                                     value={this.state.description}
-                                     componentClass="textarea" />
-                    </FormGroup>
+                                <FormGroup controlId="description">
+                                    <ControlLabel>Brief description</ControlLabel>{': '}
+                                    <FormControl onChange={this.handleChange}
+                                                 value={this.state.description}
+                                                 componentClass="textarea" />
+                                </FormGroup>
 
-                    <FormGroup controlId="projectManager">
-                        <ControlLabel>Project Manager</ControlLabel>{': '}
-                        <FormControl onChange={this.handleChange}
-                                     value={this.state.projectManager}
-                                     disabled={this.state.userIsManager}
-                        />
-                    </FormGroup>
+                                <FormGroup>
+                                    <LoadingButton type="submit"
+                                                   isLoading={this.state.isSubmitting}
+                                                   text="Create"
+                                                   loadingText="Creating..."
+                                                   disabled={!this.validateForm()} />
+                                </FormGroup>
+                            </Form>
+                        </ListGroupItem>
 
-                    <FormGroup>
-                        <Checkbox defaultChecked={this.state.userIsManager}
-                                  onChange={this.handleToggle}>
-                            I'm the project manager
-                        </Checkbox>
-                    </FormGroup>
-
-                    <DynamicDeveloperForm setDevelopers={this.setDevelopers}
-                                          name={this.state.title}
-                                          description={this.state.description}
-                                          projectManager={this.state.projectManager} />
-
-                </Form>
+                        <ListGroupItem>
+                            <h4>*OPTIONAL* Add known developers</h4>
+                            <DynamicDeveloperForm setDevelopers={this.setDevelopers}
+                                                  confirmDevelopers={this.confirmDevelopers}
+                                                  name={this.state.title}
+                                                  description={this.state.description}
+                                                  projectManager={this.props.user.username}
+                                                  siteUsers={this.state.siteUsers} />
+                        </ListGroupItem>
+                    </ListGroup>
+                    :
+                    <h2>Loading...</h2>
+                }
             </div>
         );
     }

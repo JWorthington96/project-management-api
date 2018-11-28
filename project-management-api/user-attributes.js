@@ -11,17 +11,16 @@ import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
-            GroupName: event.GroupName,
-            UserPoolId: "eu-west-2_QmN841UbB",
-            Username: event.Username
+            AccessToken: event.queryStringParameters.AccessToken
         };
         try {
-            yield call('adminRemoveUserFromGroup', params);
-            callback(null, success({ status: true }));
+            const user = yield call('getUser', params);
+            callback(null, success({ status: true, body: user }));
         }
         catch (error) {
+            console.log(error);
             callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
-//# sourceMappingURL=remove-user.js.map
+//# sourceMappingURL=user-attributes.js.map

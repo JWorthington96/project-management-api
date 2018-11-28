@@ -10,11 +10,14 @@ import { call } from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        let status = "pending" || "active" || "completed";
+        if (event.queryStringParameters)
+            status = event.queryStringParameters.status;
         const params = {
             TableName: "projects",
             Key: {
-                adminId: event.requestContext.identity.cognitoIdentityId,
-                projectId: event.pathParameters.id
+                projectId: event.pathParameters.id,
+                status: status
             }
         };
         try {
@@ -26,9 +29,9 @@ export function main(event, context, callback) {
                 callback(null, failure({ status: false, error: "Item not found." }));
             }
         }
-        catch (e) {
-            console.log(e);
-            callback(null, failure({ status: false }));
+        catch (error) {
+            console.log(error);
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }

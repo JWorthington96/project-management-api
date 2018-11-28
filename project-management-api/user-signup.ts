@@ -15,6 +15,18 @@ export async function main(event, context, callback){
             {
                 "Name": "custom:skills",
                 "Value": input.Skills
+            },
+            {
+                "Name": "custom:adminProjects",
+                "Value": ""
+            },
+            {
+                "Name": "custom:managerProjects",
+                "Value": ""
+            },
+            {
+                "Name": "custom:devProjects",
+                "Value": ""
             }
         ],
         ValidationData: null
@@ -25,6 +37,7 @@ export async function main(event, context, callback){
         await call('signUp', params);
         callback(null, success({status: true}));
     } catch (error) {
-        callback(null, failure({status: false, error: error.message}));
+        console.log(error);
+        callback(null, failure({status: false, body: error.message}));
     }
 }

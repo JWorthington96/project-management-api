@@ -11,16 +11,16 @@ import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
-            GroupName: event.GroupName,
-            UserPoolId: "eu-west-2_QmN841UbB"
+            UserPoolId: "eu-west-2_7DRbUQOk6"
         };
         try {
-            yield call('deleteGroup', params);
-            callback(null, success({ status: true }));
+            const users = yield call('listUsers', params);
+            callback(null, success(users));
         }
         catch (error) {
+            console.log(error);
             callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
-//# sourceMappingURL=delete-group.js.map
+//# sourceMappingURL=list-users.js.map

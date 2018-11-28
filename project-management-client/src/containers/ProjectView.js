@@ -7,16 +7,12 @@ export default class Project extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            project: null,
-            title: this.props.title,
-            description: this.props.description,
-            roles: this.props.roles,
-            users: this.props.users
+            project: this.props.project
         };
     }
 
     renderUsers() {
-        return this.state.users.map( (user) =>
+        return this.state.project.users.map( (user) =>
             <ListGroupItem key={user.id} header={user.username}>
                 {
                     // TODO: add skills in here pls
@@ -28,12 +24,12 @@ export default class Project extends Component {
     render() {
         return(
             <div>
-                <h1>{this.state.title}</h1>
-                <h2>{this.state.description}</h2>
-                <h3>Project manager: {this.state.projectManager}</h3>
+                <h1>{this.state.project.title}</h1>
+                <h2>{this.state.project.description}</h2>
+                <h3>Project manager: {this.state.project.projectManager}</h3>
                 <ListGroup className="developers">
                     <h4>Developers:</h4>
-                    {this.renderUsers(this.state.developers)}
+                    {this.renderUsers(this.state.project.developers)}
                     <ListGroupItem>
                         {
                             //TODO: add the project files here

@@ -13,8 +13,13 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
   authorizer:
-    users:
-      name: authorize-user
+    projects:
+      name: authorize-projects
+      type: TOKEN
+      identitySource: method.request.header.Authorization
+      identityValidationExpression: Bearer (.*)
+    default:
+      name: authorize-default
       type: TOKEN
       identitySource: method.request.header.Authorization
       identityValidationExpression: Bearer (.*)
@@ -32,10 +37,6 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-        - dynamodb:DescribeStream
-        - dynamodb:GetRecords
-        - dynamodb:GetShardIterator
-        - dynamodb:ListStreams
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
     - Effect: Allow
       Action:
@@ -47,8 +48,10 @@ provider:
 
 # API endpoints for the functions
 functions:
-  authorize-user:
-    handler: authorizer.main
+  authorize-projects:
+    handler: authorizer-projects.main
+  authorize-default:
+    handler: authorizer-default.main
   create:
     handler: create.main
     events:
@@ -56,7 +59,7 @@ functions:
           method: post
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   get:
     handler: get.main
     events:
@@ -64,7 +67,7 @@ functions:
           method: get
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   list:
     handler: list-projects.main
     events:
@@ -72,7 +75,7 @@ functions:
           method: get
           path: projects
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   delete:
     handler: delete.main
     events:
@@ -80,7 +83,7 @@ functions:
           method: delete
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.projects}
   modify:
     handler: modify.main
     events:
@@ -88,71 +91,15 @@ functions:
           method: put
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
-  create-role:
-    handler: create-role.main
+          authorizer: ${self:custom.authorizer.projects}
+  list-users:
+    handler: list-users.main
     events:
       - http:
-          method: post
-          path: projects/{id}/roles
+          method: get
+          path: users/list
           cors: true
-          authorizer: ${self:custom.authorizer.main}
-  delete-role:
-    handler: delete-role.main
-    events:
-      - http:
-          method: delete
-          path: projects/{id}/roles
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  modify-role:
-    handler: modify-role.main
-    events:
-      - http:
-          method: put
-          path: projects/{id}/roles
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  create-group:
-    handler: create-group.main
-    events:
-      - http:
-          method: post
-          path: projects/{id}/groups
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  delete-group:
-    handler: delete-group.main
-    events:
-      - http:
-          method: delete
-          path: projects/{id}/groups
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  modify-group:
-    handler: modify-group.main
-    events:
-      - http:
-          method: put
-          path: projects/{id}/groups
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  add-user:
-    handler: add-user.main
-    events:
-      - http:
-          method: post
-          path: projects/{id}/users
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
-  remove-user:
-    handler: remove-user.main
-    events:
-      - http:
-          method: delete
-          path: projects/{id}/users
-          cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   user-signup:
     handler: user-signup.main
     events:
@@ -181,7 +128,7 @@ functions:
           method: post
           path: logout
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   user-get:
     handler: user-get.main
     events:
@@ -193,12 +140,12 @@ functions:
               querystrings:
                 AccessToken: true
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   user-modify-attributes:
     handler: user-modify-attributes.main
     events:
       - http:
           method: put
-          path: users/{id}
+          path: users
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}

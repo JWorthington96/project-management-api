@@ -1,17 +1,17 @@
 import {call} from "./lib/cognito";
 import {success, failure} from "./lib/response";
 
-export async function main(event, context, callback) {
+export async function main(event, context, callback){
+    const token = event.headers.Authorization.split('Bearer')[1].trim();
     const params = {
-        GroupName: event.GroupName,
-        UserPoolId: "eu-west-2_QmN841UbB",
-        Username: event.Username
+        AccessToken: token
     };
 
     try {
-        await call('adminAddUserToGroup', params);
+        await call('globalSignOut', params);
         callback(null, success({status: true}));
     } catch (error) {
+        console.log(error);
         callback(null, failure({status: false, body: error.message}));
     }
 }

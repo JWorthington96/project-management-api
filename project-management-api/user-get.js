@@ -10,10 +10,9 @@ import { call } from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(event.requestContext);
-        console.log(context);
+        const token = event.headers.Authorization.split('Bearer')[1].trim();
         const params = {
-            AccessToken: event.headers.Authorization
+            AccessToken: token
         };
         try {
             const user = yield call('getUser', params);
@@ -21,11 +20,7 @@ export function main(event, context, callback) {
         }
         catch (error) {
             console.log(error);
-            callback(null, failure({ status: false, body: {
-                    error: error.message,
-                    context: event.requestContext
-                }
-            }));
+            callback(null, failure({ status: false, body: { error: error.message } }));
         }
     });
 }

@@ -15,37 +15,43 @@ export default class Home extends Component {
 
     async componentDidMount() {
         if (!this.props.isAuthenticated) return;
+        console.log(this.props.user);
 
         try {
-            const projects = await this.projects();
+            const projects = await API.get("projects", "/projects",
+                {
+                    headers: {
+                        Authorization: "Bearer " + this.props.user.auth.AccessToken
+                    },
+                    queryStringParameters: {
+                        username: this.props.user.username
+                    }
+                }
+            );
             this.setState({projects});
         } catch (error) {
-            console.log(error);
+            console.error(error.response);
         }
 
         this.setState({isLoading: false});
     }
 
-    projects() {
-        return API.get("projects", "/projects", {});
-    }
-
     addProject = event => {
         event.preventDefault();
         this.props.history.push("/projects/new");
-    }
+    };
 
     handleProjectClick = event => {
         event.preventDefault();
         this.props.push(event.currentTarget.getAttribute("href"));
-    }
+    };
     
     renderProjectsList(projects){
         return projects.map( (project) =>
                 <LinkContainer key={project.projectId} to={`/projects/${project.projectId}`}>
                     <ListGroupItem header={project.title}>
-                        {"Created: " + new Date(project.createdAt).toLocaleString()}
-                        <p>Project manager: {project.projectManager}</p>
+                        {"Created: " + new Date(project.createdAt).toLocaleString()} <br/>
+                        Project manager: {project.projectManager}
                     </ListGroupItem>
                 </LinkContainer>
         );

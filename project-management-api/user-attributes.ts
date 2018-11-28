@@ -2,16 +2,15 @@ import {call} from "./lib/cognito";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const params ={
-        GroupName: event.GroupName,
-        UserPoolId: "eu-west-2_QmN841UbB",
-        Username: event.Username
-    }
+    const params = {
+        AccessToken: event.queryStringParameters.AccessToken
+    };
 
     try {
-        await call('adminRemoveUserFromGroup', params);
-        callback(null, success({status: true}));
+        const user = await call('getUser', params);
+        callback(null, success({status: true, body: user}));
     } catch (error) {
+        console.log(error);
         callback(null, failure({status: false, body: error.message}));
     }
 }

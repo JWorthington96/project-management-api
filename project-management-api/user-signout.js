@@ -10,18 +10,18 @@ import { call } from "./lib/cognito";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
+        const token = event.headers.Authorization.split('Bearer')[1].trim();
         const params = {
-            GroupName: event.GroupName,
-            UserPoolId: "eu-west-2_QmN841UbB",
-            Username: event.Username
+            AccessToken: token
         };
         try {
-            yield call('adminAddUserToGroup', params);
+            yield call('globalSignOut', params);
             callback(null, success({ status: true }));
         }
         catch (error) {
+            console.log(error);
             callback(null, failure({ status: false, body: error.message }));
         }
     });
 }
-//# sourceMappingURL=add-user.js.map
+//# sourceMappingURL=user-signout.js.map

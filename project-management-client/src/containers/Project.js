@@ -10,34 +10,30 @@ export default class Project extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            project: null,
-            title: "",
-            description: "",
-            roles: [],
-            users: []
+            project: {}
         };
     }
 
     async componentDidMount() {
         try {
             const project = await this.getProject();
-            const {title, description, roles, users} = project;
+            console.log(project);
 
             this.setState({
                 isLoading: false,
-                project,
-                title,
-                description,
-                roles,
-                users
+                project
             });
         } catch (error) {
-            console.log(error.message);
+            console.log(error.response);
         }
     }
 
     getProject() {
-        return API.get("projects", `/projects/${this.props.match.params.id}`, {});
+        return API.get("projects", `/projects/${this.props.match.params.id}`, {
+            headers: {
+                Authorization: "Bearer " + this.props.user.auth.AccessToken
+            }
+        });
     }
 
     renderLoading() {
@@ -47,14 +43,20 @@ export default class Project extends Component {
     renderProject(){
         return (
             <div>
-                <Tabs id="project-tab">
-                    <Tab eventKey={1} title="View">
-                        <ProjectView />
-                    </Tab>
-                    <Tab eventKey={2} title="Settings">
-                        <ProjectSettings />
-                    </Tab>
-                </Tabs>
+                {this.state.project.projectManager === this.props.user.username ?
+                    <Tabs id="project-tab">
+                        <Tab eventKey={1} title="View">
+                            <ProjectView project={this.state.project} />
+                        </Tab>
+                        <Tab eventKey={2} title="Settings">
+                            <ProjectSettings project={this.state.project}
+                                             hist={this.props.history}
+                                             match={this.props.match}
+                                             user={this.props.user} />
+                        </Tab>
+                    </Tabs> :
+                    <ProjectView project={this.state.project}/>
+                }
             </div>
         );
     }

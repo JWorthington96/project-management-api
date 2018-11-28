@@ -11,17 +11,17 @@ import { call } from "./lib/dynamodb";
 import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
-        const data = JSON.parse(event.body);
+        const input = JSON.parse(event.body);
         const params = {
             TableName: "projects",
             Item: {
-                adminId: event.requestContext.identity.cognitoIdentityId,
                 projectId: uuid(),
-                title: data.title,
-                description: data.description,
-                admin: data.admin,
-                roles: data.roles,
-                users: data.users,
+                status: "pending",
+                title: input.title,
+                description: input.description,
+                projectManager: input.projectManager,
+                developers: input.developers,
+                users: input.users,
                 createdAt: Date.now()
             }
         };
@@ -30,7 +30,8 @@ export function main(event, context, callback) {
             callback(null, success(params.Item));
         }
         catch (error) {
-            callback(null, failure({ status: false, body: error }));
+            console.log(error);
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }

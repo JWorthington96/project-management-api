@@ -12,22 +12,22 @@ export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const params = {
             TableName: "projects",
-            // KeyConditionExpression defines the condition for the query 'userId = :userId'; only returns items with
-            // matching userId keys
-            // ExpressionAttributeValues defines the value in the condition 'userId = :userId'; defines
-            // userId to be Identity Pool identity id of the authenticated user
-            KeyConditionExpression: "adminId = :adminId",
+            // FilterExpression will search for any attributes in users with the given values
+            // ExpressionAttributeValues defines the value in the conditions :userValue1 and :userValue2; retrieves any
+            // project the given username is in (either as a project manager or developer)
+            FilterExpression: "contains (usernames, :username)",
             ExpressionAttributeValues: {
-                ":adminId": event.requestContext.identity.cognitoIdentityId
+                ":username": event.queryStringParameters.username
             }
         };
         try {
-            const result = yield call("query", params);
+            const result = yield call("scan", params);
             // Return the matching list of items in the response body
             callback(null, success(result.Items));
         }
-        catch (e) {
-            callback(null, failure({ status: false }));
+        catch (error) {
+            console.log(error);
+            callback(null, failure({ status: false, body: error.message }));
         }
     });
 }

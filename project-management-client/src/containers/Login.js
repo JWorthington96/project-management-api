@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
+import {Alert, Button, ControlLabel, FormGroup, FormControl, OverlayTrigger, Tooltip} from "react-bootstrap";
 import "./Login.css";
 import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -34,22 +34,34 @@ export default class Login extends Component {
 
     handleSubmit = async e => {
         e.preventDefault();
-
         this.setState({isLoading: true});
+
         try {
-            let response = await API.post("projects", "/login", {body: {
+            const response = (await API.post("projects", "/login", {body: {
                     Username: this.state.username,
                     Password: this.state.password
                 }
-            });
-            let user = {
-                Username: this.state.username,
-                Password: this.state.password,
-                Auth: response.body.AuthenticationResult
+            })).body;
+            console.log(response);
+
+            const attributes = (await API.get("projects", "/users", {
+                headers: {
+                    Authorization: "Bearer " + response.Auth.AccessToken
+                }
+            })).body;
+            console.log(attributes);
+
+            const user = {
+                username: this.state.username,
+                password: this.state.password,
+                attributes: attributes.UserAttributes,
+                auth: response.Auth,
+                identityId: response.IdentityId
             };
+            localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
-            this.props.changeCurrentUser(user);
+            this.props.setCurrentUser(user);
             console.log(user.valueOf());
             this.setState({isLoading: false});
             this.props.history.push("/");
@@ -62,7 +74,9 @@ export default class Login extends Component {
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {
-                console.log(error);
+                console.error(error);
+                console.error(error.response);
+                this.setState({isLoading: false});
             }
         }
     };
@@ -83,6 +97,11 @@ export default class Login extends Component {
     };
 
     render() {
+        const tooltip =
+            <Tooltip>
+                Password is at least 8 characters long.
+            </Tooltip>;
+
         return (
             <div className="Login">
                 <form onSubmit={this.handleSubmit}>
@@ -100,19 +119,20 @@ export default class Login extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
 
-                    <FormGroup
-                        controlId="password"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>Password is at least 12 characters long</HelpBlock>
-                    </FormGroup>
+                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                        <FormGroup
+                            controlId="password"
+                            validationState={this.getValidationState()}
+                        >
+                            <ControlLabel>Password</ControlLabel>
+                            <FormControl
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                            />
+                            <FormControl.Feedback />
+                        </FormGroup>
+                    </OverlayTrigger>
 
                     <LoadingButton
                         type="submit"
@@ -122,7 +142,7 @@ export default class Login extends Component {
                         loadingText="Logging in..."
                     />
 
-                    {this.state.isConfirmed ? <div></div>
+                    {this.state.isConfirmed ? null
                         : <Fragment>
                             <Alert className="alert" bsStyle="danger" onDismiss={this.handleDismiss}>
                                 <h3>Thank you again for registering!</h3>
