@@ -11,8 +11,20 @@ export async function main(event, context, callback){
     };
 
     try {
-        const result = await call('initiateAuth', params);
-        callback(null, success({status: true, body: result.AuthenticationResult}));
+        const response = await call('initiateAuth', params);
+
+        const accessToken = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[1], 'base64').toString('utf8'));
+        console.log(accessToken);
+        const idToken = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
+        console.log(idToken);
+
+        callback(null, success({status: true, body: {
+                AccessToken: response.AuthenticationResult.AccessToken,
+                IdToken: response.AuthenticationResult.IdToken,
+                IssuedAt: Math.min(accessToken["iat"], idToken["iat"]),
+                Expiration: Math.min(accessToken["exp"], idToken["iat"])
+            }
+        }));
     } catch (error) {
         callback(null, failure({status: false, body: error}));
     }
