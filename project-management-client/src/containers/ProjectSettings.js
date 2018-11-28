@@ -39,6 +39,7 @@ export default class ProjectSettings extends Component {
         event.preventDefault();
         this.setState({isLoading: true});
         try {
+            await this.props.checkTokens();
             await API.put("projects", `/projects/${this.props.project.projectId}`, {
                 headers: {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
@@ -62,6 +63,7 @@ export default class ProjectSettings extends Component {
         event.preventDefault();
         this.setState({isDeleteLoading: true});
         try {
+            await this.props.checkTokens();
             await API.del("projects", `/projects/${this.props.match.params.id}`, {
                 headers: {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken

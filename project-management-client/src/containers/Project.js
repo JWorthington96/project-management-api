@@ -16,6 +16,7 @@ export default class Project extends Component {
 
     async componentDidMount() {
         try {
+            await this.props.checkTokens();
             const project = await this.getProject();
             console.log(project);
 

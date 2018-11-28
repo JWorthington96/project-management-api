@@ -18,6 +18,7 @@ export default class Home extends Component {
         console.log(this.props.user);
 
         try {
+            await this.props.checkTokens();
             const projects = await API.get("projects", "/projects",
                 {
                     headers: {

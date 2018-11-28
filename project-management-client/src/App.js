@@ -28,7 +28,7 @@ class App extends Component {
                 return;
             }
 
-            user.auth = this.checkTokens(user.auth);
+            await this.props.checkTokens();
             this.setCurrentUser(user);
             this.userHasAuthenticated(true);
             console.log(user);

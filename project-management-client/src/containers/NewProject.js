@@ -25,6 +25,7 @@ export default class NewProject extends Component {
 
     async componentDidMount() {
         try {
+            await this.props.checkTokens();
             const users = await API.get("projects", "/users/list", {
                 headers: {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
@@ -71,6 +72,7 @@ export default class NewProject extends Component {
         users.push(this.state.projectManager);
 
         try {
+            await this.props.checkTokens();
             const project = await this.createProject({
                 title: this.state.title,
                 projectManager: this.props.user.username,
