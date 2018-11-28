@@ -107,6 +107,13 @@ functions:
           method: post
           path: register
           cors: true
+  user-refresh:
+    handler: user-refresh-tokens.main
+    events:
+      - http:
+          method: get
+          path: users/refresh
+          cors: true
   user-confirm:
     handler: user-confirm.main
     events:
