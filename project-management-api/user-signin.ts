@@ -15,12 +15,10 @@ export async function main(event, context, callback) {
     try {
         const response = await call('initiateAuth', authParams);
 
-        /*
         const accessToken = JSON.parse(Buffer.from(response.AuthenticationResult.AccessToken.split('.')[1], 'base64').toString('utf8'));
         console.log(accessToken);
         const idToken = JSON.parse(Buffer.from(response.AuthenticationResult.IdToken.split('.')[1], 'base64').toString('utf8'));
         console.log(idToken);
-        */
 
         /*
         const identityParams = {
@@ -32,7 +30,15 @@ export async function main(event, context, callback) {
         const identity = await cognitoIdentity.call('getId', identityParams);
         */
 
-        callback(null, success({status: true, body: response.AuthenticationResult}));
+        callback(null, success({status: true, body: {
+                AccessToken: response.AuthenticationResult.AccessToken,
+                IdToken: response.AuthenticationResult.IdToken,
+                RefreshToken: response.AuthenticationResult.RefreshToken,
+                TokenType: response.AuthenticationResult.TokenType,
+                IssuedAt: Math.min(accessToken["iat"], idToken["iat"]),
+                Expiration: Math.min(accessToken["exp"], idToken["iat"])
+            }
+        }));
     } catch (error) {
         console.log(error);
         callback(null, failure({status: false, body: error}));
