@@ -64,11 +64,11 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isSubmitting: true});
 
-        let users = [];
+        let usernames = [];
+        usernames.push(this.props.user.username);
         for (let i = 0; i < this.state.developers.length; i++){
-            users.push(this.state.developers[i]);
+            usernames.push(this.state.developers[i]);
         }
-        users.push(this.state.projectManager);
 
         try {
             await this.props.checkTokens();
@@ -77,7 +77,7 @@ export default class NewProject extends Component {
                 projectManager: this.props.user.username,
                 description: this.state.description,
                 developers: this.state.developers,
-                users: users
+                usernames: usernames
             });
             console.log(project);
             this.props.history.push("/");

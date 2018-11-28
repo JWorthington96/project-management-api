@@ -45,6 +45,8 @@ class App extends Component {
 
     // function to check if the given users tokens have expired, and if so refresh them and change the current user
     async checkTokens () {
+        console.log("called check tokens");
+
         const serverTime = Math.floor(new Date()/1000) - this.state.user.auth.ClockDrift;
         if (serverTime > this.state.user.auth.Expiration) {
             try {

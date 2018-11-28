@@ -12,8 +12,8 @@ export default class Project extends Component {
     }
 
     renderUsers() {
-        return this.state.project.users.map( (user) =>
-            <ListGroupItem key={user.id} header={user.username}>
+        return this.state.project.developers.map( (user, i) =>
+            <ListGroupItem key={i.toString()} header={user}>
                 {
                     // TODO: add skills in here pls
                 }
@@ -29,7 +29,7 @@ export default class Project extends Component {
                 <h3>Project manager: {this.state.project.projectManager}</h3>
                 <ListGroup className="developers">
                     <h4>Developers:</h4>
-                    {this.renderUsers(this.state.project.developers)}
+                    {this.renderUsers()}
                     <ListGroupItem>
                         {
                             //TODO: add the project files here

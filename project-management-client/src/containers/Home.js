@@ -15,10 +15,10 @@ export default class Home extends Component {
 
     async componentDidMount() {
         if (!this.props.isAuthenticated) return;
-        console.log(this.props.user);
 
         try {
             await this.props.checkTokens();
+            console.log(this.props.user);
             const projects = await API.get("projects", "/projects",
                 {
                     headers: {
@@ -29,6 +29,7 @@ export default class Home extends Component {
                     }
                 }
             );
+            console.log(projects);
             this.setState({projects});
         } catch (error) {
             console.error(error.response);

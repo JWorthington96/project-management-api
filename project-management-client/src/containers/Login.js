@@ -100,7 +100,7 @@ export default class Login extends Component {
 
     render() {
         const tooltip =
-            <Tooltip>
+            <Tooltip id="password-tooltip">
                 Password is at least 8 characters long.
             </Tooltip>;
 
