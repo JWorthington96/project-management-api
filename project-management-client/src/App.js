@@ -39,28 +39,30 @@ class App extends Component {
         this.setState({isAuthenticating: false});
     };
 
-    // function to check if the given users tokens have expired
-    async checkTokens (auth) {
-        const serverTime = Math.floor(new Data()/1000) - auth.ClockDrift;
-        if (serverTime > auth.Expiration) {
+    // function to check if the given users tokens have expired, and if so refresh them and change the current user
+    async checkTokens () {
+        const serverTime = Math.floor(new Data()/1000) - this.state.user.auth.ClockDrift;
+        if (serverTime > this.state.user.auth.Expiration) {
             try {
-                const authRefresh = auth;
+                const refreshUser = this.state.user;
                 const auth = (await API.get("projects", "/users/refresh", {
                     queryStringParameters: {
-                        RefreshToken: authRefresh.RefreshToken
+                        RefreshToken: refreshUser.auth.RefreshToken
                     }
                 })).body;
-                authRefresh.AccessToken = auth.AccessToken;
-                authRefresh.IdToken = auth.IdToken;
-                authRefresh.IssuedAt = auth.IssuedAt;
-                authRefresh.Expiration = auth.Expiration;
-                authRefresh.ClockDrift = Math.floor(new Date()/1000) - auth.IssuedAt;
-                return authRefresh;
+
+                refreshUser.auth.AccessToken = auth.AccessToken;
+                refreshUser.auth.IdToken = auth.IdToken;
+                refreshUser.auth.IssuedAt = auth.IssuedAt;
+                refreshUser.auth.Expiration = auth.Expiration;
+                refreshUser.auth.ClockDrift = Math.floor(new Date()/1000) - auth.IssuedAt;
+
+                this.setCurrentUser(refreshUser)
             } catch (error) {
                 console.log(error.response);
             }
         }
-        return auth;
+        return;
     };
 
     userHasAuthenticated = authenticated => {
@@ -95,7 +97,8 @@ class App extends Component {
             isAuthenticated: this.state.isAuthenticated,
             user: this.state.user,
             setCurrentUser: this.setCurrentUser,
-            userHasAuthenticated: this.userHasAuthenticated
+            userHasAuthenticated: this.userHasAuthenticated,
+            checkTokens: this.checkTokens
         };
 
         return (
