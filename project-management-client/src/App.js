@@ -12,28 +12,32 @@ class App extends Component {
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
-            user: {}
+            user: null
         };
         this.setCurrentUser = this.setCurrentUser.bind(this);
+        this.checkTokens = this.checkTokens.bind(this);
     };
 
     async componentDidMount() {
         try {
             // this will be used to get the current user from a saved session
             const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
+            console.log(user);
             if (user === null) {
+                console.log("User is null");
                 // no stored user means user has not logged in/authenticated
                 this.userHasAuthenticated(false);
                 this.setState({isAuthenticating: false});
                 return;
             }
 
-            await this.props.checkTokens();
             this.setCurrentUser(user);
+            console.log(this.state.user);
+            await this.setState({user: user});
+            await this.checkTokens();
             this.userHasAuthenticated(true);
-            console.log(user);
         } catch (error) {
-            console.error(error.response);
+            console.error(error);
         }
 
         this.setState({isAuthenticating: false});
@@ -50,6 +54,7 @@ class App extends Component {
                         RefreshToken: refreshUser.auth.RefreshToken
                     }
                 })).body;
+                console.log(auth);
 
                 refreshUser.auth.AccessToken = auth.AccessToken;
                 refreshUser.auth.IdToken = auth.IdToken;
@@ -57,7 +62,8 @@ class App extends Component {
                 refreshUser.auth.Expiration = auth.Expiration;
                 refreshUser.auth.ClockDrift = Math.floor(new Date()/1000) - auth.IssuedAt;
 
-                this.setCurrentUser(refreshUser)
+                console.log("Refreshed Access and Id tokens");
+                await this.setState(refreshUser);
             } catch (error) {
                 console.log(error.response);
             }
@@ -76,11 +82,10 @@ class App extends Component {
     handleLogout = async event => {
         event.preventDefault();
         try {
-            const user = this.state.user;
-            user.auth = this.checkTokens(user.auth);
+            await this.checkTokens();
             await API.post("projects", "/logout", {
                 headers: {
-                    Authorization: "Bearer " + user.auth.AccessToken
+                    Authorization: "Bearer " + this.state.user.auth.AccessToken
                 }
             });
             localStorage.removeItem("ProjectManagerSession");

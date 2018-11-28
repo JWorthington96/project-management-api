@@ -45,8 +45,7 @@ export default class NewProject extends Component {
     };
 
     validateForm(){
-        return this.state.title.length !==0 && this.state.description.length !== 0
-            && this.state.projectManager.length !== 0 && this.state.confirmDevelopers;
+        return this.state.title.length !==0 && this.state.description.length !== 0 && this.state.confirmDevelopers;
     };
 
     setDevelopers(developers) {
