@@ -2,7 +2,6 @@ import {call} from "./lib/cognito";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    console.log(event.headers.Authorization);
     const token = event.headers.Authorization.split('Bearer')[1].trim();
     const params = {
         AccessToken: token
