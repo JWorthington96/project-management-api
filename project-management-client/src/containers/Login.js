@@ -55,14 +55,17 @@ export default class Login extends Component {
                 username: this.state.username,
                 password: this.state.password,
                 attributes: attributes.UserAttributes,
-                auth: response.Auth,
-                identityId: response.IdentityId
+                auth: response.Auth
             };
+
+            // calculating the clock drift from the server
+            const clockDrift = Math.floor(new Data()/1000) - user.auth.IssuedAt;
+            user.auth.ClockDrift = clockDrift;
+
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
             this.props.setCurrentUser(user);
-            console.log(user.valueOf());
             this.setState({isLoading: false});
             this.props.history.push("/");
         } catch (error) {
