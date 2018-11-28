@@ -59,7 +59,7 @@ export default class Login extends Component {
             };
 
             // calculating the clock drift from the server
-            user.auth.ClockDrift = Math.floor(new Data()/1000) - user.auth.IssuedAt;
+            user.auth.ClockDrift = Math.floor(new Date()/1000) - user.auth.IssuedAt;
 
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
