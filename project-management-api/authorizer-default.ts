@@ -23,6 +23,7 @@ export function main(event, context, callback) {
             policy = addToPolicy(policy, "Allow", "/GET/users");
             policy = addToPolicy(policy, "Allow", "/GET/users/list");
             policy = addToPolicy(policy, "Allow", "/PUT/users");
+            policy = addToPolicy(policy, "Allow", "/POST/logout");
 
             console.log(policy.valueOf());
             callback(null, policy);
