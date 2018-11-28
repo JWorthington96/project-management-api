@@ -13,7 +13,7 @@ export async function main(event, context, callback) {
             description: input.description,
             projectManager: input.projectManager,
             developers: input.developers,
-            users: input.users,
+            usernames: input.usernames,
             createdAt: Date.now()
         }
     };
