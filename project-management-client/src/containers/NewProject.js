@@ -79,7 +79,6 @@ export default class NewProject extends Component {
                 users: users
             });
             console.log(project);
-            //await this.createDefaultRoles(project.projectId);
             this.props.history.push("/");
         } catch (error) {
             console.error(error.response);
@@ -94,53 +93,6 @@ export default class NewProject extends Component {
             },
             body: project
         });
-    }
-
-    createDefaultRoles(projectId) {
-        // remove spaces
-        const title = this.state.title.replace(/\s/g, '');
-
-        const adminRole = {
-            RoleName: title + "Admin",
-            Description: "Full access of the database",
-            DeleteBoolean: true,
-            GetBoolean: true,
-            PutBoolean: true,
-            UpdateBoolean: true
-        };
-        const projectManagerRole = {
-            RoleName: title + "ProjectManager",
-            Description: "Full access of the database",
-            DeleteBoolean: true,
-            GetBoolean: true,
-            PutBoolean: true,
-            UpdateBoolean: true
-        };
-        const developerRole = {
-            RoleName: title + "Developer",
-            Description: "Access to viewing and updating database",
-            DeleteBoolean: false,
-            GetBoolean: true,
-            PutBoolean: true,
-            UpdateBoolean: true
-        };
-
-        API.post("projects", `/projects/${projectId}/roles`, {body: adminRole}).promise();
-        API.post("projects", `/projects/${projectId}/roles`, {body: projectManagerRole}).promise();
-        API.post("projects", `/projects/${projectId}/roles`, {body: developerRole}).promise();
-
-        API.post("projects", `/projects/${projectId}/groups`, {body: {
-            RoleName: title + "Admin", GroupName: "Admins",
-                Description: "Admins have full access of the database"
-            }}).promise();
-        API.post("projects", `/projects/${projectId}/groups`, {body: {
-                RoleName: title + "ProjectManager", GroupName: "ProjectManagers",
-                Description: "Project managers have full access of the database"
-            }}).promise();
-        API.post("projects", `/projects/${projectId}/groups`, {body: {
-                RoleName: title + "Developer", GroupName: "Developers",
-                Description: "Developers have access to viewing and updating database"
-            }}).promise();
     }
 
     render() {
