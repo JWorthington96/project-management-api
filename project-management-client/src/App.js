@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 import Routes from "./Routes";
 import './App.css';
-import {Auth, API} from "aws-amplify";
+import {API} from "aws-amplify";
 
 class App extends Component {
     constructor(props) {
@@ -19,17 +19,48 @@ class App extends Component {
 
     async componentDidMount() {
         try {
-            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
-            if (user === null) throw new Error("No current user");
             // this will be used to get the current user from a saved session
+            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
+            if (user === null) {
+                // no stored user means user has not logged in/authenticated
+                this.userHasAuthenticated(false);
+                this.setState({isAuthenticating: false});
+                return;
+            }
+
+            user.auth = this.checkTokens(user.auth);
             this.setCurrentUser(user);
             this.userHasAuthenticated(true);
             console.log(user);
         } catch (error) {
-            if (error !== 'No current user') console.error(error.response);
+            console.error(error.response);
         }
 
-        this.setState({isAuthenticating: false,});
+        this.setState({isAuthenticating: false});
+    };
+
+    // function to check if the given users tokens have expired
+    async checkTokens (auth) {
+        const serverTime = Math.floor(new Data()/1000) - auth.ClockDrift;
+        if (serverTime > auth.Expiration) {
+            try {
+                const authRefresh = auth;
+                const auth = (await API.get("projects", "/users/refresh", {
+                    queryStringParameters: {
+                        RefreshToken: authRefresh.RefreshToken
+                    }
+                })).body;
+                authRefresh.AccessToken = auth.AccessToken;
+                authRefresh.IdToken = auth.IdToken;
+                authRefresh.IssuedAt = auth.IssuedAt;
+                authRefresh.Expiration = auth.Expiration;
+                authRefresh.ClockDrift = Math.floor(new Date()/1000) - auth.IssuedAt;
+                return authRefresh;
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        return auth;
     };
 
     userHasAuthenticated = authenticated => {
@@ -41,18 +72,15 @@ class App extends Component {
     };
 
     handleLogout = async event => {
+        event.preventDefault();
         try {
-            /*
-            await API.post("projects", "/signout", {
+            const user = this.state.user;
+            user.auth = this.checkTokens(user.auth);
+            await API.post("projects", "/logout", {
                 headers: {
-                    Authorization: this.state.user.auth.AccessToken
-                },
-                body: {
-                    AccessToken: this.state.user.auth.AccessToken
+                    Authorization: "Bearer " + user.auth.AccessToken
                 }
             });
-            */
-            await Auth.signOut();
             localStorage.removeItem("ProjectManagerSession");
             this.userHasAuthenticated(false);
             this.setCurrentUser({});
