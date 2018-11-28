@@ -5,6 +5,7 @@ import {
     Form,
     FormControl,
     FormGroup,
+    Glyphicon,
     ListGroup,
     ListGroupItem,
     Modal,
@@ -13,6 +14,7 @@ import {
 } from "react-bootstrap";
 import LoadingButton from "../components/LoadingButton";
 import {API} from "aws-amplify";
+import "./ProjectSettings.css";
 
 export default class ProjectSettings extends Component {
     constructor(props){
@@ -20,15 +22,43 @@ export default class ProjectSettings extends Component {
         this.state = {
             isLoading: false,
             isDeleteLoading: false,
+            isChangeLoading: false,
             confirmDelete: false,
+            confirmManager: false,
+            changeManager: false,
             project: this.props.project,
+            projectManager: this.props.project.projectManager,
+            developers: this.props.project.developers,
             title: this.props.project.title,
-            description: this.props.project.description
-        }
+            description: this.props.project.description,
+            projectRoles: [
+                {
+                    name: "Project Manager",
+                    description: "In charge of the project, has complete access."
+                },
+                {
+                    name: "Developer",
+                    description: "Develops for the project, has access to viewing the " +
+                        "project and adding new files/changing ones they've created."
+                }
+            ]
+        };
+        const roles = [];
+        roles.push({Username: this.props.project.projectManager, Role: "Project Manager"});
+        this.props.project.developers.map( (developer) => {
+            roles.push({Username: developer, Role: "Developer"})
+        });
+        this.setState({roles: roles});
+        this.setNewRoles = this.setNewRoles.bind(this);
+        this.changeDevelopers = this.changeDevelopers.bind(this);
     }
 
     changeDeleteBool = event => {
         this.setState({confirmDelete: !this.state.confirmDelete})
+    };
+
+    changeManagerBool = event => {
+        this.setState({confirmManager: !this.state.confirmManager})
     };
 
     handleChange = event => {
@@ -38,6 +68,7 @@ export default class ProjectSettings extends Component {
     handleSubmit = async event => {
         event.preventDefault();
         this.setState({isLoading: true});
+
         try {
             await this.props.checkTokens();
             await API.put("projects", `/projects/${this.props.project.projectId}`, {
@@ -45,11 +76,11 @@ export default class ProjectSettings extends Component {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
                 },
                 body: {
-                    title: this.state.title,
-                    description: this.state.description
+                    title: this.props.title,
+                    description: this.props.description
                 },
                 queryStringParameters: {
-                    IdentityId: this.props.user.identityId
+                    projectId: this.props.project.projectId
                 }
             });
         } catch (error) {
@@ -62,14 +93,12 @@ export default class ProjectSettings extends Component {
     deleteProject = async event => {
         event.preventDefault();
         this.setState({isDeleteLoading: true});
+
         try {
             await this.props.checkTokens();
             await API.del("projects", `/projects/${this.props.match.params.id}`, {
                 headers: {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
-                },
-                queryStringParameters: {
-                    IdentityId: this.props.user.identityId
                 }
             });
         } catch (error) {
@@ -79,25 +108,62 @@ export default class ProjectSettings extends Component {
         this.props.hist.push('/');
     };
 
-    renderRoles(){
-        return this.state.project.projectRoles.map( (role, i) =>
-            <tr>
-                <td>{i.toString()}</td>
-                <td>{role.name}</td>
-                <td>{role.description}</td>
-            </tr>
-        );
-    }
+    changeDevelopers = async event => {
+        event.preventDefault();
+        this.setState({isChangeLoading: true});
 
-    renderUsers(){
-        return this.state.project.users.map( (user, i) =>
-            <tr>
-                <td>{i.toString()}</td>
-                <td>{user.username}</td>
-                <td>{user.skills}</td>
-                <td>{user.role}</td>
-            </tr>
-        );
+        try {
+            await this.props.checkTokens();
+            await API.put("projects", `/projects/${this.props.match.params.id}`, {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                },
+                body: {
+                    projectManager: this.state.projectManager,
+                    developers: this.state.developers
+                }
+            });
+        } catch (error) {
+            console.log(error.response);
+            this.setState({isChangeLoading: false});
+        }
+    };
+
+    changeManager = async event => {
+        event.preventDefault();
+        this.setState({isChangeLoading: true});
+
+        try {
+            await this.props.checkTokens();
+            await API.put("projects", `/projects/${this.props.match.params.id}`, {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                },
+                body: {
+                    projectManager: this.state.projectManager,
+                    developers: this.state.developers
+                }
+            });
+        } catch (error) {
+            console.log(error.response);
+            this.setState({isChangeLoading: false});
+        }
+        this.props.history.push('/');
+    };
+
+    setNewRoles(projectManager, developers) {
+        if (projectManager === this.state.project.projectManager) {
+            this.setState({
+                changeManager: false,
+                developers: developers
+            });
+        } else {
+            this.setState({
+                changeManager: true,
+                projectManager: projectManager,
+                developers: developers
+            });
+        }
     }
 
     render() {
@@ -118,7 +184,8 @@ export default class ProjectSettings extends Component {
                                 <ControlLabel>Description</ControlLabel>{": "}
                                 <FormControl value={this.state.description}
                                              placeholder={this.props.project.description}
-                                             onChange={this.handleChange} />
+                                             onChange={this.handleChange}
+                                             componentClass="textarea" />
                             </FormGroup>
                             <LoadingButton type="submit"
                                            isLoading={this.state.isLoading}
@@ -128,32 +195,41 @@ export default class ProjectSettings extends Component {
                     </ListGroupItem>
 
                     <ListGroupItem>
-                            <Table responsive>
+                        <Table responsive striped bordered>
                             <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Role</th>
-                                <th>Description</th>
-                            </tr>
+                                <tr>
+                                    <th>Role</th>
+                                    <th>Description</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {this.renderRoles}
+                                {this.state.projectRoles.map( (role, i) =>
+                                    <tr>
+                                        <td>{role.name}</td>
+                                        <td>{role.description}</td>
+                                    </tr>
+                                )}
                             </tbody>
                         </Table>
                     </ListGroupItem>
 
                     <ListGroupItem>
-                        <Table responsive>
+                        <Table responsive striped bordered>
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Username</th>
-                                    <th>Skills</th>
                                     <th>Role</th>
+                                    <th>Skills</th>
+                                    <th>Email</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {this.renderUsers}
+                                <ProjectUsers project={this.state.project}
+                                              siteUsers={this.props.siteUsers}
+                                              setNewRoles={this.setNewRoles}
+                                              changeDevelopers={this.changeDevelopers} />
                             </tbody>
                         </Table>
                     </ListGroupItem>
@@ -183,7 +259,94 @@ export default class ProjectSettings extends Component {
                                        loadingText="Deleting..."/>
                     </Modal.Footer>
                 </Modal>
+
+                <Modal>
+                    <Modal.Header>
+                        <Modal.Title>Are you sure?</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        Once you do this you will <strong>not</strong> be able to change it back (only the new project
+                        manager or admin can.
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button onClick={this.changeManagerBool}>Cancel</Button>
+                        <LoadingButton bsStyle="danger"
+                                       onClick={this.changeManager}
+                                       isLoading={this.state.isChangeLoading}
+                                       text="Change"
+                                       loadingText="Changing..."
+                        />
+                    </Modal.Footer>
+                </Modal>
             </div>
+        );
+    }
+}
+
+class ProjectUsers extends Component {
+    constructor(props){
+        super(props);
+    }
+
+    handleClick = projectManager => {
+        const developers = this.props.project.developers;
+        developers.slice(developers.indexOf(this.props.project.projectManager), 1);
+        developers.push(this.props.project.projectManager);
+        this.props.setNewRoles(projectManager, developers);
+    };
+
+    handleRemove = async (developer, event) => {
+        const developers = this.props.project.developers;
+        developers.splice(developers.indexOf(developer), 1);
+        await this.props.setNewRoles(this.props.project.projectManager, developers);
+        await this.props.changeDevelopers(event);
+    };
+
+    render() {
+        const siteUsers = this.props.siteUsers;
+        const usernames = [];
+        siteUsers.map( (user) => {
+            usernames.push(user.Username);
+        });
+
+        return this.props.project.usernames.map( (username, i) => {
+            const role = (username === this.props.project.projectManager) ? "Project Manager" : "Developer";
+                let user = {};
+                let email = "unknown";
+                let skills = "unknown";
+                if (usernames.indexOf(username) > -1) {
+                    user = siteUsers[usernames.indexOf(username)];
+                    user.Attributes.map( (attribute) => {
+                        if (attribute.Name === "email") email = attribute.Value;
+                        if (attribute.Name === "custom:skills") skills = attribute.Value;
+                    });
+                }
+                return (
+                    <tr>
+                        <td>{(i+1).toString()}</td>
+                        <td>{username}</td>
+                        <td>
+                            {role}
+                            {role !== "Project Manager" ?
+                                <Button onClick={() => this.handleClick(username)}
+                                        style={{float: "right"}}>
+                                    Make Project Manager
+                                </Button>
+                                : null
+                            }
+                        </td>
+                        <td>{skills}</td>
+                        <td>{email}</td>
+                        <td>
+                            <Button onClick={(event) => this.handleRemove(username, event)}>
+                                <Glyphicon glyph="remove"/>
+                            </Button>
+                        </td>
+                    </tr>
+                );
+            }
         );
     }
 }
