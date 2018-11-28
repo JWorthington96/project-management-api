@@ -27,7 +27,7 @@ export function main(event, context, callback) {
                     AccessToken: response.AuthenticationResult.AccessToken,
                     IdToken: response.AuthenticationResult.IdToken,
                     IssuedAt: Math.min(accessToken["iat"], idToken["iat"]),
-                    Expiration: Math.min(accessToken["exp"], idToken["iat"])
+                    Expiration: Math.min(accessToken["exp"], idToken["exp"])
                 }
             }));
         }

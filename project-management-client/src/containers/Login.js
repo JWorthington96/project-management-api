@@ -46,7 +46,7 @@ export default class Login extends Component {
 
             const attributes = (await API.get("projects", "/users", {
                 headers: {
-                    Authorization: "Bearer " + response.Auth.AccessToken
+                    Authorization: "Bearer " + response.AccessToken
                 }
             })).body;
             console.log(attributes);
@@ -55,7 +55,7 @@ export default class Login extends Component {
                 username: this.state.username,
                 password: this.state.password,
                 attributes: attributes.UserAttributes,
-                auth: response.Auth
+                auth: response
             };
 
             // calculating the clock drift from the server

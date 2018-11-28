@@ -40,7 +40,7 @@ export function main(event, context, callback) {
                     RefreshToken: response.AuthenticationResult.RefreshToken,
                     TokenType: response.AuthenticationResult.TokenType,
                     IssuedAt: Math.min(accessToken["iat"], idToken["iat"]),
-                    Expiration: Math.min(accessToken["exp"], idToken["iat"])
+                    Expiration: Math.min(accessToken["exp"], idToken["exp"])
                 }
             }));
         }
