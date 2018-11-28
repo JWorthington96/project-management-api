@@ -13,8 +13,8 @@ custom:
     webpackConfig: ./webpack.config.js
     includeModules: true
   authorizer:
-    main:
-      name: authorize-user
+    projects:
+      name: authorize-projects
       type: TOKEN
       identitySource: method.request.header.Authorization
       identityValidationExpression: Bearer (.*)
@@ -48,7 +48,7 @@ provider:
 
 # API endpoints for the functions
 functions:
-  authorize-user:
+  authorize-projects:
     handler: authorizer-projects.main
   authorize-default:
     handler: authorizer-default.main
@@ -83,7 +83,7 @@ functions:
           method: delete
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.projects}
   modify:
     handler: modify.main
     events:
@@ -91,7 +91,7 @@ functions:
           method: put
           path: projects/{id}
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.projects}
   list-users:
     handler: list-users.main
     events:
@@ -128,7 +128,7 @@ functions:
           method: post
           path: logout
           cors: true
-          authorizer: ${self:custom.authorizer.main}
+          authorizer: ${self:custom.authorizer.default}
   user-get:
     handler: user-get.main
     events:
