@@ -2,12 +2,14 @@ import React, {Component} from "react";
 import {
     Button,
     ControlLabel,
+    DropdownButton,
     Form,
     FormControl,
     FormGroup,
     Glyphicon,
     ListGroup,
     ListGroupItem,
+    MenuItem,
     Modal,
     PageHeader,
     Table
@@ -27,6 +29,7 @@ export default class ProjectSettings extends Component {
             confirmManager: false,
             changeManager: false,
             project: this.props.project,
+            projectStatus: this.props.project.projectStatus,
             projectManager: this.props.project.projectManager,
             developers: this.props.project.developers,
             title: this.props.project.title,
@@ -50,6 +53,7 @@ export default class ProjectSettings extends Component {
         });
         this.setState({roles: roles});
         this.setNewRoles = this.setNewRoles.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
         this.changeDevelopers = this.changeDevelopers.bind(this);
     }
 
@@ -151,6 +155,23 @@ export default class ProjectSettings extends Component {
         this.props.history.push('/');
     };
 
+    changeStatus = async (status, event) => {
+        event.preventDefault();
+        try {
+            await this.props.checkTokens();
+            await API.put("projects", `/projects/${this.props.match.params.id}`, {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                },
+                body: {
+                    projectStatus: this.state.projectStatus
+                }
+            });
+        } catch (error) {
+            console.log(error.response);
+        }
+    };
+
     setNewRoles(projectManager, developers) {
         if (projectManager === this.state.project.projectManager) {
             this.setState({
@@ -233,7 +254,13 @@ export default class ProjectSettings extends Component {
                             </tbody>
                         </Table>
                     </ListGroupItem>
+
+                    <ListGroupItem>
+
+                    </ListGroupItem>
                 </ListGroup>
+
+                <StatusDropdown project={this.state.project} changeStatus={this.changeStatus}/>
 
                 <Button bsStyle="danger"
                         onClick={this.changeDeleteBool}>
@@ -256,7 +283,7 @@ export default class ProjectSettings extends Component {
                                        onClick={this.deleteProject}
                                        isLoading={this.state.isDeleteLoading}
                                        text="Delete"
-                                       loadingText="Deleting..."/>
+                                       loadingText="Deleting..." />
                     </Modal.Footer>
                 </Modal>
 
@@ -276,8 +303,7 @@ export default class ProjectSettings extends Component {
                                        onClick={this.changeManager}
                                        isLoading={this.state.isChangeLoading}
                                        text="Change"
-                                       loadingText="Changing..."
-                        />
+                                       loadingText="Changing..." />
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -347,6 +373,33 @@ class ProjectUsers extends Component {
                     </tr>
                 );
             }
+        );
+    }
+}
+
+class StatusDropdown extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            projectStatuses: ["pending", "active", "completed"],
+            selected: this.props.project.projectStatus
+        }
+    }
+
+    handleSelect = (eventKey, event) => {
+        this.setState({selected: this.state.projectStatuses[eventKey]});
+        this.props.changeStatus(this.state.selected, event);
+    };
+
+    render() {
+        return (
+            <DropdownButton dropup title={this.state.selected}>
+                {this.state.projectStatuses.map( (status, i) => (
+                    <MenuItem key={i} eventKey={i} onSelect={this.handleSelect}>
+                        {status}
+                    </MenuItem>
+                ))}
+            </DropdownButton>
         );
     }
 }
