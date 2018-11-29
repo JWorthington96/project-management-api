@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 import Routes from "./Routes";
 import './App.css';
-import {Auth, API} from "aws-amplify";
+import {API} from "aws-amplify";
 
 class App extends Component {
     constructor(props) {
@@ -12,24 +12,65 @@ class App extends Component {
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
-            user: {}
+            user: null
         };
         this.setCurrentUser = this.setCurrentUser.bind(this);
+        this.checkTokens = this.checkTokens.bind(this);
     };
 
     async componentDidMount() {
         try {
-            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
-            if (user === null) throw new Error("No current user");
             // this will be used to get the current user from a saved session
-            this.setCurrentUser(user);
-            this.userHasAuthenticated(true);
+            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
             console.log(user);
+            if (user === null) {
+                console.log("User is null");
+                // no stored user means user has not logged in/authenticated
+                this.userHasAuthenticated(false);
+                this.setState({isAuthenticating: false});
+                return;
+            }
+
+            this.setCurrentUser(user);
+            console.log(this.state.user);
+            await this.setState({user: user});
+            await this.checkTokens();
+            this.userHasAuthenticated(true);
         } catch (error) {
-            if (error !== 'No current user') console.error(error.response);
+            console.error(error);
         }
 
-        this.setState({isAuthenticating: false,});
+        this.setState({isAuthenticating: false});
+    };
+
+    // function to check if the given users tokens have expired, and if so refresh them and change the current user
+    async checkTokens () {
+        console.log("called check tokens");
+
+        const serverTime = Math.floor(new Date()/1000) - this.state.user.auth.ClockDrift;
+        if (serverTime > this.state.user.auth.Expiration) {
+            try {
+                const refreshUser = this.state.user;
+                const auth = (await API.get("projects", "/users/refresh", {
+                    queryStringParameters: {
+                        RefreshToken: refreshUser.auth.RefreshToken
+                    }
+                })).body;
+                console.log(auth);
+
+                refreshUser.auth.AccessToken = auth.AccessToken;
+                refreshUser.auth.IdToken = auth.IdToken;
+                refreshUser.auth.IssuedAt = auth.IssuedAt;
+                refreshUser.auth.Expiration = auth.Expiration;
+                refreshUser.auth.ClockDrift = Math.floor(new Date()/1000) - auth.IssuedAt;
+
+                console.log("Refreshed Access and Id tokens");
+                await this.setState(refreshUser);
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        return;
     };
 
     userHasAuthenticated = authenticated => {
@@ -41,18 +82,14 @@ class App extends Component {
     };
 
     handleLogout = async event => {
+        event.preventDefault();
         try {
-            /*
-            await API.post("projects", "/signout", {
+            await this.checkTokens();
+            await API.post("projects", "/logout", {
                 headers: {
-                    Authorization: this.state.user.auth.AccessToken
-                },
-                body: {
-                    AccessToken: this.state.user.auth.AccessToken
+                    Authorization: "Bearer " + this.state.user.auth.AccessToken
                 }
             });
-            */
-            await Auth.signOut();
             localStorage.removeItem("ProjectManagerSession");
             this.userHasAuthenticated(false);
             this.setCurrentUser({});
@@ -67,7 +104,8 @@ class App extends Component {
             isAuthenticated: this.state.isAuthenticated,
             user: this.state.user,
             setCurrentUser: this.setCurrentUser,
-            userHasAuthenticated: this.userHasAuthenticated
+            userHasAuthenticated: this.userHasAuthenticated,
+            checkTokens: this.checkTokens
         };
 
         return (
@@ -84,6 +122,9 @@ class App extends Component {
                         <Nav pullRight>
                             {this.state.isAuthenticated ?
                                 <Fragment>
+                                    <LinkContainer to="/users">
+                                        <NavItem>Users</NavItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/account">
                                         <NavItem>{this.state.user.username}</NavItem>
                                     </LinkContainer>

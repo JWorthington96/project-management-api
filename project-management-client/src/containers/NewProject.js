@@ -25,6 +25,7 @@ export default class NewProject extends Component {
 
     async componentDidMount() {
         try {
+            await this.props.checkTokens();
             const users = await API.get("projects", "/users/list", {
                 headers: {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
@@ -44,8 +45,7 @@ export default class NewProject extends Component {
     };
 
     validateForm(){
-        return this.state.title.length !==0 && this.state.description.length !== 0
-            && this.state.projectManager.length !== 0 && this.state.confirmDevelopers;
+        return this.state.title.length !==0 && this.state.description.length !== 0 && this.state.confirmDevelopers;
     };
 
     setDevelopers(developers) {
@@ -64,19 +64,20 @@ export default class NewProject extends Component {
         event.preventDefault();
         this.setState({isSubmitting: true});
 
-        let users = [];
+        let usernames = [];
+        usernames.push(this.props.user.username);
         for (let i = 0; i < this.state.developers.length; i++){
-            users.push(this.state.developers[i]);
+            usernames.push(this.state.developers[i]);
         }
-        users.push(this.state.projectManager);
 
         try {
+            await this.props.checkTokens();
             const project = await this.createProject({
                 title: this.state.title,
                 projectManager: this.props.user.username,
                 description: this.state.description,
                 developers: this.state.developers,
-                users: users
+                usernames: usernames
             });
             console.log(project);
             this.props.history.push("/");

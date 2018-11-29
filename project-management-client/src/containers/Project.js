@@ -10,17 +10,25 @@ export default class Project extends Component {
         super(props);
         this.state = {
             isLoading: true,
+            siteUsers: [],
             project: {}
         };
     }
 
     async componentDidMount() {
         try {
+            await this.props.checkTokens();
             const project = await this.getProject();
-            console.log(project);
+            const users = await API.get("projects", "/users/list", {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                }
+            });
+            console.log(users.Users);
 
             this.setState({
                 isLoading: false,
+                siteUsers: users.Users,
                 project
             });
         } catch (error) {
@@ -52,7 +60,9 @@ export default class Project extends Component {
                             <ProjectSettings project={this.state.project}
                                              hist={this.props.history}
                                              match={this.props.match}
-                                             user={this.props.user} />
+                                             user={this.props.user}
+                                             siteUsers={this.state.siteUsers}
+                                             checkTokens={this.props.checkTokens} />
                         </Tab>
                     </Tabs> :
                     <ProjectView project={this.state.project}/>

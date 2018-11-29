@@ -8,12 +8,12 @@ export async function main(event, context, callback) {
         TableName: "projects",
         Item: {
             projectId: uuid(),
-            status: "pending",
+            projectStatus: "pending",
             title: input.title,
             description: input.description,
             projectManager: input.projectManager,
             developers: input.developers,
-            users: input.users,
+            usernames: input.usernames,
             createdAt: Date.now()
         }
     };

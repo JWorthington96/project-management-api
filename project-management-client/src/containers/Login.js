@@ -46,7 +46,7 @@ export default class Login extends Component {
 
             const attributes = (await API.get("projects", "/users", {
                 headers: {
-                    Authorization: "Bearer " + response.Auth.AccessToken
+                    Authorization: "Bearer " + response.AccessToken
                 }
             })).body;
             console.log(attributes);
@@ -55,14 +55,16 @@ export default class Login extends Component {
                 username: this.state.username,
                 password: this.state.password,
                 attributes: attributes.UserAttributes,
-                auth: response.Auth,
-                identityId: response.IdentityId
+                auth: response
             };
+
+            // calculating the clock drift from the server
+            user.auth.ClockDrift = Math.floor(new Date()/1000) - user.auth.IssuedAt;
+
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
             this.props.setCurrentUser(user);
-            console.log(user.valueOf());
             this.setState({isLoading: false});
             this.props.history.push("/");
         } catch (error) {
@@ -98,7 +100,7 @@ export default class Login extends Component {
 
     render() {
         const tooltip =
-            <Tooltip>
+            <Tooltip id="password-tooltip">
                 Password is at least 8 characters long.
             </Tooltip>;
 

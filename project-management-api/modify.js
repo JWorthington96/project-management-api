@@ -11,26 +11,26 @@ import { success, failure } from "./lib/response";
 export function main(event, context, callback) {
     return __awaiter(this, void 0, void 0, function* () {
         const input = JSON.parse(event.body);
+        // mapping the input to get an AttributeUpdates object
+        const attributeUpdates = {};
+        Object.keys(input).map(key => {
+            attributeUpdates[key.toString()] = {
+                "Action": "PUT",
+                "Value": input[key]
+            };
+        });
+        console.log(attributeUpdates);
         const params = {
             TableName: "projects",
             Key: {
                 projectId: event.pathParameters.id
             },
-            UpdateExpression: "SET status = :status, title = :title, description = :description," +
-                "projectManager = :projectManager, developers = :developers, users = :users",
-            ExpressionAttributeValues: {
-                ":status": input.status ? input.status : null,
-                ":title": input.title ? input.title : null,
-                ":description": input.description ? input.description : null,
-                ":projectManager": input.projectManager ? input.projectManager : null,
-                ":developers": input.developers ? input.developers : null,
-                ":users": input.users ? input.users : null
-            },
-            ReturnValues: "ALL_NEW"
+            AttributeUpdates: attributeUpdates,
+            ReturnValues: "UPDATED_NEW"
         };
         try {
-            yield call('update', params);
-            callback(null, success({ status: true }));
+            const updated = yield call('update', params);
+            callback(null, success({ status: true, body: updated.Attributes }));
         }
         catch (error) {
             console.error(error);

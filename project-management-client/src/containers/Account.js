@@ -72,6 +72,7 @@ export default class Account extends Component {
                 input.body.UserAttributes.Name = "custom:skills";
                 input.body.UserAttributes.Value = this.state.email;
             }
+            await this.props.checkTokens();
             await API.put("projects", "/users", input);
         } catch (error) {
             this.setState({
@@ -92,6 +93,7 @@ export default class Account extends Component {
         this.setState({isLoading: true});
 
         try {
+            await this.props.checkTokens();
             await Auth.changePassword(this.props.user, this.state.oldPassword, this.state.newPassword);
         } catch (error) {
             console.log(error);
