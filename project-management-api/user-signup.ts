@@ -15,22 +15,9 @@ export async function main(event, context, callback){
             {
                 "Name": "custom:skills",
                 "Value": input.Skills
-            },
-            {
-                "Name": "custom:adminProjects",
-                "Value": ""
-            },
-            {
-                "Name": "custom:managerProjects",
-                "Value": ""
-            },
-            {
-                "Name": "custom:devProjects",
-                "Value": ""
             }
         ],
         ValidationData: null
-        //eu-west-2_7DRbUQOk6
     };
 
     try {
