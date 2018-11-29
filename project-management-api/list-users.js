@@ -15,6 +15,7 @@ export function main(event, context, callback) {
         };
         try {
             const users = yield call('listUsers', params);
+            console.log(users);
             callback(null, success(users));
         }
         catch (error) {

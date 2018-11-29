@@ -8,6 +8,7 @@ export async function main(event, context, callback){
 
     try {
         const users = await call('listUsers', params);
+        console.log(users);
         callback(null, success(users));
     } catch (error) {
         console.log(error);
