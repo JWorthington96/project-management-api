@@ -1,5 +1,15 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, ControlLabel, FormGroup, FormControl, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {
+    Alert,
+    Button,
+    ControlLabel,
+    FormGroup,
+    FormControl,
+    OverlayTrigger,
+    Tooltip,
+    Form,
+    Modal
+} from "react-bootstrap";
 import "./Login.css";
 import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
@@ -10,18 +20,20 @@ export default class Login extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.state = {
-            isConfirmed: true,
             isLoading: false,
+            isConfirmLoading: false,
+            showConfirm: false,
             incorrect: false,
             username: '',
-            password: ''
+            password: '',
+            code: ''
         };
     }
 
     getValidationBoolean() {
         const usernameLen = this.state.username.length;
         const passLen = this.state.password.length;
-        return (usernameLen > 0 && passLen > 12);
+        return (usernameLen > 0 && passLen > 8);
     };
 
     getValidationState(){
@@ -37,6 +49,7 @@ export default class Login extends Component {
         this.setState({isLoading: true});
 
         try {
+            // calling the sign in and get user methods on the backend
             const response = (await API.post("projects", "/login", {body: {
                     Username: this.state.username,
                     Password: this.state.password
@@ -63,20 +76,21 @@ export default class Login extends Component {
 
             localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
-            // this will store the user in App.js
-            this.props.setCurrentUser(user);
-            this.setState({isLoading: false});
+            // this will store the user in App.js for use in the site
+            await this.props.setCurrentUser(user);
             this.props.history.push("/");
         } catch (error) {
-            if (error.message === "") {
-                this.setState({isConfirmed: false});
+            if (error.response.data.body.message === "User is not confirmed.") {
+                this.setState({
+                    isLoading: false,
+                    showConfirm: true
+                });
             } else if (error.message === "No username/password combination found") {
                 this.setState({incorrect: true});
                 // TODO: add prompt that shows the username or pass was incorrect
             } else if (error.message === "User does not exist.") {
-                // TODO: redirect user to the register page
+                this.props.history.push('/register');
             } else {
-                console.error(error);
                 console.error(error.response);
                 this.setState({isLoading: false});
             }
@@ -91,11 +105,38 @@ export default class Login extends Component {
         event.preventDefault();
 
         try {
-            //await Auth.resendSignUp(this.state.username);
-            this.setState({isConfirmed: true});
+            await API.post("projects", "register/resend", {
+                Username: this.state.username
+            });
         } catch (error) {
             console.log(error);
         }
+    };
+
+    handleConfirmSubmit = async event => {
+        event.preventDefault();
+        this.setState({isConfirmLoading: true});
+
+        try {
+            await API.post("projects", "/register/confirm", {body: {
+                    Username: this.state.username,
+                    ConfirmationCode: this.state.code
+                }
+            });
+
+            alert("Successfully confirmed email! You can now log in.");
+            this.setState({
+                showConfirm: false,
+                isConfirmLoading: false
+            });
+        } catch (error) {
+            console.error(error.response);
+            this.setState({isConfirmLoading: false});
+        }
+    };
+
+    handleHide = event => {
+        this.setState({showConfirm: false});
     };
 
     render() {
@@ -144,13 +185,26 @@ export default class Login extends Component {
                         loadingText="Logging in..."
                     />
 
-                    {this.state.isConfirmed ? null
+                    {!this.state.showConfirm ? null
                         : <Fragment>
                             <Alert className="alert" bsStyle="danger" onDismiss={this.handleDismiss}>
                                 <h3>Thank you again for registering!</h3>
-                                <p>Unfortunately you still haven't confirmed your account. Please check your email to confirm your
-                                    account before signing in, alternatively, if that doesn't work or you lost the email,
-                                    click the button below to resend the confirmation email.</p>
+                                <p>Unfortunately you still haven't confirmed your account. Please check your email to
+                                    find the code to confirm your account before signing in, alternatively, if that
+                                    doesn't work or you lost the email, click the button below to resend the
+                                    confirmation email.</p>
+                                <Form onSubmit={this.handleConfirmSubmit}>
+                                    <FormGroup controlId="code">
+                                        <ControlLabel>Code:</ControlLabel>
+                                        <FormControl value={this.state.code}
+                                                     onChange={this.handleChange} />
+                                    </FormGroup>
+                                    <LoadingButton type="submit"
+                                                   isLoading={this.state.isConfirmLoading}
+                                                   text="Confirm"
+                                                   loadingText="Confirming..." />
+                                </Form>
+                                <br/>
                                 <p>
                                     <Button onClick={this.handleResend}>Resend email</Button>
                                     <span>  or  </span>

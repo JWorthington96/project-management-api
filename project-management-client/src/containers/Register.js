@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {ControlLabel, FormGroup, FormControl, HelpBlock, OverlayTrigger, Tooltip} from "react-bootstrap";
+import {ControlLabel, Form, FormGroup, FormControl, HelpBlock, Modal, OverlayTrigger, Tooltip} from "react-bootstrap";
 import LoadingButton from "../components/LoadingButton";
 import "./Register.css";
 import {API} from "aws-amplify";
@@ -12,12 +12,15 @@ export default class Register extends Component {
         this.state = {
             isConfirmed: false,
             isLoading: false,
+            isConfirmLoading: false,
+            showConfirm: false,
             email: '',
             skills: '',
             username: '',
             password: '',
             confirmPass: '',
-            newUser: null
+            code: '',
+            newUser: {}
         };
     }
 
@@ -25,7 +28,7 @@ export default class Register extends Component {
         const emailLen = this.state.email.length;
         const userLen = this.state.username.length;
         const passLen = this.state.password.length;
-        if (emailLen > 0 && userLen > 0 && passLen > 12 &&
+        if (emailLen > 0 && userLen > 0 && passLen > 8 &&
             this.state.confirmPass === this.state.password) return 'success';
         else return 'error';
     }
@@ -44,25 +47,57 @@ export default class Register extends Component {
         this.setState({isLoading: true});
         try {
             const newUser = {
-                Username: this.state.username,
-                Password: this.state.password,
-                Email: this.state.email,
-                Skills: this.state.skills
+                username: this.state.username,
+                password: this.state.password,
+                email: this.state.email,
+                skills: this.state.skills
             };
-            await API.post("projects", "/register", {body: newUser});
+            await API.post("projects", "/register", {body: {
+                    Username: newUser.username,
+                    Password: newUser.password,
+                    Email: newUser.email,
+                    Skills: newUser.skills
+                }
+            });
 
-            this.props.setCurrentUser(newUser);
+            this.setState({newUser: newUser});
+            //this.props.history.push('/register/confirm');
+            this.setState({showConfirm: true});
         } catch (error) {
-            console.error(error);
+            //if (error.response.data.body === "Password did not conform with password policy.") alert("Password");
+            console.error(error.response);
             this.setState({isLoading: false});
         }
-        this.props.history.push('/register/confirm');
+    };
+
+    handleConfirmSubmit = async event => {
+        event.preventDefault();
+        this.setState({isConfirmLoading: true});
+        console.log(this.state.newUser);
+
+        try {
+            await API.post("projects", "/register/confirm", {body: {
+                    Username: this.state.newUser.username,
+                    ConfirmationCode: this.state.code
+                }
+            });
+
+            alert("Successfully confirmed email! You can now log in.");
+            this.props.history.push('/login');
+        } catch (error) {
+            console.error(error.response);
+            this.setState({isConfirmLoading: false});
+        }
+    };
+
+    handleHide = event => {
+        this.setState({showConfirm: false});
     };
 
     render() {
         const tooltip =
             <Tooltip>
-                Password must be at least 8 characters long.
+                Password must be at least 8 characters long with an upper case, lower case, number and symbol.
             </Tooltip>;
 
         return(
@@ -131,6 +166,30 @@ export default class Register extends Component {
                         loadingText="Registering..."
                     />
                 </form>
+
+                <Modal show={this.state.showConfirm}
+                       onHide={this.handleHide} >
+                    <Form onSubmit={this.handleConfirmSubmit}>
+                        <Modal.Header>
+                            Confirm your username.
+                        </Modal.Header>
+                        <Modal.Body>
+                            Please enter the confirmation code sent to your email below:
+                            <FormGroup controlId="code">
+                                <ControlLabel>Code:</ControlLabel>
+                                <FormControl value={this.state.code}
+                                             onChange={this.handleChange} />
+                            </FormGroup>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <LoadingButton type="submit"
+                                           isLoading={this.state.isConfirmLoading}
+                                           text="Confirm"
+                                           loadingText="Confirming..."
+                            />
+                        </Modal.Footer>
+                    </Form>
+                </Modal>
             </div>
         );
     }
