@@ -1,11 +1,6 @@
 {
-  "body": "{\"title\":\"testing123\",\"description\":\"text\",\"admin\":\"admin\",\"roles\":\"[]\",\"users\":\"[]\"}",
-  "requestContext": {
-    "identity": {
-      "cognitoId": "user123"
-    }
-  },
+  "body": "{\"title\":\"New title\",\"description\":\"New description\",\"projectManager\":\"CodingJosh\",\"developers\":\"[]\"}",
   "pathParameters": {
-    "id": "d2192b60-e851-11e8-95a3-292b6f739720"
+    "id": "6d997860-f3d8-11e8-a2c1-e525bee56e91"
   }
 }
