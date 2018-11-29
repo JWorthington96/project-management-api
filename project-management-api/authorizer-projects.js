@@ -39,7 +39,7 @@ const generatePolicy = (user, projects, decodedToken) => {
             policy = addToPolicy(policy, "Allow", "/GET/users/list");
             if (admin) {
                 // admins will have access to all Lambda functions in every project
-                policy = addToPolicy(policy, "Allow", "/*/projects/*/*");
+                policy = addToPolicy(policy, "Allow", "/*/projects/*");
             }
             if (managerProjectIds !== []) {
                 // project managers will have access to all Lambda functions

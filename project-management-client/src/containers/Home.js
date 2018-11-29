@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {PageHeader, ButtonToolbar, Button, Glyphicon, ListGroup, ListGroupItem} from "react-bootstrap";
+import {PageHeader, ButtonToolbar, Button, Glyphicon, ListGroup, ListGroupItem, Tabs, Tab} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {API} from "aws-amplify";
 import "./Home.css";
@@ -9,7 +9,8 @@ export default class Home extends Component {
         super(props);
         this.state = {
             isLoading: true,
-            projects: []
+            projects: [],
+            allProjects: []
         };
     }
 
@@ -19,18 +20,28 @@ export default class Home extends Component {
         try {
             await this.props.checkTokens();
             console.log(this.props.user);
-            const projects = await API.get("projects", "/projects",
-                {
+
+            let allProjects = [];
+            if (this.props.user.admin) {
+                allProjects = await API.get("projects", "/projects/all", {
                     headers: {
                         Authorization: "Bearer " + this.props.user.auth.AccessToken
-                    },
-                    queryStringParameters: {
-                        username: this.props.user.username
                     }
+                });
+            }
+            const projects = await API.get("projects", "/projects", {
+                headers: {
+                    Authorization: "Bearer " + this.props.user.auth.AccessToken
+                },
+                queryStringParameters: {
+                    username: this.props.user.username
                 }
-            );
+            });
             console.log(projects);
-            this.setState({projects});
+            this.setState({
+                projects: projects,
+                allProjects: allProjects
+            });
         } catch (error) {
             console.error(error.response);
         }
@@ -86,10 +97,32 @@ export default class Home extends Component {
         );
     }
 
+    renderAllProjects() {
+        return (
+            <div className="all-projects">
+                <PageHeader>All Projects</PageHeader>
+                <ListGroup className="projects-list">
+                    {!this.state.isLoading && this.renderProjectsList(this.state.allProjects)}
+                </ListGroup>
+            </div>
+        );
+    }
+
     render() {
         return (
             <div className="Home">
-                {this.props.isAuthenticated ? this.renderProjects() : this.renderLander()}
+                {this.props.user.admin ?
+                <Tabs activeKey={this.state.activeKey}
+                      onSelect={this.handleSelect}
+                      id="tabs" >
+                    <Tab eventKey={1} title="Your projects">
+                        {this.renderProjects()}
+                    </Tab>
+                    <Tab eventKey={2} title="All projects">
+                        {this.renderAllProjects()}
+                    </Tab>
+                </Tabs> :
+                this.props.isAuthenticated ? this.renderProjects() : this.renderLander()}
             </div>
         );
     }

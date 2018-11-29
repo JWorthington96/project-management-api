@@ -71,6 +71,10 @@ export default class Login extends Component {
                 auth: response
             };
 
+            user.attributes.map( (attribute) => {
+                if (attribute.Name === "custom:admin") user["admin"] = true;
+            });
+
             // calculating the clock drift from the server
             user.auth.ClockDrift = Math.floor(new Date()/1000) - user.auth.IssuedAt;
 

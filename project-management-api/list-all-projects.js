@@ -15,7 +15,7 @@ export function main(event, context, callback) {
         };
         try {
             const response = yield call('scan', params);
-            callback(null, success({ status: true, body: response.Items }));
+            callback(null, success(response.Items));
         }
         catch (error) {
             console.log(error);

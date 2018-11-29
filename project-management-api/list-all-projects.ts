@@ -8,7 +8,7 @@ export async function main(event, context, callback){
 
     try {
         const response = await call('scan', params);
-        callback(null, success({status: true, body: response.Items}));
+        callback(null, success(response.Items));
     } catch (error) {
         console.log(error);
         callback(null, failure({status: false, body: error}));
