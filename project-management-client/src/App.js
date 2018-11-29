@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 import Routes from "./Routes";
 import './App.css';
-import {Auth} from "aws-amplify";
+import {Auth, API} from "aws-amplify";
 
 class App extends Component {
     constructor(props) {
@@ -19,12 +19,14 @@ class App extends Component {
 
     async componentDidMount() {
         try {
-            await Auth.currentSession();
+            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
+            if (user === null) throw new Error("No current user");
             // this will be used to get the current user from a saved session
-            await this.setCurrentUser();
+            this.setCurrentUser(user);
             this.userHasAuthenticated(true);
+            console.log(user);
         } catch (error) {
-            if (error !== 'No current user') console.log(error);
+            if (error !== 'No current user') console.error(error.response);
         }
 
         this.setState({isAuthenticating: false,});
@@ -34,28 +36,37 @@ class App extends Component {
         this.setState({isAuthenticated: authenticated});
     };
 
-    changeCurrentUser = user => {
+    setCurrentUser = user => {
         this.setState({user: user});
-    }
-
-    setCurrentUser = async event => {
-        let user = await Auth.currentAuthenticatedUser();
-        console.log(user.valueOf());
-        this.changeCurrentUser(user);
-    }
+    };
 
     handleLogout = async event => {
-        await Auth.signOut();
-        this.userHasAuthenticated(false);
-        this.changeCurrentUser({});
-        this.props.history.push("/");
+        try {
+            /*
+            await API.post("projects", "/signout", {
+                headers: {
+                    Authorization: this.state.user.auth.AccessToken
+                },
+                body: {
+                    AccessToken: this.state.user.auth.AccessToken
+                }
+            });
+            */
+            await Auth.signOut();
+            localStorage.removeItem("ProjectManagerSession");
+            this.userHasAuthenticated(false);
+            this.setCurrentUser({});
+            this.props.history.push("/");
+        } catch (error) {
+            console.error(error.response);
+        }
     };
 
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
             user: this.state.user,
-            changeCurrentUser: this.changeCurrentUser,
+            setCurrentUser: this.setCurrentUser,
             userHasAuthenticated: this.userHasAuthenticated
         };
 

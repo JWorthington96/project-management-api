@@ -1,87 +1,69 @@
 import React, {Component} from "react";
-import {Button, ControlLabel, FormControl, FormGroup, Glyphicon, ListGroupItem} from "react-bootstrap";
-import LoadingButton from "./LoadingButton";
+import {Button, ControlLabel, Form, FormControl, FormGroup, Glyphicon, ListGroupItem, Modal} from "react-bootstrap"
 
 // Component to allow the admin to add developers when creating the project
 export default class DynamicDeveloperForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            confirmDevelopers: true,
             currentId: 0,
             currentDevelopers: []
         };
+
         this.addDeveloper = this.addDeveloper.bind(this);
         this.changeDeveloper = this.changeDeveloper.bind(this);
         this.deleteDeveloper = this.deleteDeveloper.bind(this);
     }
 
-    validateForm() {
-        const nameLen = this.props.name.length;
-        const descLen = this.props.description.length;
-        const pmLen = this.props.projectManager.length;
-        return (nameLen > 0 && descLen > 0 && pmLen > 0 && this.state.confirmDevelopers);
-    }
-
     addDeveloper(developer) {
         const id = this.state.currentId;
-        if (id === 0) {
-            this.setState({confirmDevelopers: false});
-        }
         const devs = this.state.currentDevelopers;
-        console.log(devs.valueOf());
-        devs[id] = {id: id, username: developer};
+        devs[id] = developer;
+        console.log(devs);
+
+        if (this.props.developers === undefined){
+            this.props.confirmDevelopers(true);
+        } else if (devs.length !== this.props.developers.length) {
+            this.props.confirmDevelopers(false);
+        }
         this.setState({currentId: id + 1, currentDevelopers: devs});
     }
 
     changeDeveloper(id, developer) {
         const devs = this.state.currentDevelopers;
-        devs[id] = {id: id, username: developer};
-        this.setState({currentDevelopers: devs});
+        devs[id] = developer;
     }
 
     deleteDeveloper(id) {
         const devs = this.state.currentDevelopers;
         devs.splice(id, 1);
-        console.log(devs.valueOf());
-        for (let i = 0; i < devs.length; i++) {
-            devs[i] = {id: i, username: devs[i].username};
-        }
-        let maxi = devs.length - 1;
-        if (maxi === 0) {
-            this.setState({confirmDevelopers: true});
-        }
-        this.setState({currentId: maxi, currentDevelopers: devs});
+        if (devs.length === 0) this.props.confirmDevelopers(true);
+        this.setState({currentId: devs.length, currentDevelopers: devs});
     }
 
-    submitDevelopers = event => {
+    handleSubmit = event => {
         event.preventDefault();
-        this.setState({confirmDevelopers: true});
         this.props.setDevelopers(this.state.currentDevelopers);
-    }
+        this.props.confirmDevelopers(true);
+    };
 
     render() {
         return (
-            <div>
-                <div className="developers">
+            <div className="developers">
+                <Form onSubmit={this.handleSubmit}>
                     <DeveloperFormList
                         developers={this.state.currentDevelopers}
                         changeDeveloper={this.changeDeveloper}
                         deleteDeveloper={this.deleteDeveloper}
                     />
-                    <NewDeveloperForm addDeveloper={this.addDeveloper}/>
-                    <Button onClick={this.submitDevelopers}>Confirm developers</Button>
-                </div>
-
-                <FormGroup>
-                    <LoadingButton
-                        type="submit"
-                        isLoading={this.state.isLoading}
-                        text="Create"
-                        loadingText="Creating..."
-                        disabled={!this.validateForm()}
-                    />
-                </FormGroup>
+                    <NewDeveloperForm addDeveloper={this.addDeveloper}
+                                      projectManager={this.props.projectManager}
+                                      siteUsers={this.props.siteUsers} />
+                    <Button type="submit"
+                            disabled={this.state.confirmDevelopers}>
+                        Confirm developers
+                    </Button>
+                </Form>
             </div>
         );
     }
@@ -101,21 +83,19 @@ class DeveloperFormList extends Component {
     };
 
     handleDelete = event => {
-        const id = event.target.id;
+        const id = Number(event.target.id);
         this.props.deleteDeveloper(id);
-    }
+    };
 
     render() {
-        return this.props.developers.map( developer =>
-            <ListGroupItem>
-                <FormGroup controlId={developer.id.toString()}>
-                    {console.log(developer.id)}
-                    {console.log(developer.username)}
-                    <ControlLabel>Developer {developer.id + 1}</ControlLabel>
-                    <FormControl onChange={this.handleChange} value={developer.username} />
+        return this.props.developers.map( (developer, i) =>
+            <ListGroupItem key={i}>
+                <FormGroup controlId={i.toString()}>
+                    <ControlLabel>Developer {i + 1}</ControlLabel>
+                    <FormControl onChange={this.handleChange} value={developer} />
                 </FormGroup>
 
-                <Button id={developer.id} onClick={this.handleDelete}>
+                <Button id={i.toString()} onClick={this.handleDelete}>
                     <Glyphicon glyph="minus"/>
                 </Button>
             </ListGroupItem>
@@ -129,7 +109,9 @@ class NewDeveloperForm extends Component {
     constructor(props){
         super(props);
         this.state = {
-            newDeveloper: ""
+            newDeveloper: "",
+            managerError: false,
+            error: false
         };
     }
 
@@ -138,13 +120,56 @@ class NewDeveloperForm extends Component {
     };
 
     handleAdd = event => {
+        if (this.state.newDeveloper === this.props.projectManager){
+            this.setState({
+                managerError: true,
+                error: true
+            });
+        } else if (this.props.siteUsers.includes(this.state.newDeveloper)){
+            this.handleIgnore(event);
+        } else {
+            this.setState({error: true});
+        }
+    };
+
+    handleIgnore = event => {
         event.preventDefault();
         this.props.addDeveloper(this.state.newDeveloper);
-        this.setState({newDeveloper: ""});
+        this.setState({
+            newDeveloper: "",
+            error: false
+        });
+    };
+
+    handleClose = () => {
+        this.setState({error: false});
     };
 
     validateForm(){
         return this.state.newDeveloper.length > 0;
+    }
+
+    renderModal() {
+        return (
+            <Modal show={this.state.error}>
+                <Modal.Header>
+                    Error!
+                </Modal.Header>
+                <Modal.Body>
+                    {this.state.managerError ?
+                        <h4>You cannot add yourself as a developer, this is implied (and can be changed later).</h4>
+                        :
+                        <h4>User not found in user base.</h4>
+                    }
+                </Modal.Body>
+                <Modal.Footer>
+                    {this.state.managerError ? null :
+                        <Button onClick={this.handleIgnore}>Add anyway</Button>
+                    }
+                    <Button onClick={this.handleClose}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+        );
     }
 
     render() {
@@ -158,6 +183,7 @@ class NewDeveloperForm extends Component {
                 <Button disabled={!this.validateForm()} onClick={this.handleAdd}>
                     <Glyphicon glyph="plus" />
                 </Button>
+                {this.renderModal()}
             </ListGroupItem>
         );
     }

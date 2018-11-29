@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
-import {Alert, Button, FormGroup, FormControl, ControlLabel, HelpBlock, Checkbox} from "react-bootstrap";
+import {Alert, Button, ControlLabel, FormGroup, FormControl, OverlayTrigger, Tooltip} from "react-bootstrap";
 import "./Login.css";
-import {Auth} from "aws-amplify";
+import {API} from "aws-amplify";
 import LoadingButton from "../components/LoadingButton";
 
 export default class Login extends Component {
@@ -12,6 +12,7 @@ export default class Login extends Component {
         this.state = {
             isConfirmed: true,
             isLoading: false,
+            incorrect: false,
             username: '',
             password: ''
         };
@@ -21,56 +22,86 @@ export default class Login extends Component {
         const usernameLen = this.state.username.length;
         const passLen = this.state.password.length;
         return (usernameLen > 0 && passLen > 12);
-    }
+    };
 
     getValidationState(){
         return this.getValidationBoolean() ? 'success' : 'error';
-    }
+    };
 
     handleChange = event => {
         this.setState({[event.target.id]: event.target.value});
-    }
+    };
 
     handleSubmit = async e => {
         e.preventDefault();
-
         this.setState({isLoading: true});
+
         try {
-            let user = await Auth.signIn(this.state.username, this.state.password);
+            const response = (await API.post("projects", "/login", {body: {
+                    Username: this.state.username,
+                    Password: this.state.password
+                }
+            })).body;
+            console.log(response);
+
+            const attributes = (await API.get("projects", "/users", {
+                headers: {
+                    Authorization: "Bearer " + response.Auth.AccessToken
+                }
+            })).body;
+            console.log(attributes);
+
+            const user = {
+                username: this.state.username,
+                password: this.state.password,
+                attributes: attributes.UserAttributes,
+                auth: response.Auth,
+                identityId: response.IdentityId
+            };
+            localStorage.setItem("ProjectManagerSession", JSON.stringify(user));
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js
-            this.props.changeCurrentUser(user);
+            this.props.setCurrentUser(user);
+            console.log(user.valueOf());
             this.setState({isLoading: false});
             this.props.history.push("/");
         } catch (error) {
-            if (error.message === "User is not confirmed.") {
+            if (error.message === "") {
                 this.setState({isConfirmed: false});
-            } else if (error.message === "") {
-                // TODO: notify user if credentials are wrong
+            } else if (error.message === "No username/password combination found") {
+                this.setState({incorrect: true});
+                // TODO: add prompt that shows the username or pass was incorrect
             } else if (error.message === "User does not exist.") {
                 // TODO: redirect user to the register page
             } else {
-                console.log(error);
+                console.error(error);
+                console.error(error.response);
+                this.setState({isLoading: false});
             }
         }
-    }
+    };
 
     handleDismiss = event => {
         this.setState({isConfirmed: true});
-    }
+    };
 
     handleResend = async event => {
         event.preventDefault();
 
         try {
-            await Auth.resendSignUp(this.state.username);
+            //await Auth.resendSignUp(this.state.username);
             this.setState({isConfirmed: true});
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     render() {
+        const tooltip =
+            <Tooltip>
+                Password is at least 8 characters long.
+            </Tooltip>;
+
         return (
             <div className="Login">
                 <form onSubmit={this.handleSubmit}>
@@ -88,23 +119,20 @@ export default class Login extends Component {
                         <FormControl.Feedback />
                     </FormGroup>
 
-                    <FormGroup
-                        controlId="password"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>Password</ControlLabel>
-                        <FormControl
-                            type="password"
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                        />
-                        <FormControl.Feedback />
-                        <HelpBlock>Password is at least 12 characters long</HelpBlock>
-                    </FormGroup>
-
-                    <Checkbox title="The website will save your credentials to immediately login next time">
-                        Remember details
-                    </Checkbox>
+                    <OverlayTrigger placement="bottom" overlay={tooltip}>
+                        <FormGroup
+                            controlId="password"
+                            validationState={this.getValidationState()}
+                        >
+                            <ControlLabel>Password</ControlLabel>
+                            <FormControl
+                                type="password"
+                                value={this.state.password}
+                                onChange={this.handleChange}
+                            />
+                            <FormControl.Feedback />
+                        </FormGroup>
+                    </OverlayTrigger>
 
                     <LoadingButton
                         type="submit"
@@ -114,7 +142,7 @@ export default class Login extends Component {
                         loadingText="Logging in..."
                     />
 
-                    {this.state.isConfirmed ? <div></div>
+                    {this.state.isConfirmed ? null
                         : <Fragment>
                             <Alert className="alert" bsStyle="danger" onDismiss={this.handleDismiss}>
                                 <h3>Thank you again for registering!</h3>
