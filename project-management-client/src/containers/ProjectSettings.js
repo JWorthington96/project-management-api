@@ -321,7 +321,12 @@ class ProjectUsers extends Component {
             console.error(error);
             this.setState({isChangeLoading: false});
         }
-        this.props.hist.push('/');
+        if (this.props.user.admin) {
+            this.setState({changeManager: false});
+            window.location.reload();
+        } else {
+            this.props.hist.push('/');
+        }
     };
 
     renderModal() {

@@ -51,7 +51,7 @@ export default class Project extends Component {
     renderProject(){
         return (
             <div>
-                {this.state.project.projectManager === this.props.user.username ?
+                {this.state.project.projectManager === this.props.user.username || this.props.user.admin ?
                     <Tabs id="project-tab">
                         <Tab eventKey={1} title="View">
                             <ProjectView project={this.state.project} />
