@@ -2,20 +2,20 @@ import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    let status = "pending" || "active" || "completed";
-    if (event.queryStringParameters) status = event.queryStringParameters.status;
+    let projectStatus = "pending" || "active" || "completed";
+    if (event.queryStringParameters) projectStatus = event.queryStringParameters.projectStatus;
 
     const input = JSON.parse(event.body);
     const params = {
         TableName: "projects",
         Key: {
             projectId: event.pathParameters.id,
-            status: status
+            projectStatus: projectStatus
         },
-        UpdateExpression: "SET status = :status, title = :title, description = :description," +
+        UpdateExpression: "SET projectStatus = :projectStatus, title = :title, description = :description," +
             "projectManager = :projectManager, developers = :developers, usernames = :usernames",
         ExpressionAttributeValues: {
-            ":status": input.status ? input.status : null,
+            ":projectStatus": input.projectStatus ? input.status : null,
             ":title": input.title ? input.title : null,
             ":description": input.description ? input.description : null,
             ":projectManager": input.projectManager ? input.projectManager : null,
