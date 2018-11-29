@@ -76,6 +76,14 @@ functions:
           path: projects
           cors: true
           authorizer: ${self:custom.authorizer.default}
+  list-all:
+    handler: list-all-projects.main
+    events:
+      - http:
+          method: get
+          path: projects/all
+          cors: true
+          authorizer: ${self:custom.authorizer.projects}
   delete:
     handler: delete.main
     events:
@@ -106,6 +114,13 @@ functions:
       - http:
           method: post
           path: register
+          cors: true
+  user-resend:
+    handler: user-resend-code.main
+    events:
+      - http:
+          method: post
+          path: register/resend
           cors: true
   user-refresh:
     handler: user-refresh-tokens.main
