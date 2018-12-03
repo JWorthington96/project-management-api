@@ -32,8 +32,6 @@ class App extends Component {
             }
 
             this.setCurrentUser(user);
-            console.log(this.state.user);
-            await this.setState({user: user});
             await this.checkTokens();
             this.userHasAuthenticated(true);
         } catch (error) {
@@ -92,7 +90,7 @@ class App extends Component {
             });
             localStorage.removeItem("ProjectManagerSession");
             this.userHasAuthenticated(false);
-            this.setCurrentUser({});
+            this.setCurrentUser(null);
             this.props.history.push("/");
         } catch (error) {
             console.error(error.response);
@@ -120,7 +118,7 @@ class App extends Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
-                            {this.state.isAuthenticated ?
+                            {this.state.isAuthenticated && this.state.user !== null ?
                                 <Fragment>
                                     <LinkContainer to="/users">
                                         <NavItem>Users</NavItem>

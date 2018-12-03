@@ -1,5 +1,7 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
+//import AuthenticatedRoute from "./components/AuthenticatedRoute"
+//import UnauthenticatedRoute from "./components/UnauthenticatedRoute"
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
@@ -19,5 +21,5 @@ export default ({childProps}) =>
         <AppliedRoute path="/projects/new" exact component={NewProject} props={childProps} />
         <AppliedRoute path="/projects/:id" exact component={Project} props={childProps} />
         <AppliedRoute path="/users" exact component={Users} props={childProps} />
-        <Route component={NotFound} />
+        <AppliedRoute component={NotFound} />
     </Switch>

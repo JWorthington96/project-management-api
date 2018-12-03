@@ -82,15 +82,18 @@ export default class Login extends Component {
             this.props.userHasAuthenticated(true);
             // this will store the user in App.js for use in the site
             await this.props.setCurrentUser(user);
-            this.props.history.push("/");
+            this.props.history.push('/');
         } catch (error) {
             if (error.response.data.body.message === "User is not confirmed.") {
                 this.setState({
                     isLoading: false,
                     showConfirm: true
                 });
-            } else if (error.message === "No username/password combination found") {
-                this.setState({incorrect: true});
+            } else if (error.response.data.body.code === "NotAuthorizedException") {
+                this.setState({
+                    isLoading: false,
+                    incorrect: true
+                });
                 // TODO: add prompt that shows the username or pass was incorrect
             } else if (error.message === "User does not exist.") {
                 this.props.history.push('/register');
@@ -101,8 +104,12 @@ export default class Login extends Component {
         }
     };
 
-    handleDismiss = event => {
-        this.setState({isConfirmed: true});
+    handleDismiss = (event, password) => {
+        if (password) {
+            this.setState({incorrect: false})
+        } else {
+            this.setState({isConfirmed: true});
+        }
     };
 
     handleResend = async event => {
@@ -142,6 +149,19 @@ export default class Login extends Component {
     handleHide = event => {
         this.setState({showConfirm: false});
     };
+
+    renderAlert(){
+        return(
+            <Alert className="alert" bsStyle="danger" onDismiss={(event) => this.handleDismiss(event, true)}>
+                <h3>Incorrect username or password</h3>
+                <p>
+                    No username/password combination found, please make sure you have entered the correct details
+                    (username and password are both case sensitive).
+                </p>
+                <Button onClick={(event) => this.handleDismiss(event, true)}>Dismiss</Button>
+            </Alert>
+        );
+    }
 
     render() {
         const tooltip =
@@ -216,6 +236,7 @@ export default class Login extends Component {
                                 </p>
                             </Alert>
                         </Fragment>}
+                    {this.state.incorrect ? this.renderAlert() : null}
                 </form>
             </div>
         );

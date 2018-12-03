@@ -108,10 +108,13 @@ export default class Home extends Component {
         );
     }
 
+    // if the user is not authenticated it will render the lander, else if the user is an admin it will render
+    // "Your Projects" and "All Projects" as separate tabs, otherwise it will just render "Your Projects"
     render() {
         return (
             <div className="Home">
-                {this.props.user.admin ?
+                {!this.props.isAuthenticated ? this.renderLander() :
+                    this.props.user.admin ?
                 <Tabs activeKey={this.state.activeKey}
                       onSelect={this.handleSelect}
                       id="tabs" >
@@ -122,7 +125,7 @@ export default class Home extends Component {
                         {this.renderAllProjects()}
                     </Tab>
                 </Tabs> :
-                this.props.isAuthenticated ? this.renderProjects() : this.renderLander()}
+                        this.renderProjects()}
             </div>
         );
     }
