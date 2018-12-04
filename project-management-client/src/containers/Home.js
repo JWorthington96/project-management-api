@@ -15,20 +15,25 @@ export default class Home extends Component {
     }
 
     async componentDidMount() {
-        if (!this.props.isAuthenticated) return;
+        if (!this.props.isAuthenticated) {
+            this.setState({isLoading: false});
+            return;
+        }
 
         try {
             await this.props.checkTokens();
-            console.log(this.props.user);
+            //console.log(this.props.user);
 
             let allProjects = [];
             if (this.props.user.admin) {
+                // listing all projects if the user is an admin
                 allProjects = await API.get("projects", "/projects/all", {
                     headers: {
                         Authorization: "Bearer " + this.props.user.auth.AccessToken
                     }
                 });
             }
+            // listing all projects associated with the authenticated user
             const projects = await API.get("projects", "/projects", {
                 headers: {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
@@ -37,7 +42,6 @@ export default class Home extends Component {
                     username: this.props.user.username
                 }
             });
-            console.log(projects);
             this.setState({
                 projects: projects,
                 allProjects: allProjects
@@ -85,14 +89,14 @@ export default class Home extends Component {
         return (
             <div className="projects">
                 <PageHeader>Your Projects</PageHeader>
+                <ListGroup className="projects-list">
+                    {!this.state.isLoading && this.renderProjectsList(this.state.projects)}
+                </ListGroup>
                 <ButtonToolbar className="toolbar">
                     <Button onClick={this.addProject}>
                         <Glyphicon glyph="plus" />
                     </Button>
                 </ButtonToolbar>
-                <ListGroup className="projects-list">
-                    {!this.state.isLoading && this.renderProjectsList(this.state.projects)}
-                </ListGroup>
             </div>
         );
     }
@@ -111,21 +115,23 @@ export default class Home extends Component {
     // if the user is not authenticated it will render the lander, else if the user is an admin it will render
     // "Your Projects" and "All Projects" as separate tabs, otherwise it will just render "Your Projects"
     render() {
-        return (
-            <div className="Home">
-                {!this.props.isAuthenticated ? this.renderLander() :
+        return(
+            <div className="Projects-Tabs">
+                {this.props.isAuthenticated && this.props.user ?
                     this.props.user.admin ?
-                <Tabs activeKey={this.state.activeKey}
-                      onSelect={this.handleSelect}
-                      id="tabs" >
-                    <Tab eventKey={1} title="Your projects">
-                        {this.renderProjects()}
-                    </Tab>
-                    <Tab eventKey={2} title="All projects">
-                        {this.renderAllProjects()}
-                    </Tab>
-                </Tabs> :
-                        this.renderProjects()}
+                        <Tabs activeKey={this.state.activeKey}
+                              onSelect={this.handleSelect}
+                              id="tabs">
+                            <Tab eventKey={1} title="Your projects">
+                                {this.renderProjects()}
+                            </Tab>
+                            <Tab eventKey={2} title="All projects">
+                                {this.renderAllProjects()}
+                            </Tab>
+                        </Tabs>
+                        : this.renderProjects()
+                    : this.renderLander()
+                }
             </div>
         );
     }

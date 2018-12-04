@@ -40,7 +40,6 @@ provider:
       Resource: "arn:aws:dynamodb:eu-west-2:*:*"
     - Effect: Allow
       Action:
-        - congito-identity:*
         - cognito-idp:*
         - cognito-sync:*
         - iam:*

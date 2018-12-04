@@ -21,11 +21,14 @@ class App extends Component {
     async componentDidMount() {
         try {
             // this will be used to get the current user from a saved session
-            const user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
-            console.log(user);
+            let user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
             if (user === null) {
                 console.log("User is null");
                 // no stored user means user has not logged in/authenticated
+                user = {
+                    admin: false
+                };
+                this.setCurrentUser({user});
                 this.userHasAuthenticated(false);
                 this.setState({isAuthenticating: false});
                 return;
@@ -54,7 +57,7 @@ class App extends Component {
                         RefreshToken: refreshUser.auth.RefreshToken
                     }
                 })).body;
-                console.log(auth);
+                //console.log(auth);
 
                 refreshUser.auth.AccessToken = auth.AccessToken;
                 refreshUser.auth.IdToken = auth.IdToken;
