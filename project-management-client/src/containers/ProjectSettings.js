@@ -86,7 +86,7 @@ export default class ProjectSettings extends Component {
                     projectStatus: this.state.projectStatus
                 }
             });
-            console.log(attributes);
+            //console.log(attributes);
         } catch (error) {
             console.error(error.response);
             this.setState({isLoading: false});
@@ -128,7 +128,7 @@ export default class ProjectSettings extends Component {
                 }
             });
         } catch (error) {
-            console.log(error.response);
+            console.error(error.response);
             this.setState({isChangeLoading: false});
         }
     };
@@ -305,7 +305,7 @@ class ProjectUsers extends Component {
 
         const developers = this.props.developers;
         developers.splice(developers.indexOf(this.state.newProjectManager), 1, this.props.projectManager);
-        console.log(developers);
+        //console.log(developers);
         try {
             await this.props.checkTokens();
             await API.put("projects", `/projects/${this.props.match.params.id}`, {

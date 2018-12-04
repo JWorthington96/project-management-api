@@ -60,20 +60,25 @@ export default class Register extends Component {
                 }
             });
 
-            this.setState({newUser: newUser});
-            //this.props.history.push('/register/confirm');
-            this.setState({showConfirm: true});
+            this.setState({
+                newUser: newUser,
+                showConfirm: true
+            });
         } catch (error) {
-            //if (error.response.data.body === "Password did not conform with password policy.") alert("Password");
-            console.error(error.response);
-            this.setState({isLoading: false});
+            if (error.response.data.body === "Password did not conform with password policy.")
+                alert("Password must have a lower case, upper case, symbol and number.");
+            else if (error.response.data.body === "User already exists") alert("ERROR: username is already taken.");
+            else {
+                console.error(error.response);
+                this.setState({isLoading: false});
+            }
         }
     };
 
     handleConfirmSubmit = async event => {
         event.preventDefault();
         this.setState({isConfirmLoading: true});
-        console.log(this.state.newUser);
+        //console.log(this.state.newUser);
 
         try {
             await API.post("projects", "/register/confirm", {body: {

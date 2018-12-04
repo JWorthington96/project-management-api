@@ -24,7 +24,7 @@ export default class Project extends Component {
                     Authorization: "Bearer " + this.props.user.auth.AccessToken
                 }
             });
-            console.log(users.Users);
+            //console.log(users.Users);
 
             this.setState({
                 isLoading: false,
@@ -54,7 +54,7 @@ export default class Project extends Component {
                 {this.state.project.projectManager === this.props.user.username || this.props.user.admin ?
                     <Tabs id="project-tab">
                         <Tab eventKey={1} title="View">
-                            <ProjectView project={this.state.project} />
+                            <ProjectView project={this.state.project} siteUsers={this.state.siteUsers} />
                         </Tab>
                         <Tab eventKey={2} title="Settings">
                             <ProjectSettings project={this.state.project}

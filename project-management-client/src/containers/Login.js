@@ -55,14 +55,14 @@ export default class Login extends Component {
                     Password: this.state.password
                 }
             })).body;
-            console.log(response);
+            //console.log(response);
 
             const attributes = (await API.get("projects", "/users", {
                 headers: {
                     Authorization: "Bearer " + response.AccessToken
                 }
             })).body;
-            console.log(attributes);
+            //console.log(attributes);
 
             const user = {
                 username: this.state.username,
@@ -71,9 +71,11 @@ export default class Login extends Component {
                 auth: response
             };
 
+            let admin = false;
             user.attributes.map( (attribute) => {
-                if (attribute.Name === "custom:admin") user["admin"] = true;
+                if (attribute.Name === "custom:admin") admin = true;
             });
+            user.admin = admin;
 
             // calculating the clock drift from the server
             user.auth.ClockDrift = Math.floor(new Date()/1000) - user.auth.IssuedAt;
@@ -120,7 +122,7 @@ export default class Login extends Component {
                 Username: this.state.username
             });
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
