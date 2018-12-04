@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom";
 import {LinkContainer} from "react-router-bootstrap";
 import Routes from "./Routes";
 import './App.css';
-import {Auth} from "aws-amplify";
+import {API} from "aws-amplify";
 
 class App extends Component {
     constructor(props) {
@@ -12,51 +12,101 @@ class App extends Component {
         this.state = {
             isAuthenticated: false,
             isAuthenticating: true,
-            user: {}
+            user: null
         };
         this.setCurrentUser = this.setCurrentUser.bind(this);
+        this.checkTokens = this.checkTokens.bind(this);
     };
 
     async componentDidMount() {
         try {
-            await Auth.currentSession();
             // this will be used to get the current user from a saved session
-            await this.setCurrentUser();
+            let user = JSON.parse(localStorage.getItem("ProjectManagerSession"));
+            if (user === null) {
+                console.log("User is null");
+                // no stored user means user has not logged in/authenticated
+                user = {
+                    admin: false
+                };
+                this.setCurrentUser({user});
+                this.userHasAuthenticated(false);
+                this.setState({isAuthenticating: false});
+                return;
+            }
+
+            this.setCurrentUser(user);
+            await this.checkTokens();
             this.userHasAuthenticated(true);
         } catch (error) {
-            if (error !== 'No current user') console.log(error);
+            console.error(error);
         }
 
-        this.setState({isAuthenticating: false,});
+        this.setState({isAuthenticating: false});
+    };
+
+    // function to check if the given users tokens have expired, and if so refresh them and change the current user
+    async checkTokens () {
+        console.log("called check tokens");
+
+        const serverTime = Math.floor(new Date()/1000) - this.state.user.auth.ClockDrift;
+        if (serverTime > this.state.user.auth.Expiration) {
+            try {
+                const refreshUser = this.state.user;
+                const auth = (await API.get("projects", "/users/refresh", {
+                    queryStringParameters: {
+                        RefreshToken: refreshUser.auth.RefreshToken
+                    }
+                })).body;
+                //console.log(auth);
+
+                refreshUser.auth.AccessToken = auth.AccessToken;
+                refreshUser.auth.IdToken = auth.IdToken;
+                refreshUser.auth.IssuedAt = auth.IssuedAt;
+                refreshUser.auth.Expiration = auth.Expiration;
+                refreshUser.auth.ClockDrift = Math.floor(new Date()/1000) - auth.IssuedAt;
+
+                console.log("Refreshed Access and Id tokens");
+                await this.setState(refreshUser);
+            } catch (error) {
+                console.log(error.response);
+            }
+        }
+        return;
     };
 
     userHasAuthenticated = authenticated => {
         this.setState({isAuthenticated: authenticated});
     };
 
-    changeCurrentUser = user => {
+    setCurrentUser = user => {
         this.setState({user: user});
-    }
-
-    setCurrentUser = async event => {
-        let user = await Auth.currentAuthenticatedUser();
-        console.log(user.valueOf());
-        this.changeCurrentUser(user);
-    }
+    };
 
     handleLogout = async event => {
-        await Auth.signOut();
-        this.userHasAuthenticated(false);
-        this.changeCurrentUser({});
-        this.props.history.push("/");
+        event.preventDefault();
+        try {
+            await this.checkTokens();
+            await API.post("projects", "/logout", {
+                headers: {
+                    Authorization: "Bearer " + this.state.user.auth.AccessToken
+                }
+            });
+            localStorage.removeItem("ProjectManagerSession");
+            this.userHasAuthenticated(false);
+            this.setCurrentUser(null);
+            this.props.history.push("/");
+        } catch (error) {
+            console.error(error.response);
+        }
     };
 
     render() {
         const childProps = {
             isAuthenticated: this.state.isAuthenticated,
             user: this.state.user,
-            changeCurrentUser: this.changeCurrentUser,
-            userHasAuthenticated: this.userHasAuthenticated
+            setCurrentUser: this.setCurrentUser,
+            userHasAuthenticated: this.userHasAuthenticated,
+            checkTokens: this.checkTokens
         };
 
         return (
@@ -71,8 +121,11 @@ class App extends Component {
                     </Navbar.Header>
                     <Navbar.Collapse>
                         <Nav pullRight>
-                            {this.state.isAuthenticated ?
+                            {this.state.isAuthenticated && this.state.user !== null ?
                                 <Fragment>
+                                    <LinkContainer to="/users">
+                                        <NavItem>Users</NavItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/account">
                                         <NavItem>{this.state.user.username}</NavItem>
                                     </LinkContainer>

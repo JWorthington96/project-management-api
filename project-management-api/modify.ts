@@ -2,30 +2,32 @@ import {call} from "./lib/dynamodb";
 import {success, failure} from "./lib/response";
 
 export async function main(event, context, callback) {
-    const data = JSON.parse(event.body);
+    const input = JSON.parse(event.body);
+
+    // mapping the input to get an AttributeUpdates object
+    const attributeUpdates = {};
+    Object.keys(input).map( key => {
+        attributeUpdates[key.toString()] = {
+            "Action": "PUT",
+            "Value": input[key]
+        }
+    });
+    console.log(attributeUpdates);
+
     const params = {
         TableName: "projects",
         Key: {
-            adminId: event.requestContext.identity.cognitoIdentityId,
-            projectId: event.pathParameters.id,
+            projectId: event.pathParameters.id
         },
-        UpdateExpression: "SET title = :title, description = :description, admin = :admin," +
-            "projectManager = :projectManager, developers = :developers",
-        ExpressionAttributeValues: {
-            ":title": data.title ? data.title : null,
-            ":description": data.description ? data.description : null,
-            ":admin": data.admin ? data.admin : null,
-            ":projectManager": data.projectManager ? data.projectManager : null,
-            ":developers": data.developers ? data.developers : null,
-        },
-        ReturnValues: "ALL_NEW"
+        AttributeUpdates: attributeUpdates,
+        ReturnValues: "UPDATED_NEW"
     };
 
     try {
-        call('update', params);
-        callback(null , success({status: true}));
+        const updated = await call('update', params);
+        callback(null , success({status: true, body: updated.Attributes}));
     } catch (error) {
         console.error(error);
-        callback(null, failure({status: false}));
+        callback(null, failure({status: false, body: error.message}));
     }
 }
